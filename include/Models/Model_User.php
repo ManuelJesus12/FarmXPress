@@ -68,25 +68,20 @@ class UserModel {
         try{
             //*-----------------------------DATA------------------------------*//
             if(isset($_COOKIE["user-avatar"])) $file=$_COOKIE["user-avatar"]; else $file=null;
-            $pwd=password_hash($data[3], PASSWORD_BCRYPT);
+            $data[3]=password_hash($data[3], PASSWORD_BCRYPT);
             $date=date("Y-m-d H:i:s");
             //*-----------------------------DATA------------------------------*//
 
             //*-----------------------------INSERT CODE------------------------------*//
-            $sql=$this->db->prepare("INSERT INTO USUARIOS (Email, CIF, Nombre, Contraseña, Teléfono, Dirección, Tipo, Fecha_Registro, Avatar, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $sql->bindValue(1, $data[0]); //Email
-            $sql->bindValue(2, $data[1]); //Cif
-            $sql->bindValue(3, $data[2]); //Nombre
-            $sql->bindValue(4, $pwd); //Contraseña
-            $sql->bindValue(5, $data[4]); //Telefono
-            $sql->bindValue(6, $data[5]); //Direccion
-            $sql->bindValue(7, $data[6]); //Tipo
-            $sql->bindValue(8, $date); //Fecha_Registro
-            $sql->bindValue(9, $file); //Avatar
+            $sql=$this->db->prepare("INSERT INTO USUARIOS (Email, CIF, Nombre, Contraseña, Teléfono, Dirección, Comunidad, Provincia, Tipo, Fecha_Registro, Avatar, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            for($i=0;$i<=8;$i++) $sql->bindValue($i+1, $data[$i]);
+            $sql->bindValue(10, $date); //Fecha_Registro
+            $sql->bindValue(11, $file); //Avatar
 
             if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
-                $sql->bindValue(10, 1, PDO::PARAM_INT);
-            else $sql->bindValue(10, 0, PDO::PARAM_INT);
+                $sql->bindValue(12, 1, PDO::PARAM_INT);
+            else 
+                $sql->bindValue(12, 0, PDO::PARAM_INT);
             $sql->execute();
 
             //*-----------------------------CLIENT / SUPPLIER------------------------------*//
@@ -101,7 +96,6 @@ class UserModel {
 
             return 1;
         }catch(PDOException $e) {
-            echo $e->getMessage();
             return -1;
         }
     }
@@ -120,18 +114,20 @@ class UserModel {
                 if(is_array($user)) $file=$user[0]['Avatar']; else $file=null;
             }
 
-            $sql=$this->db->prepare("UPDATE USUARIOS SET Email=?, CIF=?, Nombre=?, Teléfono=?, Dirección=?, Avatar=? WHERE USUARIO_ID=?");
+            $sql=$this->db->prepare("UPDATE USUARIOS SET Email=?, CIF=?, Nombre=?, Teléfono=?, Dirección=?, Comunidad=?, Provincia=?, Avatar=? WHERE USUARIO_ID=?");
             $sql->bindValue(1, $data[0]); //Email
             $sql->bindValue(2, $data[1]); //Cif
             $sql->bindValue(3, $data[2]); //Nombre
             $sql->bindValue(4, $data[4]); //Telefono
             $sql->bindValue(5, $data[5]); //Direccion
-            $sql->bindValue(6, $file);
-            $sql->bindValue(7, $id);
+            $sql->bindValue(6, $data[6]); //Comunidad
+            $sql->bindValue(7, $data[7]); //Provincia
+            $sql->bindValue(8, $file);
+            $sql->bindValue(9, $id);
             $sql->execute();
 
             if($file==null) $file="anon.png";
-                setcookie("UserAvatar", "assets/img/users/".$file, time()+3600*24*7, "/");
+            setcookie("UserAvatar", "assets/img/users/".$file, time()+3600*24*7, "/");
             return 1;
         }catch(PDOException $e) {
             return -1;

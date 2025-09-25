@@ -33,6 +33,8 @@ CREATE TABLE Usuarios (
     Contraseña VARCHAR(255),
     Teléfono VARCHAR(9) UNIQUE,
     Dirección VARCHAR(255),
+    Comunidad VARCHAR(255),
+    Provincia VARCHAR(255),
     Fecha_Registro DATETIME,
     Estado BOOLEAN,
     Avatar BLOB,

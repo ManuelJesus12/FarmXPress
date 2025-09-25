@@ -1,6 +1,6 @@
 <!-------------------------------LOGIC------------------------------->
 <?php
-    $email=$cif=$name=$passwd=$phone=$address="";
+    $email=$cif=$name=$passwd=$phone=$address=$region=$province="";
     include("_Indexes/Index_User.php");
 
     if(in_array("viewUpdate", $methods)){
@@ -10,7 +10,8 @@
         $userData=$userController->selectUser($field, $_SESSION["usuario"]);
         $userId=$userData[0]['Usuario_ID'];
         $email=$userData[0]['Email']; $cif=$userData[0]['CIF'];
-        $name=$userData[0]['Nombre']; $phone=$userData[0]['Teléfono']; 
+        $name=$userData[0]['Nombre']; $phone=$userData[0]['Teléfono'];
+        $region=$userData[0]['Comunidad']; $province=$userData[0]['Provincia']; 
         $address=$userData[0]['Dirección'];
     }else{
         $action="principal.php?methodUser=insert-login";
@@ -20,46 +21,66 @@
 <!-------------------------------LOGIC------------------------------->
 
 <!-------------------------------FORM------------------------------->
-<article class="col-6 form-log site-section rounded pb-2">
+<article class="col-8 form-log site-section rounded pb-2">
     <?php echo "<h2>$title</h2>"; ?>
 
     <table class="table-form" style="margin:auto">
         <form action="<?php echo $action; ?>" method="post" enctype='multipart/form-data' id="form-data-user">
             <?php if(in_array("viewUpdate", $methods)){ ?>
                 <tr>
-                    <td colspan="2"><input type="hidden" name="userId" id="userId" value="<?php echo $userId ?>" /></td>
+                    <td colspan="2"><input type="hidden" name="userId" id="userId" class="input-form" value="<?php echo $userId ?>" /></td>
                 </tr>
             <?php } ?>
             <tr>
                 <td>Email: <span class="error">*</span></td>
-                <td><input type="email" placeholder="ejemplo@gmail.com" name="email" id="email" value="<?php echo $email; ?>" required /></td>
+                <td><input type="email" placeholder="ejemplo@gmail.com" name="email" id="email" class="input-form" value="<?php echo $email; ?>" required /></td>
             </tr>
             <tr>
                 <td>CIF: <span class="error">*</span></td>
-                <td><input type="text" placeholder="Ejemplo de CIF: A12345678" name="cif" id="cif" value="<?php echo $cif; ?>" required /></td>
+                <td><input type="text" placeholder="Ejemplo de CIF: A12345678" name="cif" id="cif" class="input-form" value="<?php echo $cif; ?>" required /></td>
             </tr>
             <tr>
                 <td>Nombre: <span class="error">*</span></td>
-                <td><input type="text" placeholder="Nombre de Empresa" name="name" id="name" value="<?php echo $name; ?>" required /></td>
+                <td><input type="text" placeholder="Nombre de Empresa" name="name" id="name" class="input-form" value="<?php echo $name; ?>" required /></td>
             </tr>
             <?php if($_GET["methodUser"]=="viewRegister"){ ?>
                 <tr>
                     <td>Contraseña: <span class="error">*</span></td>
-                    <td><input type="password" placeholder="Ejemplo de contraseña" name="password" id="password" value="<?php echo $passwd; ?>" required /></td>
+                    <td><input type="password" placeholder="Ejemplo de contraseña" name="password" id="password" class="input-form" value="<?php echo $passwd; ?>" required /></td>
                 </tr>
             <?php } ?>
             <tr>
                 <td>Teléfono: <span class="error">*</span></td>
-                <td><input type="text" placeholder="Ejemplo de teléfono: 123456789" name="phone" id="phone" value="<?php echo $phone; ?>" required /></td>
+                <td><input type="text" placeholder="Ejemplo de teléfono: 123456789" name="phone" id="phone" class="input-form" value="<?php echo $phone; ?>" required /></td>
             </tr>
             <tr>
                 <td>Dirección: <span class="error">*</span></td>
-                <td><input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" value="<?php echo $address; ?>" required /></td>
+                <td><input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" class="input-form" value="<?php echo $address; ?>" required /></td>
+            </tr>
+            <tr>
+                <td>Comunidad Autónoma: <span class="error">*</span></td>
+                <td>
+                    <select name="region" id="region" class="input-form" required >
+                        <option value="">Seleccione</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Provincia: <span class="error">*</span></td>
+                <td>
+                    <select name="province" id="province" class="input-form" required disabled >
+                        <option value="">Seleccione</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Dirección: <span class="error">*</span></td>
+                <td><input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" class="input-form" value="<?php echo $address; ?>" required /></td>
             </tr>
                 <?php if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR"){ ?>
                 <tr>
                     <td>Tipo: </td>
-                    <td><select name="tipo" id="tipo" required>
+                    <td><select name="tipo" id="tipo" class="input-form" equired>
                         <option value="P">Proveedor</option>
                         <option value="C">Cliente</option>
                     </select></td>
@@ -75,7 +96,7 @@
                 <td><span>Acepto los <a href="../index.php?view=legal">Términos y Condiciones</a> y la <a href="../index.php?view=privacy">Política de Privacidad</a></span></td>
             </tr>
             <?php } ?>
-            <tr><td colspan="2"><input type="button" class="btn-log element-green-bg" id="btn-data-user" value="Enviar" /></td></tr>
+            <tr><td colspan="2"><input type="button" class="btn-log element-green-bg" id="btn-data-user"  class="form-input" value="Enviar" /></td></tr>
             <tr>
                 <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
             </tr>
@@ -95,6 +116,7 @@
 
     <!-------------------------------SCRIPT------------------------------->
     <script src="../assets/js/form_user_validation.js"></script>
+    <script src="../assets/js/provinces_load.js"></script>
     <!-------------------------------SCRIPT------------------------------->
 </body>
 </html>

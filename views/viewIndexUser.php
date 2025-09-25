@@ -71,9 +71,9 @@ if(isset($_GET['action'])){
 <?php 
 if(PDOConnect($c)!=false) { 
   include("include/_Indexes/Index_Product.php"); $offset = 0;
-  $productControl= $productController->viewListProductCarousel($offset);
+  $productControl = $productController->viewListProductCarousel($offset);
 
-  if(count($productControl) > 0) {
+  if(is_array($productControl) && count($productControl) > 0) {
 ?>
   <section id="services-2" class="services-2 element-green-bg">
     <div class="container section-title" data-aos="fade-up">
@@ -121,19 +121,24 @@ if(PDOConnect($c)!=false) {
 
           <?php foreach($productControl as $product) { ?>
             <div class='swiper-slide card-prod element-green-border rounded text-center pt-4 pb-4' style="margin: auto; font-size: 0.8em !important;">
-                <?php if($product['Imagen']!=null) $file="assets/img/products/".$product['Imagen']; else $file="assets/img/products/anon.png"; ?>
-                <img src="<?php echo $file; ?>" alt="<?php echo $file; ?>" class="img-fluid shadow element-green-border rounded mb-3">
-                <h3 class='service-item-category' style='color: white !important;'><?php echo $product['Nombre']." - ".$product['Precio_Mensual']; ?>€</h3>
-                <?php if($product["Estado"]==1){ ?>
-                  <p class="card-text prod-status text-success fw-semibold mb-2" id='enabled-<?php echo $product["Producto_ID"]; ?>'>
-                    <i class="fa fa-check-circle me-1"></i>Estado: Disponible
-                  </p>
-                <?php } else { ?>
-                  <p class="card-text prod-status text-danger fw-semibold mb-2" id='disabled-<?php echo $product["Producto_ID"]; ?>'>
-                    <i class="fa fa-times-circle me-1"></i>Estado: No disponible
-                  </p>
-                <?php } ?>
+              <?php if($product['Imagen']!=null) $file="assets/img/products/".$product['Imagen']; else $file="assets/img/products/anon.png"; ?>
+              <img src="<?php echo $file; ?>" alt="<?php echo $file; ?>" class="img-fluid shadow element-green-border rounded mb-3">
+              <h3 class='service-item-category' style='color: white !important;'><?php echo $product['Nombre']." - ".$product['Precio_Mensual']; ?>€</h3>
+              <?php if($product["Estado"]==1){ ?>
+                <p class="card-text prod-status text-success fw-semibold mb-2" id='enabled-<?php echo $product["Producto_ID"]; ?>'>
+                  <i class="fa fa-check-circle me-1"></i>Estado: Disponible
+                </p>
+              <?php } else { ?>
+                <p class="card-text prod-status text-danger fw-semibold mb-2" id='disabled-<?php echo $product["Producto_ID"]; ?>'>
+                  <i class="fa fa-times-circle me-1"></i>Estado: No disponible
+                </p>
+              <?php } 
+              
+              if(isset($_SESSION["usuario"])){ ?>
                 <a href="include/principal.php?methodProd=viewProduct&id=<?php echo $product['Producto_ID']; ?>&page=1" class="col-6 btn btn-log btn-shape element-green-bg" style="font-size:1em">Ver Detalles</a>
+              <?php } else { ?>
+                <a href="include/principal.php?methodUser=login" class="col-6 btn btn-log btn-shape element-green-bg" style="font-size:1em">Iniciar Sesión</a>
+              <?php } ?>
             </div>
           <?php } ?>
 

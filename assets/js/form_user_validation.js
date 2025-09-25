@@ -42,6 +42,7 @@ $("#btn-data-user").on("click", async function(event){
     var phone = $("#phone").val().trim();      const phoneRegex = /^[1-9][0-9]{8}$/;
     var address = $("#address").val().trim();  const addressRegex = /^[A-Za-z0-9\s.,\-ºª#\/]+$/;
     var password = "";                         const passwordRegex = /^[A-Za-z0-9\s.,\-ºª#\/]+$/;
+    var region = $("#region").val().trim();    var province = $("#province").val().trim();  
     var file = $("#avatar").val().trim();
 
     // Email validación
@@ -57,6 +58,7 @@ $("#btn-data-user").on("click", async function(event){
     }
     let validEmail = await validateField("Email", email, "email");
     if (!validEmail) return;
+    // Email validación
 
     // CIF validación
     if(cif.length != 9) {
@@ -71,6 +73,7 @@ $("#btn-data-user").on("click", async function(event){
     }
     let validCif = await validateField("CIF", cif, "cif");
     if (!validCif) return;
+    // CIF validación
 
     // Nombre validación
     if(name.length < 3 || name.length > 100) {
@@ -91,6 +94,7 @@ $("#btn-data-user").on("click", async function(event){
     }
     let validName = await validateField("Nombre", name, "name");
     if (!validName) return;
+    // Nombre validación
 
     // Contraseña validación
     if($("#password").length > 0) {
@@ -106,6 +110,7 @@ $("#btn-data-user").on("click", async function(event){
             return;
         }
     }
+    // Contraseña validación
 
     // Teléfono validación
     if (!phoneRegex.test(phone)) {
@@ -115,6 +120,7 @@ $("#btn-data-user").on("click", async function(event){
     }
     let validPhone = await validateField("Teléfono", phone, "phone");
     if (!validPhone) return;
+    // Teléfono validación
 
     // Dirección validación
     if(address.length < 3 || address.length > 255) {
@@ -129,12 +135,27 @@ $("#btn-data-user").on("click", async function(event){
     }
     let validAddress = await validateField("Dirección", address, "address");
     if (!validAddress) return;
+    // Dirección validación
+
+    // Comunidad Autónoma y Provincia validación
+    if(region == "") {
+        $("#error").text("Debes seleccionar una Comunidad Autónoma.");
+        $("#region").focus();
+        return;
+    }
+    if(province == "") {
+        $("#error").text("Debes seleccionar una Provincia.");
+        $("#province").focus();
+        return;
+    }
+    // Comunidad Autónoma y Provincia validación
 
     // Aceptar términos y condiciones
     if($("#terms").length > 0 && !$("#terms").is(":checked")) {
         $("#error").text("Debes aceptar los términos y condiciones.");
         return;
     }
+    // Aceptar términos y condiciones
 
     // Subir Avatar
     if(file != "") {
@@ -169,9 +190,10 @@ $("#btn-data-user").on("click", async function(event){
             await sleep(500);
         }
     }
+    // Subir Avatar
 
-    var fieldValues = [email, cif, name, password, phone, address, $("#tipo").val() ?? "C"];
-    document.cookie = "data-user=" + encodeURIComponent(JSON.stringify(fieldValues)) + "; path=/; max-age=" + (60);
+    var fieldValues = [email, cif, name, password, phone, address, region, province, $("#tipo").val() ?? "C"];
+    document.cookie = "data-user=" + encodeURIComponent(JSON.stringify(fieldValues)) + "; max-age=" + (60);
     $("#form-data-user").submit();
 });
 ///////////////////////////////////////////////////////////////

@@ -73,7 +73,6 @@ class UserController {
                 $data = json_decode($_COOKIE["data-user"], true);
             
                 if($this->userModel->insertUser($data)==1){
-                    setcookie("data-user", 0, time()-1,"/");
                     setcookie("user-avatar", 0, time()-1,"/");
 
                     if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
@@ -107,7 +106,6 @@ class UserController {
 
             $data = json_decode($_COOKIE["data-user"], true);
             if($this->userModel->updateUser($id, $data)==1){
-                setcookie("data-user", 0, time()-1,"/");
                 setcookie("user-avatar", 0, time()-1,"/");
 
                 if($_SESSION["usuario"]!="ADMINISTRADOR") $_SESSION["usuario"]=$data[2];

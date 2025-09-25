@@ -109,7 +109,7 @@
 
 /*-----------------------------------------------------------------------------------------------------*/
 table{ text-align: center; }
-input{ width:100%; }
+input, select{ width:100%; }
 
 .table-striped, .services-2{ margin-top: 15px;}
 .table-striped td, .table-striped th { border: 1px solid #ddd; vertical-align: middle;}
