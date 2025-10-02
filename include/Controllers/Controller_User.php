@@ -166,14 +166,22 @@ class UserController {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Cerrar sesión de usuario
-     * Params: No recibe parámetros, utiliza cookies y sesión para cerrar la sesión
+    /* Función: Cerrar sesión de usuario y eliminar cookies
+     * Params: No recibe parámetros
      * Return: No devuelve nada, solo destruye la sesión y elimina las cookies
      */
     public function logoutUser(){
         try{
-            setcookie("UserType", 0, time()-3600,"/");
-            setcookie("UserAvatar", 0, time()-3600,"/");
+            if (isset($_SERVER['HTTP_COOKIE'])) {
+                $cookies = explode(';', $_SERVER['HTTP_COOKIE']);
+                foreach($cookies as $cookie) {
+                    $parts = explode('=', $cookie);
+                    $name = trim($parts[0]);
+                    setcookie($name, '', time()-1, '/');
+                }
+            }
+            echo "<script>localStorage.clear();</script>";
+            
             session_destroy();
         }catch (Exception $e){
             return "Logout failed.";

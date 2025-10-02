@@ -75,11 +75,8 @@
     <!-------------------------------FORM------------------------------->
 
     <!-------------------------------SCRIPT------------------------------->
+    <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
     <script>
-        $("#closeFormBtn").click(function() {
-            $("#formPopup").fadeOut();
-        });
-
         $("#btn-data-cat").on("click",function() {
             var name = $("#name").val().trim();
             var desc = $("#desc").val().trim();

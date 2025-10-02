@@ -44,11 +44,7 @@
     <!-------------------------------FORM------------------------------->
 
     <!-------------------------------SCRIPT------------------------------->
-    <script>
-        $("#closeFormBtn").click(function(){
-            $("#formPopup").fadeOut();
-        });
-    </script>
+    <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
     <!-------------------------------SCRIPT------------------------------->
 
 </body>

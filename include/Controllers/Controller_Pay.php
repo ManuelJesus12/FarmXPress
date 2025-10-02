@@ -30,7 +30,18 @@ class PayController {
      */
     public function selectDebtMoney(&$rId){
         return $this->payModel->selectDebtMoney($rId);
-        
+    }
+
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+
+    /* Función: Seleccionar todos los pagos realizados para un alquiler
+     * Params: $rId (ID del alquiler)
+     * Return: Consulta con todos los datos, -1 en caso de error
+     */
+    public function selectPay(&$rId){
+        return $this->payModel->selectPay($rId);
     }
 
     ///////////////////////////////////////////////////////////////

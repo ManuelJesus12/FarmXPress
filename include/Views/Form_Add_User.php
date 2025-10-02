@@ -68,6 +68,22 @@
                     <td>Dirección:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" value="<?php echo $address; ?>" required /></td>
                 </tr>
+                <tr>
+                    <td>Comunidad Autónoma: <span class="error">*</span></td>
+                    <td>
+                        <select name="region" id="region" class="input-form" required >
+                            <option value="">Seleccione</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Provincia: <span class="error">*</span></td>
+                    <td>
+                        <select name="province" id="province" class="input-form" required disabled >
+                            <option value="">Seleccione</option>
+                        </select>
+                    </td>
+                </tr>
                     <?php if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR" && !isset($_GET["id"])){ ?>
                     <tr>
                         <td>Tipo:  <span class="error">*</span></td>
@@ -92,6 +108,8 @@
     <!-------------------------------FORM------------------------------->
 
     <!-------------------------------SCRIPT------------------------------->
+    <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
+    <script src="../assets/js/form_field_validation.js"></script>
     <script src="../assets/js/form_user_validation.js"></script>
     <!-------------------------------SCRIPT------------------------------->
 </body>

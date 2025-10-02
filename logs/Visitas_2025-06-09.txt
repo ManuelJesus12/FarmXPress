@@ -1,2 +1,0 @@
-O:5:"Visit":1:{s:6:"string";s:53:"20,Cliente 10,B00000010,2025-06-09 11:10:37,/carrito,";}
-O:5:"Visit":1:{s:6:"string";s:53:"20,Cliente 10,B00000010,2025-06-09 11:10:37,/carrito,";}

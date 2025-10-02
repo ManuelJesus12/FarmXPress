@@ -1,7 +1,8 @@
 <?php
 if(!isset($c)) $c=PDOConnect($c);
 
-if(isset($dirChangeVar) && $dirChangeVar==1) $dir="../"; else $dir="";
+global $dirLocation;
+$dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Pay.php';
 require_once $dir.'Controllers/Controller_Pay.php';
 
@@ -26,6 +27,8 @@ if(isset($_GET['methodPay'])){
 
     // INITIALIZE VIEW
     /*--------------------------------------------------------------------------*/
+    if(in_array("selectPay", $methods))
+        $message = $payController -> selectPay($_GET["rId"]);
     if(in_array("viewPay", $methods))
         $message = $payController -> viewPay();
     if(in_array("viewStripe", $methods)){

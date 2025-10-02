@@ -72,7 +72,6 @@ class AdminModel {
         try{
             try{
                 PDOConnect($c);
-
                 $sql = file_get_contents('../assets/FarmXPress_Data.sql');
                 $statements = array_filter(array_map('trim', explode(';', $sql)));
                 foreach ($statements as $stmt) {

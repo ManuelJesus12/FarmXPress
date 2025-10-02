@@ -1,44 +1,4 @@
 ///////////////////////////////////////////////////////////////
-async function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-async function validateField(field, value, fieldName) {
-    if($('#prodId').length > 0) var id = $("#prodId").val().trim();
-    else var id= null;
-
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: '../assets/js/validateProduct.php',
-            type: 'POST',
-            dataType: 'json',
-            data: { field: field, value: value, prodId: id },
-            success: function(response) {
-                if(response.text != 0){
-                    $("#error").text("Ya hay un usuario registrado con este " + field);
-                    $("#" + fieldName).val("");
-                    $("#" + fieldName).focus();
-                    resolve(false);
-                } else {
-                    $("#error").text("");
-                    resolve(true);
-                }
-            },
-            error: function(xhr, status, error) {
-                $("#error").text("Error inesperado");
-                reject(error);
-            }
-        });
-    });
-}
-
-///////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////
-$("#closeFormBtn").click(function() {
-    $("#formPopup").fadeOut();
-});
-///////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////
 $("#btn-data-prod").on("click", async function() {
     var name = $("#name").val().trim();
     var desc = $("#desc").val().trim();
@@ -48,34 +8,44 @@ $("#btn-data-prod").on("click", async function() {
 
     if (name.length < 3 || name.length > 100) {
         $("#error").text("El campo Nombre debe tener entre 3 y 100 caracteres.");
+        $("#name").addClass("input-error");
         $("#name").focus();
         return;
+    }else
+        $("#name").removeClass("input-error");
+
+    const refRegex = /^[A-Z]{1}[0-9]{4}$/;
+    if(ref.length != 5) {
+        $("#error").text("El campo Referencia debe estar formado por una mayúscula y 4 números.");
+        $("#ref").addClass("input-error");
+        $("#ref").focus();
+        return;
+    }else if (refRegex.test(ref) == false) {
+        $("#error").text("El campo Referencia debe estar formado por una mayúscula y 4 números.");
+        $("#ref").addClass("input-error");
+        $("#ref").focus();
+        return;
+    }else{
+        var validRef = await validateField("Referencia", ref, "ref", "#prodId", "validateProduct.php");
+        if (!validRef) return;
+        else $("#ref").removeClass("input-error");
     }
 
     if (desc.length < 3 || desc.length > 255) {
         $("#error").text("El campo Descripción debe tener al menos 3 caracteres.");
+        $("#desc").addClass("input-error");
         $("#desc").focus();
         return;
-    }
+    }else
+        $("#desc").removeClass("input-error");
 
     if(isNaN(price) || price <= 0) {
         $("#error").text("El campo Precio Mensual debe ser un número positivo.");
+        $("#price").addClass("input-error");
         $("#price").focus();
         return;
-    }
-
-    const refRegex = /^[A-Z]{1}[0-9]{4}$/;
-    if(ref.length != 5) {
-        $("#error").text("El campo Referencia debe estar formado por una letra y 4 números.");
-        $("#ref").focus();
-        return;
-    }else if (refRegex.test(ref) == false) {
-        $("#error").text("El campo Referencia no tiene un formato válido.");
-        $("#ref").focus();
-        return;
     }else
-        var validRef = await validateField("Referencia", ref, "ref");
-        if (!validRef) return;
+        $("#price").removeClass("input-error");
 
     if(file != "") {
         var fileExt = $("#imagen").val().split('.').pop().toLowerCase();

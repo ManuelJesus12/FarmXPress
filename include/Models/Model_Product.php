@@ -23,10 +23,9 @@ class ProductModel {
             $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
             $sql->bindValue(2, $offset*6, PDO::PARAM_INT);
             $sql->execute();
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
-            else
-                return 0;
+
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            else return 0;
         }catch(PDOException $e) {
             return -1;
         }
@@ -40,39 +39,48 @@ class ProductModel {
      */
     public function listProductC($offset){
         try{
-            $placeholder = "%"; $offset=$offset*6;
+            $placeholder = "%"; $offset=$offset*10;
 
             //*-----------------------------QUERY BUILD------------------------------*//
-            $query = "SELECT * FROM PRODUCTOS WHERE (Categoría_ID LIKE ? OR Categoría_ID IS NULL)";
+            $query = "SELECT * FROM PRODUCTOS P1 JOIN PROVEEDORES P2 ON P1.USUARIO_ID=P2.USUARIO_ID JOIN USUARIOS U ON P2.USUARIO_ID=U.USUARIO_ID WHERE (Categoría_ID LIKE ? OR Categoría_ID IS NULL)";
             $parameters = [$placeholder];
 
-            if (isset($_GET["category"]) && $_GET["category"]!="") {
-                $query = "SELECT * FROM PRODUCTOS WHERE Categoría_ID = ?";
-                $parameters[0] = $_GET["category"];
-            }
-            if (isset($_GET["minPrice"]) && $_GET["minPrice"]!="") {
-                $query .= " AND Precio_Mensual >= ?";
-                $parameters[] = $_GET["minPrice"];
-            }
-            if (isset($_GET["maxPrice"]) && $_GET["maxPrice"]!="") {
-                $query .= " AND Precio_Mensual <= ?";
-                $parameters[] = $_GET["maxPrice"];
+            if(isset($_COOKIE["search-options"])){
+                $search=json_decode($_COOKIE["search-options"], true);
+
+                if ($search["category"]!="") {
+                    $query = "SELECT * FROM PRODUCTOS P1 JOIN PROVEEDORES P2 ON P1.USUARIO_ID=P2.USUARIO_ID JOIN USUARIOS U ON P2.USUARIO_ID=U.USUARIO_ID WHERE Categoría_ID = ?";
+                    $parameters[0] = $search["category"];
+                }
+                if ($search["minPrice"]!="") {
+                    $query .= " AND Precio_Mensual >= ?";
+                    $parameters[] = $search["minPrice"];
+                }
+                if ($search["maxPrice"]!="") {
+                    $query .= " AND Precio_Mensual <= ?";
+                    $parameters[] = $search["maxPrice"];
+                }
+                if ($search["region"]!="") {
+                    $query .= " AND Comunidad LIKE ?";
+                    $parameters[] = $search["region"];
+                }
+                if ($search["province"]!="") {
+                    $query .= " AND Provincia LIKE ?";
+                    $parameters[] = $search["province"];
+                }
             }
 
-            $query .= " LIMIT 7 OFFSET ?";
+            $query .= " LIMIT 11 OFFSET ?";
             //*-----------------------------QUERY BUILD------------------------------*//
 
             //*-----------------------------QUERY BIND------------------------------*//
             $sql = $this->db->prepare($query);
-            foreach ($parameters as $index => $value)
-                $sql->bindValue($index + 1, $value);
+            foreach ($parameters as $index => $value) $sql->bindValue($index + 1, $value);
             $sql->bindValue(count($parameters)+1, $offset, PDO::PARAM_INT);
             $sql->execute();
 
-            if ($sql->rowCount() != 0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
-            else
-                return 0;
+            if ($sql->rowCount() != 0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            else return 0;
             //*-----------------------------QUERY BIND------------------------------*//
         }catch(PDOException $e) {
             echo $e->getMessage();
@@ -92,10 +100,8 @@ class ProductModel {
             $sql->bindValue(1, $value, PDO::PARAM_INT);
             $sql->execute();
             
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
-            else
-                return 0;
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            else return 0;
         }catch(PDOException $e) {
             return -1;
         }
@@ -113,6 +119,7 @@ class ProductModel {
         try{
             //*-----------------------------DATA------------------------------*//
             include("_Indexes/Index_User.php"); $field="Nombre";
+            $data[4]=($data[4]=="") ? null : $data[4];
             $uid=$userController->selectUser($field, $_SESSION["usuario"])[0]['Usuario_ID'];
             if(isset($_COOKIE["product-image"])) $file=$_COOKIE["product-image"]; else $file=null;
             //*-----------------------------DATA------------------------------*//
@@ -122,7 +129,7 @@ class ProductModel {
             $sql->bindValue(2, $data[1]);
             $sql->bindValue(3, $data[2]);
             $sql->bindValue(4, $data[3]);
-            if (empty($data[4])) $sql->bindValue(5, null, PDO::PARAM_NULL); else $sql->bindValue(5, $data[4], PDO::PARAM_INT);
+            $sql->bindValue(5, $data[4]);
             $sql->bindValue(6, $uid);
             $sql->bindValue(7, $file);
             $sql->bindValue(8, 1);
@@ -142,6 +149,7 @@ class ProductModel {
      */
     public function updateProduct(&$id, &$data){
         try{
+            $data[4]=($data[4]=="") ? null : $data[4];
             if(isset($_COOKIE["product-image"])) $file=$_COOKIE["product-image"]; 
             else{
                 $field="Producto_ID";
@@ -155,7 +163,7 @@ class ProductModel {
             $sql->bindValue(2, $data[1]);
             $sql->bindValue(3, $data[2]);
             $sql->bindValue(4, $data[3]);
-            if (empty($data[4])) $sql->bindValue(5, null, PDO::PARAM_NULL); else $sql->bindValue(5, $data[4], PDO::PARAM_INT);
+            $sql->bindValue(5, $data[4]);
             $sql->bindValue(6, $file);
             $sql->bindValue(7, $id, PDO::PARAM_INT);
             $sql->execute();
@@ -180,7 +188,6 @@ class ProductModel {
             $sql->execute();
 
             unlink("../assets/img/products/".$imagen);
-
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -199,6 +206,7 @@ class ProductModel {
             $sql->bindValue(1, $active, PDO::PARAM_INT);
             $sql->bindValue(2, $id, PDO::PARAM_INT);
             $sql->execute();
+
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -268,10 +276,8 @@ class ProductModel {
             $sql=$this->db->prepare("SELECT COUNT(PRODUCTO_ID) AS 'COUNT' FROM PRODUCTOS");
             $sql->execute();
             
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC)[0]['COUNT'];
-            else
-                return 0;
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC)[0]['COUNT'];
+            else return 0;
         }catch(PDOException $e) {
             return 0;
         }

@@ -60,11 +60,8 @@
     <!-------------------------------FORM------------------------------->
 
     <!-------------------------------SCRIPT------------------------------->
+    <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
     <script>
-        $("#closeFormBtn").click(function() {
-            $("#formPopup").fadeOut();
-        });
-
         $("#btn-data-sub").on("click",function() {
             var name = $("#name").val().trim();
             var price = $("#price").val().trim();;

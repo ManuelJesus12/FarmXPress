@@ -1,8 +1,8 @@
 <?php
 if(!isset($c)) $c=PDOConnect($c);
 
-if(isset($dirChangeVar) && $dirChangeVar==1) $dir="../"; 
-else if(dirChangeProgram()==0) $dir="include/"; else $dir="";
+global $dirLocation;
+$dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Product.php';
 require_once $dir.'Controllers/Controller_Product.php';
 
@@ -29,10 +29,10 @@ if(isset($_GET['methodProd'])){
     // INITIALIZE VIEW
     /*--------------------------------------------------------------------------*/
     if(in_array("select", $methods)){
-        if(!isset($_GET['page']))
+        if(!isset($_GET['page']) or $_GET['page']<1)
             header("Location: principal.php?methodProd=select&page=1");
         else{
-            $offset=$_GET['page'];
+            $offset = $_GET['page']-1;
             $productController -> viewListProduct($offset);
         }
     }

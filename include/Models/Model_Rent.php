@@ -116,6 +116,7 @@ class RentModel {
             $sql->bindValue(2, $month*$mPrice, PDO::PARAM_INT);
             $sql->bindValue(3, $rId, PDO::PARAM_INT);
             $sql->execute();
+
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -137,6 +138,7 @@ class RentModel {
             $sql->bindValue(2, $date, PDO::PARAM_STR);
             $sql->bindValue(3, $rId, PDO::PARAM_INT);
             $sql->execute();
+
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -156,10 +158,8 @@ class RentModel {
             $sql=$this->db->prepare("SELECT COUNT(ALQUILER_ID) AS 'COUNT' FROM ALQUILERES");
             $sql->execute();
             
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC)[0]['COUNT'];
-            else
-                return 0;
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC)[0]['COUNT'];
+            else return 0;
         }catch(PDOException $e) {
             return 0;
         }

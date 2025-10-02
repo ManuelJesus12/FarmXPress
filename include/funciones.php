@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+$dirLocation = dirChangeProgram();
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,9 +26,10 @@ Funcion: Recoger la pagina en la que se desarrolla el programa
 */
 function dirChangeProgram(){
     $link=explode("/", $_SERVER["PHP_SELF"]);
-    $page=$link[count($link)-1];
-    if($page=="principal.php") return 1; 
-    else if($page=="index.php") return 0;
+
+    if(in_array("Views", $link)) return 2;
+    else if(in_array("include", $link)) return 1;
+    else return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,28 +42,24 @@ Funcion: Seleccionar la barra de navegación que se va a mostrar, y guardar el t
 @return: No devuelve nada, pero incluye la barra de navegación correspondiente
 */
 function navegacion(){
-    if(dirChangeProgram()==0){ $dirNav=""; $dirUrl="include/"; }else{ $dirNav="../"; $dirUrl=""; }
+    global $dirLocation;
+    $dirNav = ($dirLocation==0) ? "" : "../";
+    $dirUrl = ($dirLocation==0) ? "include/" : "";
 
-    if(isset($_SESSION["usuario"])){
-        if($_SESSION["usuario"]!="ADMINISTRADOR"){
-            if(!isset($_COOKIE["UserType"]) || !isset($_COOKIE["UserAvatar"])){
-                include($dirNav."_Indexes/Index_User.php"); $field="Nombre";
-                $usuario=$userController->selectUser($field, $_SESSION["usuario"])[0];
+    if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
+        if(!isset($_COOKIE["UserType"]) || !isset($_COOKIE["UserAvatar"])){
+            include($dirNav."_Indexes/Index_User.php"); $field="Nombre";
 
-                $tipo=$usuario['Tipo'];
-                if($usuario["Avatar"]==null) $avatarAux="anon.png"; 
-                else $avatarAux=$usuario["Avatar"];
-                
-                $avatar=$dirNav."assets/img/users/".$avatarAux;
-                setcookie("UserType", $tipo, time()+3600*24*7, "/");
-                setcookie("UserAvatar", "assets/img/users/".$avatarAux, time()+3600*24*7, "/");
-            }else{ $tipo=$_COOKIE["UserType"]; $avatar=$dirNav.$_COOKIE["UserAvatar"]; }
+            $usuario=$userController->selectUser($field, $_SESSION["usuario"])[0];
+            $file = ($usuario["Avatar"]==null) ? "assets/img/users/anon.png" : "assets/img/users/".$usuario["Avatar"];
+            $tipo=$usuario['Tipo'];
 
-            if($tipo=="C") include($dirNav."views/navBar/navCliente.php");
-            else if($tipo=="P") include($dirNav."views/navBar/navProveedor.php");
+            setcookie("UserType", $tipo, time()+3600*24*7, "/");
+            setcookie("UserAvatar", $file, time()+3600*24*7, "/");
+        }else{ $tipo=$_COOKIE["UserType"]; $file=$dirNav.$_COOKIE["UserAvatar"]; }
 
-        }else
-            echo '<i class="mobile-nav-toggle"></i>';
+        if($tipo=="C") include($dirNav."views/navBar/navCliente.php");
+        else if($tipo=="P") include($dirNav."views/navBar/navProveedor.php");
     }else
         include($dirNav."views/navBar/navInvitado.php");
 }
@@ -77,6 +74,8 @@ Funcion: Mostrar el contenido principal de la pagina, dependiendo de si es un us
 @return: No devuelve nada, pero incluye los índices correspondientes a cada entidad MVC para mostrar el contenido
 */
 function seleccionarContenidoPrincipal(){
+    if(isset($_GET["methodProd"]))
+        include("_Indexes/Index_Product.php");
     if(isset($_GET["methodUser"]))
         include("_Indexes/Index_User.php");
     if(isset($_GET["methodAdmin"])){
@@ -95,12 +94,12 @@ function seleccionarContenidoPrincipal(){
             include("_Indexes/Index_Sub.php");
         if(isset($_GET["methodPerk"]))
             include("_Indexes/Index_Perk.php");
-        if(isset($_GET["methodProd"]))
-            include("_Indexes/Index_Product.php");
         if(isset($_GET["methodFav"]))
             include("_Indexes/Index_Fav.php");
         if(isset($_GET["methodRev"]))
             include("_Indexes/Index_Review.php");
+        if(isset($_GET["methodRent"]))
+            include("_Indexes/Index_Rent.php");
         if(isset($_GET["methodPay"]))
             include("_Indexes/Index_Pay.php");
     }
@@ -117,7 +116,7 @@ Funcion: Mostrar las vistas y páginas de utilidad de la web
 */
 function seleccionarContenidoIndex(){
     includeVisit();
-
+    
     if(isset($_GET["view"])){
         if($_GET["view"]=="testimonials")
             include("views/pages/testimonials.php");
@@ -138,7 +137,7 @@ function seleccionarContenidoIndex(){
             include("views/viewIndexAdmin.php");
         else
             include("views/viewIndexUser.php");
-    }    
+    }  
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,15 +150,15 @@ Funcion: Incluir los índices de las visitas, miembros y alquileres para realiza
 @return: No devuelve nada, pero incluye los índices de las visitas, miembros y alquileres
 */
 function includeVisit(){
-    if((PDOConnect($c)!=false && isset($_SESSION["usuario"]) and $_SESSION["usuario"]!="ADMINISTRADOR") and !isset($dirChangeVar)){
-        if(dirChangeProgram()==1) $dir=""; else $dir="include/";
+    global $dirLocation;
+    
+    if((PDOConnect($c)!=false && isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR")){
+        $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
         include($dir."_Indexes/Index_Visit.php");
         include($dir."_Indexes/Index_Member.php");
-        include($dir."_Indexes/Index_Rent.php");
         
-        $offset=-1;
         $memberController -> activeMember();
-        $rentController   -> checkActiveRent($offset);
+        $visitController  -> insertVisit();
     }
 }
 
@@ -167,4 +166,7 @@ function includeVisit(){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+function console_log($data){
+    echo '<script>console.log('.$data.')</script>';
+}
 ?>

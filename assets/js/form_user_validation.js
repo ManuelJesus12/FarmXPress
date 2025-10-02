@@ -1,38 +1,3 @@
-///////////////////////////////////////////////////////////////
-async function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-async function validateField(field, value, fieldName) {
-    if($('#userId').length > 0) var id = $("#userId").val().trim();
-    else var id= null;
-
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: '../assets/js/validateUser.php',
-            type: 'POST',
-            dataType: 'json',
-            data: { field: field, value: value, userId: id },
-            success: function(response) {
-                if(response.text != 0){
-                    $("#error").text("Ya hay un usuario registrado con este " + field);
-                    $("#" + fieldName).val("");
-                    $("#" + fieldName).addClass("input-error");                    
-                    $("#" + fieldName).focus();
-                    resolve(false);
-                } else {
-                    $("#" + fieldName).removeClass("input-error");
-                    $("#error").text("");
-                    resolve(true);
-                }
-            },
-            error: function(xhr, status, error) {
-                $("#error").text("Error inesperado");
-                reject(error);
-            }
-        });
-    });
-}
-///////////////////////////////////////////////////////////////
-
 $("#btn-data-user").on("click", async function(event){
     event.preventDefault();
 
@@ -56,7 +21,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#email").focus();
         return;
     }
-    let validEmail = await validateField("Email", email, "email");
+    let validEmail = await validateField("Email", email, "email", "#userId", "validateUser.php");
     if (!validEmail) return;
     // Email validación
 
@@ -71,7 +36,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#cif").focus();
         return;
     }
-    let validCif = await validateField("CIF", cif, "cif");
+    let validCif = await validateField("CIF", cif, "cif", "#userId", "validateUser.php");
     if (!validCif) return;
     // CIF validación
 
@@ -92,7 +57,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#name").focus();
         return;
     }
-    let validName = await validateField("Nombre", name, "name");
+    let validName = await validateField("Nombre", name, "name", "#userId", "validateUser.php");
     if (!validName) return;
     // Nombre validación
 
@@ -118,7 +83,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#phone").focus();
         return;
     }
-    let validPhone = await validateField("Teléfono", phone, "phone");
+    let validPhone = await validateField("Teléfono", phone, "phone", "#userId", "validateUser.php");
     if (!validPhone) return;
     // Teléfono validación
 
@@ -133,7 +98,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#address").focus();
         return;
     }
-    let validAddress = await validateField("Dirección", address, "address");
+    let validAddress = await validateField("Dirección", address, "address", "#userId", "validateUser.php");
     if (!validAddress) return;
     // Dirección validación
 

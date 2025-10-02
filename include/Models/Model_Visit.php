@@ -18,10 +18,8 @@ class VisitModel {
      */
     public function listVisit(){
         $sql=$this->db->query("SELECT NOMBRE, EMAIL, CIF, TELÉFONO, DIRECCIÓN, TIPO, RUTA, FECHA_HORA FROM USUARIOS JOIN VISITAS ON USUARIOS.USUARIO_ID=VISITAS.USUARIO_ID"); 
-        if($sql->rowCount()!=0)
-            return $sql->fetchAll(PDO::FETCH_ASSOC);
-        else
-            return 0;
+        if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+        else return 0;
     }
     
     ///////////////////////////////////////////////////////////////

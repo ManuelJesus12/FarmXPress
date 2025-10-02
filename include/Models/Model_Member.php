@@ -69,6 +69,7 @@ class MemberModel {
             $sql->bindValue(4, date("Y-m-d H:i:s", strtotime("+".$subController->selectSub($id)[0]['Duración_Base']." months")), PDO::PARAM_STR);
             $sql->bindValue(5, 1, PDO::PARAM_INT);
             $sql->execute();
+
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -88,6 +89,7 @@ class MemberModel {
             $sql->bindValue(1, $month, PDO::PARAM_INT);
             $sql->bindValue(2, $_SESSION["usuario"], PDO::PARAM_STR);
             $sql->execute();
+
             return 1;
         }catch(PDOException $e) {
             echo $e->getMessage();
@@ -106,7 +108,8 @@ class MemberModel {
         try{
             $sql=$this->db->prepare("UPDATE MEMBRESÍAS SET ESTADO=0 WHERE MEMBRESÍA_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
-            $sql->execute();   
+            $sql->execute();
+
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -126,10 +129,8 @@ class MemberModel {
             $sql=$this->db->prepare("SELECT COUNT(MEMBRESÍA_ID) AS 'COUNT' FROM MEMBRESÍAS");
             $sql->execute();
             
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC)[0]['COUNT'];
-            else
-                return 0;
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC)[0]['COUNT'];
+            else return 0;
         }catch(PDOException $e) {
             return 0;
         }

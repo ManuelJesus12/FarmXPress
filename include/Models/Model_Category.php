@@ -31,10 +31,8 @@ class CategoryModel {
             }
             
             $sql->execute();
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
-            else
-                return 0;
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            else return 0;
         }catch(PDOException $e) {
             return -1;
         }
@@ -51,6 +49,7 @@ class CategoryModel {
             $sql=$this->db->prepare("SELECT * FROM CATEGORÍAS WHERE CATEGORÍA_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
+
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }catch(PDOException $e) {
             return -1;
@@ -67,13 +66,12 @@ class CategoryModel {
      */
     public function insertCategory(&$data){
         try{
+            $data[2] = ($data[2] == 0) ? null : $data[2];
+
             $sql=$this->db->prepare("INSERT INTO CATEGORÍAS (Nombre, Descripción, Cat_Padre_ID) VALUES (?, ?, ?)");
             $sql->bindValue(1, $data[0]);
             $sql->bindValue(2, $data[1]);
-            if (empty($data[2]))
-                $sql->bindValue(3, null, PDO::PARAM_NULL);
-            else
-                $sql->bindValue(3, $data[2], PDO::PARAM_INT);
+            $sql->bindValue(3, $data[2]);
             $sql->execute();
 
             setcookie("data-cat", 0, time()-1,"/");
@@ -91,13 +89,12 @@ class CategoryModel {
      */
     public function updateCategory(&$id, &$data){
         try{
+            $data[2] = ($data[2] == 0) ? null : $data[2];
+
             $sql=$this->db->prepare("UPDATE CATEGORÍAS SET Nombre=?, Descripción=?, Cat_Padre_ID=? WHERE CATEGORÍA_ID=?");
             $sql->bindValue(1, $data[0]);
             $sql->bindValue(2, $data[1]);
-            if (empty($data[2]))
-                $sql->bindValue(3, null, PDO::PARAM_NULL);
-            else
-                $sql->bindValue(3, $data[2], PDO::PARAM_INT);
+            $sql->bindValue(3, $data[2]);
             $sql->bindValue(4, $id, PDO::PARAM_INT);
             $sql->execute();
 
@@ -119,6 +116,7 @@ class CategoryModel {
             $sql=$this->db->prepare("DELETE FROM CATEGORÍAS WHERE CATEGORÍA_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
+            
             return 1;
         }catch(PDOException $e) {
             return -1;

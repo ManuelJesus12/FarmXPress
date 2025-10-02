@@ -21,10 +21,9 @@ class SubModel {
             $sql=$this->db->prepare("SELECT * FROM SUSCRIPCIONES LIMIT 11 OFFSET ?");
             $sql->bindValue(1, 10*$offset, PDO::PARAM_INT);
             $sql->execute();
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
-            else
-                return 0;
+
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            else return 0;
         }catch(PDOException $e) {
             return -1;
         }
@@ -41,6 +40,7 @@ class SubModel {
             $sql=$this->db->prepare("SELECT * FROM SUSCRIPCIONES WHERE SUSCRIPCIÓN_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
+
             return $sql->fetchAll(PDO::FETCH_ASSOC);
         }catch(PDOException $e) {
             return -1;
@@ -99,6 +99,7 @@ class SubModel {
             $sql=$this->db->prepare("DELETE FROM SUSCRIPCIONES WHERE SUSCRIPCIÓN_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
+            
             return 1;
         }catch(PDOException $e) {
             return -1;

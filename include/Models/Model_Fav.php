@@ -46,7 +46,8 @@ class FavModel {
             $sql->bindValue(2, $_SESSION["usuario"], PDO::PARAM_STR);
             $sql->execute();
 
-            if($sql->rowCount()!=0) return 1; else return 0;
+            if($sql->rowCount()!=0) return 1; 
+            else return 0;
         }catch(PDOException $e) {
             return -1;
         }
@@ -71,6 +72,7 @@ class FavModel {
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->bindValue(2, $_SESSION["usuario"], PDO::PARAM_STR);
             $sql->execute();
+            
             return 1;
         }catch(PDOException $e) {
             return -1;

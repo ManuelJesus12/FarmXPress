@@ -1,7 +1,8 @@
 <?php
 if(!isset($c)) $c=PDOConnect($c);
 
-if(isset($dirChangeVar) && $dirChangeVar==1) $dir="../"; else $dir="";
+global $dirLocation;
+$dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Sub.php';
 require_once $dir.'Controllers/Controller_Sub.php';
 

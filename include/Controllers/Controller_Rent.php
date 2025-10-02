@@ -73,8 +73,8 @@ class RentController {
                 header("Location: principal.php?methodProd=viewProduct&id=".$pId."&page=1&success=0");
             else{
                 if($this->rentModel->insertRent($pId, $month, $price)==1){
-                    $rentControl=$this->selectLastRent();
                     $productController -> activeProduct($pId, $active);
+                    $rentControl=$this->selectLastRent();
 
                     include("_Indexes/Index_Pay.php");
                     if($payController->insertPay($rentControl[0]["Alquiler_ID"], $price, $month, $price)==1){
@@ -129,7 +129,7 @@ class RentController {
      * Params: $offset (paginación) seteado por referencia a -1 lo cual selecciona todos los alquileres del usuario
      * Return: Notificación de alquiler activo si corresponde
      */
-    public function checkActiveRent(&$offset){
+    public function checkActiveRent(&$offset=-1){
         if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
             $rentControl = $this->rentModel->listRent($offset);
             

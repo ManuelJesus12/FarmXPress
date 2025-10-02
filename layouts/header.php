@@ -46,10 +46,10 @@
 <header id="header" class="header d-flex align-items-center position-relative">
 <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 <?php
+    echo '<i class="mobile-nav-toggle"></i>';
     $logo = $dir.'assets/img/logo.png';
-    if(!isset($_SESSION["usuario"]) || (isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR")){
+    if(!isset($_SESSION["usuario"]) || (isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"))
         echo "<img src=$logo alt='FarmXPress' style='width: 80px ; height:60px ;'></img>";
-    }
 
     ob_start();
     navegacion(); 

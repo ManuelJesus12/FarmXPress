@@ -2,17 +2,16 @@
 <?php
 include("_Indexes/Index_Category.php");
 include("_Indexes/Index_Fav.php");
-
 $offset=$opt=1; $productCount=0;
 $categoryControl = $categoryController->viewListCategory($offset, $opt);
 
-$minPrice=$maxPrice=$category="";
-if(isset($_GET["minPrice"]) && $_GET["minPrice"]!="") $minPrice=$_GET["minPrice"];
-if(isset($_GET["maxPrice"]) && $_GET["maxPrice"]!="") $maxPrice=$_GET["maxPrice"];
-if(isset($_GET["category"]) && $_GET["category"]!="") $category=$_GET["category"];
-
-if(isset($_GET["error"]))
-    echo "<script>showBoxProduct(".$_GET["error"].");</script>";
+if(isset($_COOKIE["search-options"])){
+    $search=json_decode($_COOKIE["search-options"], true);
+    $category=$search["category"] ?? "";
+    $minPrice=$search["minPrice"] ?? "";
+    $maxPrice=$search["maxPrice"] ?? "";
+}
+if(isset($_GET["error"])) echo "<script>showBoxProduct(".$_GET["error"].");</script>";
 ?>
 <!--------------------------------------------LOGICA--------------------------------------------->
 
@@ -22,10 +21,7 @@ if(isset($_GET["error"]))
     <div class="filter-prod col-lg-2 col-md-2 col-sm-2">
         <h2>Filtrar</h2>
         <div class="form-group">
-            <form id="filter-form" action="principal.php" method="GET" >
-                <input type="hidden" name="methodProd" value="select">
-                <input type="hidden" name="page" value="1">
-
+            <form id="filter-form" action="#" method="POST">
                 <label for="category">Categoría: </label>
                 <select class="form-control" id="category" name="category">
                     <option value="">Todas</option>
@@ -43,7 +39,17 @@ if(isset($_GET["error"]))
                 <label for="maxPrice">Precio Máximo: </label>
                 <input type="number" class="form-control" id="maxPrice" name="maxPrice" min="0" value="<?php echo $maxPrice; ?>"><br>
                 
-                <input type="submit" class="btn element-green-bg btn-log" value="Filtrar" />
+                <label for="region">Comunidad Autónoma: </label>
+                <select name="region" id="region" class="form-control">
+                    <option value="">Seleccione</option>
+                </select>
+                
+                <label for="province">Provincia: </label>
+                <select name="province" id="province" class="form-control" disabled>
+                    <option value="">Seleccione</option>
+                </select>
+                
+                <input type="button" id="btn-filter-form" class="btn element-green-bg btn-log" value="Filtrar" style="margin-top: 30px;" />
             </form>
         </div>
     </div>
@@ -68,14 +74,12 @@ if(isset($productControl)){
         foreach($productControl as $product){
             //*-----------------------------DATA CONTROL------------------------------*//
             if($product['Imagen']!=null) $file="../assets/img/products/".$product['Imagen']; else $file="../assets/img/products/anon.png";
-
-            if($product["Categoría_ID"]==null) $category="Sin categoría";
-            else $category = $categoryController->selectCategory($product["Categoría_ID"])[0]["Nombre"];
+            $category = ($product["Categoría_ID"] == null) ? "Sin categoría" : $categoryController->selectCategory($product["Categoría_ID"])[0]["Nombre"];            
             //*-----------------------------DATA CONTROL------------------------------*//
 
             //*-----------------------------PRODUCT CARD------------------------------*//
             echo "<div class='col-lg-5 col-md-5 col-sm-12 card card-prod element-green-border rounded'>";
-                if($_SESSION["usuario"]!="ADMINISTRADOR"){    
+                if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){    
                     if($favController->selectFav($product["Producto_ID"])==0)
                         echo "<a href='#' id='add-".$product["Producto_ID"]."'><i class='fa-regular fa-star icon-star border-5' style='color:orange !important'></i></a>";
                     else
@@ -87,51 +91,42 @@ if(isset($productControl)){
                     echo "<div class='col-6'><img class='card-image img-fluid rounded shadow' src='$file' style='width: 75%;' /></div>";
                     echo "<div class='col-6'>";
                         echo "<p class='card-text'>Categoría: ".$category."</p>";
+                        echo "<p class='card-text'>Localización: ".$product["Provincia"]."</p>";
                         echo "<p class='card-text' style='color: limegreen;'>".$product["Precio_Mensual"]."€ / mes</p>";
                         if($product["Estado"]==0)
                             echo "<p class='card-text prod-status' id='disabled-".$product["Producto_ID"]."'>Alquilado</p>";
-                        else if($product["Estado"]==1)
+                        else
                             echo "<p class='card-text prod-status' id='enabled-".$product["Producto_ID"]."'>Disponible</p>";
                     echo "</div>";
                 echo "</div>";
 
                 echo "<div class='col-12 card-buttons'>";
-                    if($_SESSION["usuario"]=="ADMINISTRADOR" && $product["Estado"]==1){
-                        echo "<div class='col-5'><a href='principal.php?methodProd=viewProduct&id=".$product["Producto_ID"]."' class='btn btn-shape btn-log element-green-bg' style='padding:5px 15px 7px 15px;'><i class='fa-solid fa-eye border-5'></i> Ver Más</a></div>";
-                        echo "<div class='col-5'><a href='#' id='delete-".$product["Producto_ID"]."' class='btn btn-shape btn-product-delete btn-delete'><i class='fa-solid fa-trash icon-trash border-5'></i> Eliminar</a></div>";
-                    }else{
+                    if(isset($_SESSION["usuario"]))
                         echo "<div class='col-6'><a href='principal.php?methodProd=viewProduct&id=".$product["Producto_ID"]."' class='btn btn-shape btn-log element-green-bg'><i class='fa-solid fa-eye border-5'></i> Ver Más</a></div>";
-                    }
+                    else
+                        echo "<div class='col-6'><a href='principal.php?methodUser=viewLogin' class='btn btn-shape btn-log element-green-bg'>Iniciar Sesión</a></div>";
                 echo "</div>";
             echo "</div>";
             //*-----------------------------PRODUCT CARD------------------------------*//
 
-            $productCount++; if($productCount==6) break;
+            $productCount++; if($productCount==10) break;
         }
         echo "</div>";
         //*-----------------------------PRODUCT LIST------------------------------*//
 
         //*-----------------------------NAV BUTTONS------------------------------*//
-        $queryString = "";
-        if(isset($_GET['category']) && $_GET['category']!="")
-            $queryString.="&category=".$_GET['category'];
-        if(isset($_GET['minPrice']) && $_GET['minPrice']!="")
-            $queryString.="&minPrice=".$_GET['minPrice'];
-        if(isset($_GET['maxPrice']) && $_GET['maxPrice']!="")
-            $queryString.="&maxPrice=".$_GET['maxPrice'];
-
         $class0=$class1=$class2="btn btn-log element-green-bg ";
         if(!(isset($_GET['page']) && $_GET['page']>1)) $class1=$class0."not-visible";
-        if(count($productControl)<=6) $class2=$class0."not-visible";
+        if(count($productControl)<=10) $class2=$class0."not-visible";
 
         echo "<div class='nav-buttons'>";
             echo "<div class='btn-group'>";
-                echo "<a class='$class1' href='principal.php?methodProd=select&page=".($_GET['page']-1).$queryString."'>Anterior</a>";
+                echo "<a class='$class1' href='principal.php?methodProd=select&page=".($_GET['page']-1)."'>Anterior</a>";
             echo "</div>";
             echo "<div class='btn-group'>";
                 echo "<a class='$class0' href='#'>".$_GET["page"]."</a>";
             echo "</div><div class='btn-group'>";
-                echo "<a class='$class2' href='principal.php?methodProd=select&page=".($_GET['page']+1).$queryString."'>Siguiente</a>";
+                echo "<a class='$class2' href='principal.php?methodProd=select&page=".($_GET['page']+1)."'>Siguiente</a>";
             echo "</div>";
         echo "</div>";
         //*-----------------------------NAV BUTTONS------------------------------*//
@@ -142,29 +137,21 @@ if(isset($productControl)){
 <!--------------------------------------------LISTA PRODUCTOS--------------------------------------------->
 
 <!-------------------------------SCRIPT------------------------------->
-    <?php if($_SESSION["usuario"]!="ADMINISTRADOR"){ ?> <script src="../assets/js/prod_user_fav.js"></script> <?php } ?>
+    <script src="../assets/js/provinces_load.js"></script>
     <script src="../assets/js/popup_box_create.js"></script>
-    <script>
-        for(let $i=0;$i<$(".card").length;$i++){
-            //*-----------------------------DELETE------------------------------*//
-            $(".card").eq($i).find(".btn-delete").on("click", function(){
-                let id=($(this).attr("id")).split("-")[1];
-                let $div = $(this).closest(".card"); 
 
-                if(confirm("¿Está seguro de que desea eliminar este producto?")){
-                    $.ajax({
-                        url: "principal.php?methodProd=delete",
-                        type: "POST",
-                        data: { deleteId: id },
-                        success: function(response) {
-                                $div.fadeOut(300);
-                                window.location.reload();
-                        },
-                        error: function() { alert("Error inesperado."); }
-                    });
-                }
-            });
-            //*-----------------------------DELETE------------------------------*//
-        }
+    <?php if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){ ?> 
+        <script src="../assets/js/prod_user_fav.js"></script> 
+    <?php } ?>
+
+    <script>
+        $('#btn-filter-form').on('click', function() {
+            event.preventDefault();
+            
+            var search = { category: $('#category').val(), minPrice: $('#minPrice').val(), maxPrice: $('#maxPrice').val(), region: $('#region').val() ?? "", province: $('#province').val() ?? "" };
+            document.cookie = "search-options=" + JSON.stringify(search) + "; path=/; max-age=" + (86400 * 30);
+            localStorage.setItem('search-options', JSON.stringify(search));
+            $('#filter-form').submit();
+        });
     </script>
 <!-------------------------------SCRIPT------------------------------->

@@ -17,26 +17,15 @@ class ProductController {
      * Return: Vista de lista de productos según el tipo de usuario
      */
     public function viewListProduct(&$offset){
-        if(!isset($_SESSION["usuario"]))
-            header("Location: principal.php?methodUser=viewLogin");
-        else{
-            if(!isset($_COOKIE["UserType"])) $tipo="C";
-            else $tipo=$_COOKIE["UserType"];
+        $tipo = (!isset($_COOKIE["UserType"])) ? $tipo="C" : $_COOKIE["UserType"];
 
-            $offset--;
-            if($offset>=0){
-                if($tipo=="P"){
-                    $productControl=$this->productModel->listProductP($offset);
-                    include("Views/View_List_Prod.php");
-                }else if($tipo=="C"){
-                    $productControl=$this->productModel->listProductC($offset);
-                    include("Views/Client_List_Prod.php");
-                }
-            
-            }else
-                header("Location: principal.php?methodProd=select&page=1");
+        if($tipo=="P"){
+            $productControl=$this->productModel->listProductP($offset);
+            include("Views/View_List_Prod.php");
+        }else{
+            $productControl=$this->productModel->listProductC($offset);
+            include("Views/Client_List_Prod.php");
         }
-        return 1;
     }
 
     ///////////////////////////////////////////////////////////////

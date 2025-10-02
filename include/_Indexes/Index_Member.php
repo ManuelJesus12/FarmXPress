@@ -1,12 +1,10 @@
 <?php
 if(!isset($c)) $c=PDOConnect($c);
 
-if(isset($dirChangeVar) && $dirChangeVar==1) $dir="../"; 
-else if(dirChangeProgram()==1) $dir=""; else $dir="include/";
-
+global $dirLocation;
+$dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Member.php';
 require_once $dir.'Controllers/Controller_Member.php';
-
 
 // INITIALIZE MODEL AND CONTROLLER
 $memberModel = new MemberModel($c);

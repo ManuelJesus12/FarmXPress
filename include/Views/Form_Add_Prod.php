@@ -96,6 +96,8 @@
     <!-------------------------------FORM------------------------------->
 
     <!-------------------------------SCRIPT------------------------------->
+    <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
+    <script src="../assets/js/form_field_validation.js"></script>
     <script src="../assets/js/form_prod_validation.js"></script>
     <!-------------------------------SCRIPT------------------------------->
 </body>

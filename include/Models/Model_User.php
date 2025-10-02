@@ -166,6 +166,7 @@ class UserModel {
             $sql->bindValue(1, $active, PDO::PARAM_INT);
             $sql->bindValue(2, $id, PDO::PARAM_INT);
             $sql->execute();
+
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -189,8 +190,7 @@ class UserModel {
                 if(is_array($user)){
                     if(password_verify($contraseña, $user[0]['Contraseña']))
                         return 1;
-                    else
-                        return 0;
+                    else return 0;
                 }else   return 0;
             }catch(PDOException $e){
                 return -1;
@@ -241,10 +241,8 @@ class UserModel {
             $sql=$this->db->prepare("SELECT COUNT(USUARIO_ID) AS 'COUNT' FROM USUARIOS");
             $sql->execute();
             
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC)[0]['COUNT'];
-            else
-                return 0;
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC)[0]['COUNT'];
+            else return 0;
         }catch(PDOException $e) {
             return 0;
         }

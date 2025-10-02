@@ -5,13 +5,13 @@
 ///////////////////////////////////////////////////////////////////////
 if(isset($_GET["success"])){ ?> <script> showBoxSuccessPay("<?php echo $_GET["success"]; ?>"); </script> <?php }
 ///////////////////////////////////////////////////////////////////////
+
 if(is_array($rentControl)){
     echo "<h2>Productos Alquilados</h2><br>";
     echo "<div class='row card-deck col-12'>";
     foreach($rentControl as $rent) { 
         //*-----------------------------DATA CONTROL------------------------------*//
-        if($rent['Imagen']!=null) $file="../assets/img/products/".$rent['Imagen']; else $file="../assets/img/products/anon.png";
-
+        $file=($rent['Imagen']!=null) ? "../assets/img/products/".$rent['Imagen'] : $file="../assets/img/products/anon.png";
         $debtMoney=$payController->selectDebtMoney($rent["Alquiler_ID"]);
         if(is_array($debtMoney)) $debtMoney=$rent["Precio_Total"]-$debtMoney[0]["Debt_Money"];
         //*-----------------------------DATA CONTROL------------------------------*//
@@ -32,9 +32,11 @@ if(is_array($rentControl)){
                 <?php 
                     if($debtMoney>0){ ?>
                         <a href='#' class='btn btn-shape btn-product-modify btn-pay' id='update-<?php echo $rent['Alquiler_ID']."-".$rent['Producto_ID']; ?>'><i class='fa-solid fa-credit-card icon-credit-card border-5'></i> Realizar Pago</a>
+                        <a href='#' class='btn btn-shape btn-product-modify btn-select' id='select-<?php echo $rent['Alquiler_ID']."-".$rent['Producto_ID']; ?>'><i class='fa-solid fa-credit-card icon-credit-card border-5'></i> Historial de Pagos </a>
                     <?php }else{ ?>
-                        <a href='#' class='btn btn-shape btn-product-extend btn-pay' id='update-<?php echo $rent['Alquiler_ID']."-".$rent['Producto_ID']; ?>'><i class='fa-solid fa-plus icon-plus border-5'></i> Extender Duración</a>
-                        <a href='#' class='btn btn-shape btn-product-delete btn-delete' id='active-<?php echo $rent['Alquiler_ID']."-".$rent['Producto_ID']; ?>'><i class='fa-solid fa-xmark icon-xmark border-5'></i> Desactivar</a>
+                        <a href='#' style="font-size:0.8em;" class='btn col-3 btn-product-extend btn-pay' id='update-<?php echo $rent['Alquiler_ID']."-".$rent['Producto_ID']; ?>'><i class='fa-solid fa-plus icon-plus border-5'></i> Extender</a>
+                        <a href='#' style="font-size:0.8em;" class='btn col-3 btn-product-delete btn-delete' id='active-<?php echo $rent['Alquiler_ID']."-".$rent['Producto_ID']; ?>'><i class='fa-solid fa-xmark icon-xmark border-5'></i> Liberar</a>
+                        <a href='#' style="font-size:0.8em;" class='btn col-3 btn-product-modify btn-select' id='select-<?php echo $rent['Alquiler_ID']."-".$rent['Producto_ID']; ?>'><i class='fa-solid fa-credit-card icon-credit-card border-5'></i> Pagos</a>
                 <?php } ?>
             </div>
         </div>
@@ -69,9 +71,16 @@ if(is_array($rentControl)){
         $(".rent").eq(i).find(".btn-pay").on("click", function(){
             let rId=($(this).attr("id")).split("-")[1];
             let pId=($(this).attr("id")).split("-")[2];
-            $("#modal").load("Views/Client_Pay_Rent.php?methodRent&rId="+rId+"&pId="+pId, function() { $("#formPopup").fadeIn(1000); });
+            $("#modal").load("Views/Client_Pay_Rent.php?methodRent=select&rId="+rId+"&pId="+pId, function() { $("#formPopup").fadeIn(1000); });
         });
         //*-----------------------------UPDATE PAY------------------------------*//
+
+        //*-----------------------------PAY HISTORY------------------------------*//
+        $(".rent").eq(i).find(".btn-select").on("click", function(){
+            let rId=($(this).attr("id")).split("-")[1];
+            $("#modal").load("Views/Client_List_Pay.php?methodPay&rId="+rId, function() { $("#formPopup").fadeIn(1000); });
+        });
+        //*-----------------------------PAY HISTORY------------------------------*//
 
         //*-----------------------------DEACTIVATE RENT------------------------------*//
         $(".rent").eq(i).find(".btn-delete").on("click", function(){

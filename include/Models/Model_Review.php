@@ -23,10 +23,8 @@ class ReviewModel {
             $sql->bindValue(2, 10*$offset, PDO::PARAM_INT);
             $sql->execute();
             
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
-            else
-                return 0;
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            else return 0;
         }catch(PDOException $e) {
             return -1;
         }
@@ -44,10 +42,9 @@ class ReviewModel {
             $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
             $sql->bindValue(2, $pId, PDO::PARAM_INT);
             $sql->execute();
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
-            else
-                return 0;
+
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            else return 0;
         }catch(PDOException $e) {
             return -1;
         }
@@ -109,6 +106,7 @@ class ReviewModel {
             $sql=$this->db->prepare("DELETE FROM RESEÑAS WHERE RESEÑA_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
+            
             return 1;
         }catch(PDOException $e) {
             return -1;

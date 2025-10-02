@@ -8,23 +8,23 @@
 </head>
 <body>
 
-    <!-------------------------------LOGIC------------------------------->
+    <!-------------------------------LOGICA------------------------------->
     <?php
-    include("../funciones.php");
-    $dirChangeVar=1; $field="Producto_ID";
+        $dirChangeVar=1; $field="Producto_ID";
+        include("../funciones.php");
+        include("../_Indexes/Index_Product.php");
+        include("../_Indexes/Index_Rent.php");
+        include("../_Indexes/Index_Pay.php");
 
-    include("../_Indexes/Index_Product.php");
-    include("../_Indexes/Index_Rent.php");
-    include("../_Indexes/Index_Pay.php");
-    $productControl=$productController->selectProduct($field, $_GET["pId"]);
-    $rentControl=$rentController->rentModel->selectRent($_GET["pId"]);
-    $mPrice=$productControl[0]["Precio_Mensual"];
+        $productControl=$productController->selectProduct($field, $_GET["pId"]); 
+        $rentControl=$rentController->rentModel->selectRent($_GET["pId"]);
+        $mPrice=$productControl[0]["Precio_Mensual"];
 
-    $debtMoney=$payController->selectDebtMoney($rentControl[0]["Alquiler_ID"]);
-    if(is_array($debtMoney)) $debtMoney=$rentControl[0]["Precio_Total"]-$debtMoney[0]["Debt_Money"];
-    else $debtMoney=$rentControl[0]["Precio_Total"];
+        $debtMoney=$payController->selectDebtMoney($rentControl[0]["Alquiler_ID"]);
+        if(is_array($debtMoney)) $debtMoney=$rentControl[0]["Precio_Total"]-$debtMoney[0]["Debt_Money"];
+        else $debtMoney=$rentControl[0]["Precio_Total"];
     ?>
-    <!-------------------------------LOGIC------------------------------->
+    <!-------------------------------LOGICA------------------------------->
 
 <div id="formPopup" class="popup" style="top: -90;">
     <div class="popup-content">
@@ -73,12 +73,11 @@
         </form>
     </div>
 </div>
+</body>
 
+<!-------------------------------SCRIPT------------------------------->
+<script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
 <script>
-    $("#closeFormBtn").click(function() {
-        $("#formPopup").fadeOut();
-    });
-
     $("#amount").on("input", function() {
         var value = $(this).val();
         var maxAmount = parseInt($("#maxAmount").val());
@@ -86,6 +85,5 @@
         else if(value < 1 || isNan(value)) $(this).val(1);
     });
 </script>
-
-</body>
+<!-------------------------------SCRIPT------------------------------->
 </html>

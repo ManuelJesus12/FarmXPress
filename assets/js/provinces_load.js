@@ -8,6 +8,7 @@ var array = fetch('../assets/js/provinces_list.json')
             const option = document.createElement('option');
             option.value = comunidad;
             option.textContent = comunidad;
+            if(localStorage.getItem("search-options") && JSON.parse(localStorage.getItem("search-options")).region == comunidad) option.selected = true;
             region.appendChild(option);
         });
         //CARGAR COMUNIDADES AUTÓNOMAS
@@ -30,7 +31,6 @@ var array = fetch('../assets/js/provinces_list.json')
             }
         });
         //CARGAR PROVINCIAS SEGÚN COMUNIDAD AUTÓNOMA
-
     });
 
 

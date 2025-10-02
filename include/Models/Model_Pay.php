@@ -22,11 +22,30 @@ class PayModel {
             $sql->bindValue(1, $rId, PDO::PARAM_INT);
             $sql->execute();
             
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
-            else
-                return 0;
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            else return 0;
         }catch(PDOException $e) {
+            return -1;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+
+    /* Función: Seleccionar todos los pagos realizados para un alquiler
+     * Params: $rId (ID del alquiler)
+     * Return: Consulta con todos los datos, -1 en caso de error
+     */
+    public function selectPay(&$rId){
+        try{
+            $sql=$this->db->prepare("SELECT * FROM PAGOS WHERE ALQUILER_ID=? ORDER BY FECHA_HORA DESC");
+            $sql->bindValue(1, $rId, PDO::PARAM_INT);
+            $sql->execute();
+
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            else return 0;
+        }catch(Exception $e){
             return -1;
         }
     }
@@ -41,13 +60,10 @@ class PayModel {
      */
     public function insertPay(&$rId, &$month, &$price){
         try{
-            $date=date("Y-m-d H:i:s");
-            
-            $sql=$this->db->prepare("INSERT INTO PAGOS (FECHA_HORA, CANTIDAD, MESES_EXTRA, ALQUILER_ID) VALUES (?, ?, ?, ?)");
-            $sql->bindValue(1, $date,  PDO::PARAM_STR);
-            $sql->bindValue(2, $price, PDO::PARAM_INT);
-            $sql->bindValue(3, $month, PDO::PARAM_INT);
-            $sql->bindValue(4, $rId,   PDO::PARAM_INT);
+            $sql=$this->db->prepare("INSERT INTO PAGOS (FECHA_HORA, CANTIDAD, MESES_EXTRA, ALQUILER_ID) VALUES (NOW(), ?, ?, ?)");
+            $sql->bindValue(1, $price, PDO::PARAM_INT);
+            $sql->bindValue(2, $month, PDO::PARAM_INT);
+            $sql->bindValue(3, $rId,   PDO::PARAM_INT);
             $sql->execute();
             
             return 1;

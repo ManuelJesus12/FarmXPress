@@ -1,6 +1,7 @@
 <nav id="navmenu" class="navmenu">
     <ul>
         <li><a href="<?php echo $dirUrl."../index.php"; ?>" class="active"><span><i class="margin-5 fa-solid fa-house"></i>Inicio</span></a></li>
+        <li><a href="<?php echo $dirUrl."principal.php?methodProd=select&page=1"; ?>"><span><i class="margin-5 fa-solid fa-bag-shopping"></i>Consultar Catálogo</span></a></li>
         <li><a href="<?php echo $dirUrl."../index.php?view=services"; ?>"><span><i class="margin-5 fa-solid fa-pen"></i>Nuestros servicios</span></a></li>
         <li><a href="<?php echo $dirUrl."../index.php?view=testimonials"; ?>"><span><i class="margin-5 fa-solid fa-comments"></i>Testimonios</span></a></li>
         <li><a href="<?php echo $dirUrl."../index.php?view=contact"; ?>"><span><i class="margin-5 fa-solid fa-file-signature"></i>Contacto</span></a></li>

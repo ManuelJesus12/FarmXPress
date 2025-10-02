@@ -25,26 +25,26 @@ INSERT INTO Categorías (Descripción, Nombre, Cat_Padre_ID) VALUES
 
 -- 4. Usuarios
 INSERT INTO Usuarios (Email, CIF, Nombre, Contraseña, Teléfono, Dirección, Comunidad, Provincia, Fecha_Registro, Estado, Avatar, Tipo) VALUES
-('proveedor1@mail.com', 'A00000001', 'Proveedor 1', '$2b$12$IfNkcUevECJyoGYjif3lCeSCbtpB/y4RPhytuoxl7PJWilKZwveeO', 'Andalucía', "Huelva", '100000001', 'Dir 1', NOW(), 1, NULL, 'P'),
-('proveedor2@mail.com', 'A00000002', 'Proveedor 2', '$2b$12$gFj0C1RRDIfZCmXuRH83qO5Mubofy1B8oyn57sQxJJ6EYJzXwiBjO', 'Andalucía', "Huelva", '100000002', 'Dir 2', NOW(), 1, NULL, 'P'),
-('proveedor3@mail.com', 'A00000003', 'Proveedor 3', '$2b$12$AbibGym6qUoBfao7LpS6ReqeSHIj4rsiZd6KHsgPvDw9vwupwe9m2', 'Andalucía', "Huelva", '100000003', 'Dir 3', NOW(), 1, NULL, 'P'),
-('proveedor4@mail.com', 'A00000004', 'Proveedor 4', '$2b$12$IdIcnfvEvxKOICaOROzxuu.7yc54fkFpdQ2ODt2.25KdtXqdf0Qqe', 'Andalucía', "Huelva", '100000004', 'Dir 4', NOW(), 1, NULL, 'P'),
-('proveedor5@mail.com', 'A00000005', 'Proveedor 5', '$2b$12$xCSlki4L6uwo.PX3kwQUEe5w2z0asnPE8q7zVGudqKLfViCFo1u4.', 'Andalucía', "Huelva", '100000005', 'Dir 5', NOW(), 1, NULL, 'P'),
-('proveedor6@mail.com', 'A00000006', 'Proveedor 6', '$2b$12$kSgYZjQLdDFtRmLYhR9E7eUI5hyEodtMV42OAYDlafzfUFdPvtEJq', 'Andalucía', "Huelva", '100000006', 'Dir 6', NOW(), 1, NULL, 'P'),
-('proveedor7@mail.com', 'A00000007', 'Proveedor 7', '$2b$12$UJB0EDAqmo1pMA0o8k7RLOaXKCMcXcq4GmwGIvkBPzMhquQzvQT7u', 'Andalucía', "Huelva", '100000007', 'Dir 7', NOW(), 1, NULL, 'P'),
-('proveedor8@mail.com', 'A00000008', 'Proveedor 8', '$2b$12$gWpyUgT2jw.NJzDfUOULxeWjHamTfjcw5pyS8knQcsU0ejOwQFGyy', 'Andalucía', "Huelva", '100000008', 'Dir 8', NOW(), 1, NULL, 'P'),
-('proveedor9@mail.com', 'A00000009', 'Proveedor 9', '$2b$12$.MOSnU4F.eMBMfnUm/hKJeM.Pe4qvcF49zdyVg3rXMrqmrpIwo/z.', 'Andalucía', "Huelva", '100000009', 'Dir 9', NOW(), 1, NULL, 'P'),
-('proveedor10@mail.com', 'A00000010', 'Proveedor 10', '$2b$12$XybPgPzkBn53OWmlC74G/uxzdm0pWue34xrO3QdoN5mDb58trkvxu', 'Andalucía', "Huelva", '100000010', 'Dir 10', NOW(), 1, NULL, 'P'),
-('cliente1@mail.com', 'B00000001', 'Cliente 1', '$2b$12$NqYXvZ.6wZkAuVZOePvkT.IllLqFnyxhXPNFLiP4l6uFp3pqbOnMi', 'Andalucía', "Huelva", '100000011', 'Dir 11', NOW(), 1, NULL, 'C'),
-('cliente2@mail.com', 'B00000002', 'Cliente 2', '$2b$12$73IBrIKQSi60dbc.EXRvTOJnA7iVbC8j2mWX1908f0AT6HW/dEBR2', 'Andalucía', "Huelva", '100000012', 'Dir 12', NOW(), 1, NULL, 'C'),
-('cliente3@mail.com', 'B00000003', 'Cliente 3', '$2b$12$K/05kEufQk3gUQsK/7SHXu1.NmbT06r8/B/XpL7vwLPtr47dhlXdu', 'Andalucía', "Huelva", '100000013', 'Dir 13', NOW(), 1, NULL, 'C'),
-('cliente4@mail.com', 'B00000004', 'Cliente 4', '$2b$12$OFS0.SbiR00Yj9WZIkgOdulwkSJGx.Uwe5nwXMgDxDnwAFCPCNFxi', 'Andalucía', "Huelva", '100000014', 'Dir 14', NOW(), 1, NULL, 'C'),
-('cliente5@mail.com', 'B00000005', 'Cliente 5', '$2b$12$4u4r5GIH4GxtlSkrxZjp2.HaEpX5R06W83x79J/Nh8QvHbf.2QB/2', 'Andalucía', "Huelva", '100000015', 'Dir 15', NOW(), 1, NULL, 'C'),
-('cliente6@mail.com', 'B00000006', 'Cliente 6', '$2b$12$n333dhRN2o7sfpicAP8R9.8ITh7nbQ1Si3XqCw4pZYBIx1kpBSw5q', 'Andalucía', "Huelva", '100000016', 'Dir 16', NOW(), 1, NULL, 'C'),
-('cliente7@mail.com', 'B00000007', 'Cliente 7', '$2b$12$uTgBm4T7QUn3Q66iCB/bQO5EwO90zHhHdNk9NVwRwEqHRYETJ1B8.', 'Andalucía', "Huelva", '100000017', 'Dir 17', NOW(), 1, NULL, 'C'),
-('cliente8@mail.com', 'B00000008', 'Cliente 8', '$2b$12$L4qEEopDcPW.TFGof3x4yOyqaNpD5Wjv25FTfqFe5G0LiZgN60tVC', 'Andalucía', "Huelva", '100000018', 'Dir 18', NOW(), 1, NULL, 'C'),
-('cliente9@mail.com', 'B00000009', 'Cliente 9', '$2b$12$njhNamJyosKHKWsTbFP/ruLUneZBejhlZywXz12l8FFzVkw6AxoQS', 'Andalucía', "Huelva", '100000019', 'Dir 19', NOW(), 1, NULL, 'C'),
-('cliente10@mail.com', 'B00000010', 'Cliente 10', '$2b$12$3P99tAohAWUu52vMrplykeICpBazvo5g.h8gvSNQQTt/wsA6fzvCu', 'Andalucía', "Huelva", '100000020', 'Dir 20', NOW(), 1, NULL, 'C');
+('proveedor1@mail.com', 'A00000001', 'Proveedor 1', '$2b$12$IfNkcUevECJyoGYjif3lCeSCbtpB/y4RPhytuoxl7PJWilKZwveeO', '100000001', 'Dir 1', 'Andalucía', "Huelva", NOW(), 1, NULL, 'P'),
+('proveedor2@mail.com', 'A00000002', 'Proveedor 2', '$2b$12$gFj0C1RRDIfZCmXuRH83qO5Mubofy1B8oyn57sQxJJ6EYJzXwiBjO', '100000002', 'Dir 2', 'Andalucía', "Huelva", NOW(), 1, NULL, 'P'),
+('proveedor3@mail.com', 'A00000003', 'Proveedor 3', '$2b$12$AbibGym6qUoBfao7LpS6ReqeSHIj4rsiZd6KHsgPvDw9vwupwe9m2', '100000003', 'Dir 3', 'Andalucía', "Huelva", NOW(), 1, NULL, 'P'),
+('proveedor4@mail.com', 'A00000004', 'Proveedor 4', '$2b$12$IdIcnfvEvxKOICaOROzxuu.7yc54fkFpdQ2ODt2.25KdtXqdf0Qqe', '100000004', 'Dir 4', 'Andalucía', "Huelva", NOW(), 1, NULL, 'P'),
+('proveedor5@mail.com', 'A00000005', 'Proveedor 5', '$2b$12$xCSlki4L6uwo.PX3kwQUEe5w2z0asnPE8q7zVGudqKLfViCFo1u4.', '100000005', 'Dir 5', 'Andalucía', "Huelva", NOW(), 1, NULL, 'P'),
+('proveedor6@mail.com', 'A00000006', 'Proveedor 6', '$2b$12$kSgYZjQLdDFtRmLYhR9E7eUI5hyEodtMV42OAYDlafzfUFdPvtEJq', '100000006', 'Dir 6', 'Andalucía', "Huelva", NOW(), 1, NULL, 'P'),
+('proveedor7@mail.com', 'A00000007', 'Proveedor 7', '$2b$12$UJB0EDAqmo1pMA0o8k7RLOaXKCMcXcq4GmwGIvkBPzMhquQzvQT7u', '100000007', 'Dir 7', 'Andalucía', "Huelva", NOW(), 1, NULL, 'P'),
+('proveedor8@mail.com', 'A00000008', 'Proveedor 8', '$2b$12$gWpyUgT2jw.NJzDfUOULxeWjHamTfjcw5pyS8knQcsU0ejOwQFGyy', '100000008', 'Dir 8', 'Andalucía', "Huelva", NOW(), 1, NULL, 'P'),
+('proveedor9@mail.com', 'A00000009', 'Proveedor 9', '$2b$12$.MOSnU4F.eMBMfnUm/hKJeM.Pe4qvcF49zdyVg3rXMrqmrpIwo/z.', '100000009', 'Dir 9', 'Andalucía', "Huelva", NOW(), 1, NULL, 'P'),
+('proveedor10@mail.com', 'A00000010', 'Proveedor 10', '$2b$12$XybPgPzkBn53OWmlC74G/uxzdm0pWue34xrO3QdoN5mDb58trkvxu', '100000010', 'Dir 10', 'Andalucía', "Huelva", NOW(), 1, NULL, 'P'),
+('cliente1@mail.com', 'B00000001', 'Cliente 1', '$2b$12$NqYXvZ.6wZkAuVZOePvkT.IllLqFnyxhXPNFLiP4l6uFp3pqbOnMi', '100000011', 'Dir 11', 'Andalucía', "Huelva", NOW(), 1, NULL, 'C'),
+('cliente2@mail.com', 'B00000002', 'Cliente 2', '$2b$12$73IBrIKQSi60dbc.EXRvTOJnA7iVbC8j2mWX1908f0AT6HW/dEBR2', '100000012', 'Dir 12', 'Andalucía', "Huelva", NOW(), 1, NULL, 'C'),
+('cliente3@mail.com', 'B00000003', 'Cliente 3', '$2b$12$K/05kEufQk3gUQsK/7SHXu1.NmbT06r8/B/XpL7vwLPtr47dhlXdu', '100000013', 'Dir 13', 'Andalucía', "Huelva", NOW(), 1, NULL, 'C'),
+('cliente4@mail.com', 'B00000004', 'Cliente 4', '$2b$12$OFS0.SbiR00Yj9WZIkgOdulwkSJGx.Uwe5nwXMgDxDnwAFCPCNFxi', '100000014', 'Dir 14', 'Andalucía', "Huelva", NOW(), 1, NULL, 'C'),
+('cliente5@mail.com', 'B00000005', 'Cliente 5', '$2b$12$4u4r5GIH4GxtlSkrxZjp2.HaEpX5R06W83x79J/Nh8QvHbf.2QB/2', '100000015', 'Dir 15', 'Andalucía', "Huelva", NOW(), 1, NULL, 'C'),
+('cliente6@mail.com', 'B00000006', 'Cliente 6', '$2b$12$n333dhRN2o7sfpicAP8R9.8ITh7nbQ1Si3XqCw4pZYBIx1kpBSw5q', '100000016', 'Dir 16', 'Andalucía', "Huelva", NOW(), 1, NULL, 'C'),
+('cliente7@mail.com', 'B00000007', 'Cliente 7', '$2b$12$uTgBm4T7QUn3Q66iCB/bQO5EwO90zHhHdNk9NVwRwEqHRYETJ1B8.', '100000017', 'Dir 17', 'Andalucía', "Huelva", NOW(), 1, NULL, 'C'),
+('cliente8@mail.com', 'B00000008', 'Cliente 8', '$2b$12$L4qEEopDcPW.TFGof3x4yOyqaNpD5Wjv25FTfqFe5G0LiZgN60tVC', '100000018', 'Dir 18', 'Andalucía', "Huelva", NOW(), 1, NULL, 'C'),
+('cliente9@mail.com', 'B00000009', 'Cliente 9', '$2b$12$njhNamJyosKHKWsTbFP/ruLUneZBejhlZywXz12l8FFzVkw6AxoQS', '100000019', 'Dir 19', 'Andalucía', "Huelva", NOW(), 1, NULL, 'C'),
+('cliente10@mail.com', 'B00000010', 'Cliente 10', '$2b$12$3P99tAohAWUu52vMrplykeICpBazvo5g.h8gvSNQQTt/wsA6fzvCu', '100000020', 'Dir 20', 'Andalucía', "Huelva", NOW(), 1, NULL, 'C');
 
 
 -- 5. Proveedores y Clientes
