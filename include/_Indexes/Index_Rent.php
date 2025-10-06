@@ -1,14 +1,12 @@
 <?php
-if(!isset($c)) $c=PDOConnect($c);
-
-global $dirLocation;
+global $PDOConnect, $dirLocation;
 $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Rent.php';
 require_once $dir.'Controllers/Controller_Rent.php';
 
 
 // INITIALIZE MODEL AND CONTROLLER
-$rentModel = new RentModel($c);
+$rentModel = new RentModel($PDOConnect);
 $rentController = new RentController($rentModel);
 
 if(isset($_GET['methodRent'])){

@@ -69,7 +69,7 @@ if(isset($_GET['action'])){
 </section><!-- /Hero Section -->
 
 <?php 
-if(PDOConnect($c)!=false) { 
+if($PDOConnect!=false) { 
   include("include/_Indexes/Index_Product.php"); $offset = 0;
   $productControl = $productController->viewListProductCarousel($offset);
 

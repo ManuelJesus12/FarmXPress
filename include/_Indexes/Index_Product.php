@@ -1,14 +1,11 @@
 <?php
-if(!isset($c)) $c=PDOConnect($c);
-
-global $dirLocation;
+global $PDOConnect, $dirLocation;
 $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Product.php';
 require_once $dir.'Controllers/Controller_Product.php';
 
-
 // INITIALIZE MODEL AND CONTROLLER
-$productModel = new ProductModel($c);
+$productModel = new ProductModel($PDOConnect);
 $productController = new ProductController($productModel);
 
 if(isset($_GET['methodProd'])){
@@ -23,29 +20,23 @@ if(isset($_GET['methodProd'])){
         $message = $productController -> deleteProduct($_POST['deleteId']);
     
     if(in_array("uploadImage", $methods))
-        $result = $productController->uploadImage($_POST['prodId'], $_FILES["imagen"]);
+        $result = $productController->uploadImage($_POST['prodId'], $_FILES['imagen']);
     /*--------------------------------------------------------------------------*/
 
     // INITIALIZE VIEW
     /*--------------------------------------------------------------------------*/
     if(in_array("select", $methods)){
-        if(!isset($_GET['page']) or $_GET['page']<1)
-            header("Location: principal.php?methodProd=select&page=1");
-        else{
+        if(isset($_GET['page']) && $_GET['page']>0){
             $offset = $_GET['page']-1;
             $productController -> viewListProduct($offset);
-        }
+        }else header("Location: principal.php?methodProd=select&page=1");
     }
     /*--------------------------------------------------------------------------*/
 
     /*--------------------------------------------------------------------------*/
     if(in_array("viewProduct", $methods)){
-        if(!isset($_GET['id']))
-            header("Location: principal.php?methodProd=select&page=1");
-        else if(!isset($_GET['page']))
-            header("Location: principal.php?methodProd=viewProduct&id=".$_GET['id']."&page=1");
-        else
-            $message = $productController -> viewPageProduct($_GET['id']);
+        if(isset($_GET['id'])) $message = $productController -> viewPageProduct($_GET['id']);
+        else header("Location: principal.php?methodProd=select");
     }
     /*--------------------------------------------------------------------------*/
 }

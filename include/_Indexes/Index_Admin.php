@@ -1,11 +1,10 @@
 <?php
-if(!isset($c)) $c=PDOConnect($c);
-
+global $PDOConnect, $dirLocation;
 require_once 'Models/Model_Admin.php';
 require_once 'Controllers/Controller_Admin.php';
 
 // INITIALIZE MODEL AND CONTROLLER
-$adminModel = new AdminModel($c);
+$adminModel = new AdminModel($PDOConnect);
 $adminController = new AdminController($adminModel);
 
 if(isset($_GET['methodAdmin'])){
@@ -19,25 +18,21 @@ if(isset($_GET['methodAdmin'])){
         $message = $adminController -> DeleteDB();
     if(in_array("DataUpload", $methods))  
         $message = $adminController -> DataUpload();
+    if(in_array("store", $methods))  
+        $message = $adminController -> storeLog();
+    if(in_array("print", $methods))  
+        $message = $adminController -> printLog();
+    if(in_array("select", $methods))  
+        $message = $adminController -> listLog($_GET['type']);
     /*--------------------------------------------------------------------------*/
 
-    if($c!=false && isset($_SESSION["usuario"])){
-        /*--------------------------------------------------------------------------*/
-        if(in_array("select", $methods))  
-            $message = $adminController -> listLog($_GET['type']);
-        if(in_array("store", $methods))  
-            $message = $adminController -> storeLog();
-        if(in_array("print", $methods))  
-            $message = $adminController -> printLog();
-        /*--------------------------------------------------------------------------*/
-
+    if($PDOConnect!=false && isset($_SESSION["usuario"])){
         // INITIALIZE VIEW
         /*--------------------------------------------------------------------------*/
         if(in_array("newLog", $methods)  || in_array("viewLog", $methods))
             $message = $adminController -> viewLogMenu();
-        else  
-            echo $message;
         /*--------------------------------------------------------------------------*/
-    }else setcookie("error", 1, time()+3600, "/");
+    }
+    echo $message;
 }
 ?>

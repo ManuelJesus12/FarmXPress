@@ -1,15 +1,17 @@
 <?php
 session_start();
+$PDOConnect  = PDOConnect();
 $dirLocation = dirChangeProgram();
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*
 Funcion: Recoger la pagina en la que se desarrolla el programa
-@param: $c - Conexion a la base de datos por referencia - Entrada y salida
+@param: $c - Conexion a la base de datos por referencia - Salida
 */
-function PDOConnect(&$c){
+function PDOConnect(){
     try {
         $c = new PDO("mysql:host=localhost;dbname=FARMXPRESS", "root", "");
         $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -74,20 +76,9 @@ Funcion: Mostrar el contenido principal de la pagina, dependiendo de si es un us
 @return: No devuelve nada, pero incluye los índices correspondientes a cada entidad MVC para mostrar el contenido
 */
 function seleccionarContenidoPrincipal(){
-    if(isset($_GET["methodProd"]))
-        include("_Indexes/Index_Product.php");
-    if(isset($_GET["methodUser"]))
-        include("_Indexes/Index_User.php");
-    if(isset($_GET["methodAdmin"])){
-        if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR"){
-            include("_Indexes/Index_Admin.php");
-        }else
-            echo "<article class='col-12 list-user form-log site-section rounded'><h2>Acceso a esta sección denegado</h2></article>";
-    }
+    global $PDOConnect;
 
-    if(PDOConnect($c)!=false && isset($_SESSION["usuario"])){
-        includeVisit();
-
+    if($PDOConnect!=false && isset($_SESSION["usuario"])){
         if(isset($_GET["methodCat"]))
             include("_Indexes/Index_Category.php");
         if(isset($_GET["methodSub"]))
@@ -102,6 +93,19 @@ function seleccionarContenidoPrincipal(){
             include("_Indexes/Index_Rent.php");
         if(isset($_GET["methodPay"]))
             include("_Indexes/Index_Pay.php");
+
+        includeVisit();
+    }
+
+    if(isset($_GET["methodProd"]))
+        include("_Indexes/Index_Product.php");
+    if(isset($_GET["methodUser"]))
+        include("_Indexes/Index_User.php");
+    if(isset($_GET["methodAdmin"])){
+        if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR"){
+            include("_Indexes/Index_Admin.php");
+        }else
+            echo "<article class='col-12 list-user form-log site-section rounded'><h2>Acceso a esta sección denegado</h2></article>";
     }
 }
 
@@ -115,8 +119,6 @@ Funcion: Mostrar las vistas y páginas de utilidad de la web
 @return: No devuelve nada, pero incluye las vistas correspondientes a cada página
 */
 function seleccionarContenidoIndex(){
-    includeVisit();
-    
     if(isset($_GET["view"])){
         if($_GET["view"]=="testimonials")
             include("views/pages/testimonials.php");
@@ -138,6 +140,8 @@ function seleccionarContenidoIndex(){
         else
             include("views/viewIndexUser.php");
     }  
+    
+    includeVisit();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -150,9 +154,9 @@ Funcion: Incluir los índices de las visitas, miembros y alquileres para realiza
 @return: No devuelve nada, pero incluye los índices de las visitas, miembros y alquileres
 */
 function includeVisit(){
-    global $dirLocation;
+    global $dirLocation, $PDOConnect;
     
-    if((PDOConnect($c)!=false && isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR")){
+    if(($PDOConnect==false && isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR")){
         $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
         include($dir."_Indexes/Index_Visit.php");
         include($dir."_Indexes/Index_Member.php");

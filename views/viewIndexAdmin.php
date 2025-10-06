@@ -1,6 +1,6 @@
-<?php
+<?php global $PDOConnect;
 ///////////////////////////////////////////////////////////////////////
-if(PDOConnect($c)!=false){
+if($PDOConnect!=false){
   include ("include/_Indexes/Index_User.php");
   include ("include/_Indexes/Index_Product.php");
   include ("include/_Indexes/Index_Rent.php");
@@ -12,7 +12,7 @@ if(PDOConnect($c)!=false){
   $memberCount = $memberController -> countMember();
 }else{
   $userCount = $productCount = $rentCount = $memberCount = 0;
-  if(dirChangeProgram()==1) $dir=""; else $dir="include/";
+  $dir = ($dirLocation==1) ? "" : "include/";
 }
 ///////////////////////////////////////////////////////////////////////
 ?>

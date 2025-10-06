@@ -100,10 +100,11 @@
 .btn-pill-green{ border: 2px solid #116530; } 
 .btn-pill-green:hover{ color: #116530 !important; }
 
-.btn-pill-red{ 
+.btn-pill-red, .btn-danger:hover{ 
     background-color: red !important; 
     border: 2px solid red;
 } 
+.btn-danger:hover  { background-color: red; } 
 .btn-pill-red:hover{ color: red !important; }
 /*-----------------------------------------------------------------------------------------------------*/
 
@@ -160,7 +161,7 @@ footer *{ color: white !important; font-weight: bold; }
 }
 
 .form-log{
-    background-color: white;
+    background-color: #ffffff;
     border: 1px solid #ddd;
     margin: auto;
 }

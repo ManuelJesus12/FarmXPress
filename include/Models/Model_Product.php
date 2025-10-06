@@ -42,14 +42,13 @@ class ProductModel {
             $placeholder = "%"; $offset=$offset*10;
 
             //*-----------------------------QUERY BUILD------------------------------*//
-            $query = "SELECT * FROM PRODUCTOS P1 JOIN PROVEEDORES P2 ON P1.USUARIO_ID=P2.USUARIO_ID JOIN USUARIOS U ON P2.USUARIO_ID=U.USUARIO_ID WHERE (Categoría_ID LIKE ? OR Categoría_ID IS NULL)";
+            $query = "SELECT *, P1.Estado AS 'P1Estado', P1.Nombre AS 'P1Nombre', U.Nombre AS 'UNombre' FROM PRODUCTOS P1 JOIN USUARIOS U ON P1.USUARIO_ID=U.USUARIO_ID WHERE (Categoría_ID LIKE ? OR Categoría_ID IS NULL)";
             $parameters = [$placeholder];
 
             if(isset($_COOKIE["search-options"])){
                 $search=json_decode($_COOKIE["search-options"], true);
-
                 if ($search["category"]!="") {
-                    $query = "SELECT * FROM PRODUCTOS P1 JOIN PROVEEDORES P2 ON P1.USUARIO_ID=P2.USUARIO_ID JOIN USUARIOS U ON P2.USUARIO_ID=U.USUARIO_ID WHERE Categoría_ID = ?";
+                    $query = "SELECT *, P1.Estado AS 'P1Estado', P1.Nombre AS 'P1Nombre', U.Nombre AS 'UNombre' FROM PRODUCTOS P1 JOIN USUARIOS U ON P1.USUARIO_ID=U.USUARIO_ID WHERE Categoría_ID = ?";
                     $parameters[0] = $search["category"];
                 }
                 if ($search["minPrice"]!="") {
@@ -69,7 +68,6 @@ class ProductModel {
                     $parameters[] = $search["province"];
                 }
             }
-
             $query .= " LIMIT 11 OFFSET ?";
             //*-----------------------------QUERY BUILD------------------------------*//
 
@@ -83,7 +81,6 @@ class ProductModel {
             else return 0;
             //*-----------------------------QUERY BIND------------------------------*//
         }catch(PDOException $e) {
-            echo $e->getMessage();
             return -1;
         }
     }
@@ -100,7 +97,7 @@ class ProductModel {
             $sql->bindValue(1, $value, PDO::PARAM_INT);
             $sql->execute();
             
-            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC)[0];
             else return 0;
         }catch(PDOException $e) {
             return -1;
@@ -120,8 +117,8 @@ class ProductModel {
             //*-----------------------------DATA------------------------------*//
             include("_Indexes/Index_User.php"); $field="Nombre";
             $data[4]=($data[4]=="") ? null : $data[4];
+            $file=(isset($_COOKIE["product-image"])) ? $_COOKIE["product-image"] : null;
             $uid=$userController->selectUser($field, $_SESSION["usuario"])[0]['Usuario_ID'];
-            if(isset($_COOKIE["product-image"])) $file=$_COOKIE["product-image"]; else $file=null;
             //*-----------------------------DATA------------------------------*//
 
             $sql=$this->db->prepare("INSERT INTO PRODUCTOS (Nombre, Descripción, Referencia, Precio_Mensual, Categoría_ID, Usuario_ID, Imagen, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
@@ -219,7 +216,7 @@ class ProductModel {
      * Params: $uId (ID del usuario)
      * Return: 1 si se activa correctamente, -1 en caso de error
      */
-    public function activeByUser(&$uId){
+    public function liberateProduct(&$uId){
         try{
             $sql2 = $this->db->prepare("UPDATE PRODUCTOS SET ESTADO=? WHERE PRODUCTO_ID IN (
                 SELECT PRODUCTO_ID FROM ALQUILERES A WHERE A.USUARIO_ID=? AND A.ESTADO=1)");

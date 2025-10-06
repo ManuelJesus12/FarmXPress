@@ -1,14 +1,12 @@
 <?php
-if(!isset($c)) $c=PDOConnect($c);
-
-global $dirLocation;
+global $PDOConnect, $dirLocation;
 $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Review.php';
 require_once $dir.'Controllers/Controller_Review.php';
 
 
 // INITIALIZE MODEL AND CONTROLLER
-$reviewModel = new ReviewModel($c);
+$reviewModel = new ReviewModel($PDOConnect);
 $reviewController = new ReviewController($reviewModel);
 
 if(isset($_GET['methodRev'])){

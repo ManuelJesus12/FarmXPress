@@ -1,13 +1,11 @@
 <?php
-if(!isset($c)) $c=PDOConnect($c);
-
-global $dirLocation;
+global $PDOConnect, $dirLocation;
 $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Category.php';
 require_once $dir.'Controllers/Controller_Category.php';
 
 // INITIALIZE MODEL AND CONTROLLER
-$categoryModel = new CategoryModel($c);
+$categoryModel = new CategoryModel($PDOConnect);
 $categoryController = new CategoryController($categoryModel);
 
 if(isset($_GET['methodCat'])){

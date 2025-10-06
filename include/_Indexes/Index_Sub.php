@@ -1,14 +1,12 @@
 <?php
-if(!isset($c)) $c=PDOConnect($c);
-
-global $dirLocation;
+global $PDOConnect, $dirLocation;
 $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Sub.php';
 require_once $dir.'Controllers/Controller_Sub.php';
 
 
 // INITIALIZE MODEL AND CONTROLLER
-$subModel = new SubModel($c);
+$subModel = new SubModel($PDOConnect);
 $subController = new SubController($subModel);
 
 if(isset($_GET['methodSub'])){

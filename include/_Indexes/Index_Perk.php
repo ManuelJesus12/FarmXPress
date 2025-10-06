@@ -1,14 +1,12 @@
 <?php
-if(!isset($c)) $c=PDOConnect($c);
-
-global $dirLocation;
+global $PDOConnect, $dirLocation;
 $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Perk.php';
 require_once $dir.'Controllers/Controller_Perk.php';
 
 
 // INITIALIZE MODEL AND CONTROLLER
-$perkModel = new PerkModel($c);
+$perkModel = new PerkModel($PDOConnect);
 $perkController = new PerkController($perkModel);
 
 if(isset($_GET['methodPerk'])){

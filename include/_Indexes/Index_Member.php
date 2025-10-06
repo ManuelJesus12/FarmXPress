@@ -1,13 +1,11 @@
 <?php
-if(!isset($c)) $c=PDOConnect($c);
-
-global $dirLocation;
+global $PDOConnect, $dirLocation;
 $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Member.php';
 require_once $dir.'Controllers/Controller_Member.php';
 
 // INITIALIZE MODEL AND CONTROLLER
-$memberModel = new MemberModel($c);
+$memberModel = new MemberModel($PDOConnect);
 $memberController = new MemberController($memberModel);
 
 if(isset($_GET['methodMember'])){

@@ -1,13 +1,11 @@
 <?php
-if(!isset($c)) $c=PDOConnect($c);
-
-global $dirLocation;
+global $PDOConnect, $dirLocation;
 $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Fav.php';
 require_once $dir.'Controllers/Controller_Fav.php';
 
 // INITIALIZE MODEL AND CONTROLLER
-$favModel = new FavModel($c);
+$favModel = new FavModel($PDOConnect);
 $favController = new FavController($favModel);
 
 if(isset($_GET['methodFav'])){

@@ -69,10 +69,8 @@ class PerkController {
      * Return: Mensaje de éxito o error
      */
     public function deletePerk(&$id){
-        if($this->perkModel->deletePerk($id)==1)
-            return "Ventaja eliminada correctamente";
-        else
-            return "Error al eliminar la ventaja";
+        if($this->perkModel->deletePerk($id)==1) return "Ventaja eliminada correctamente";
+        else return "Error al eliminar la ventaja";
     }
 
     ///////////////////////////////////////////////////////////////

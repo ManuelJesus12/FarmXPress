@@ -1,13 +1,11 @@
 <?php
-if(!isset($c)) $c=PDOConnect($c);
-
-global $dirLocation;
+global $PDOConnect, $dirLocation;
 $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_User.php';
 require_once $dir.'Controllers/Controller_User.php';
 
 // INITIALIZE MODEL AND CONTROLLER
-$userModel = new UserModel($c);
+$userModel = new UserModel($PDOConnect);
 $userController = new UserController($userModel);
 
 if(isset($_GET['methodUser'])){
@@ -19,7 +17,7 @@ if(isset($_GET['methodUser'])){
         $result = $userController->uploadAvatar($_POST['userId'], $_FILES["avatar"]);
 
     // CONTROLLER FUNCTION HANDLING
-    if($c!=false && isset($_SESSION["usuario"])){
+    if($PDOConnect!=false && isset($_SESSION["usuario"])){
         /*--------------------------------------------------------------------------*/
         if(in_array("update", $methods))
             $message = $userController -> updateUser();

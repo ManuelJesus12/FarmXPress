@@ -73,7 +73,7 @@ if(isset($productControl)){
         echo "<div class='row card-deck col-12'>";
         foreach($productControl as $product){
             //*-----------------------------DATA CONTROL------------------------------*//
-            if($product['Imagen']!=null) $file="../assets/img/products/".$product['Imagen']; else $file="../assets/img/products/anon.png";
+            $file = ($product['Imagen']!=null) ? "../assets/img/products/".$product['Imagen'] : "../assets/img/products/anon.png";
             $category = ($product["Categoría_ID"] == null) ? "Sin categoría" : $categoryController->selectCategory($product["Categoría_ID"])[0]["Nombre"];            
             //*-----------------------------DATA CONTROL------------------------------*//
 
@@ -86,14 +86,14 @@ if(isset($productControl)){
                         echo "<a href='#' id='del-".$product["Producto_ID"]."'><i class='fas fa-star icon-star border-5' style='color:orange !important'></i></a>";
                 }
 
-                echo "<div class='card-header element-green-bg'>".$product["Nombre"]." - ".$product["Referencia"]."</div>";
+                echo "<div class='card-header element-green-bg'>".$product["P1Nombre"]." - ".$product["Referencia"]."</div>";
                 echo "<div class='row card-body'>";
                     echo "<div class='col-6'><img class='card-image img-fluid rounded shadow' src='$file' style='width: 75%;' /></div>";
                     echo "<div class='col-6'>";
                         echo "<p class='card-text'>Categoría: ".$category."</p>";
                         echo "<p class='card-text'>Localización: ".$product["Provincia"]."</p>";
                         echo "<p class='card-text' style='color: limegreen;'>".$product["Precio_Mensual"]."€ / mes</p>";
-                        if($product["Estado"]==0)
+                        if($product["P1Estado"]==false)
                             echo "<p class='card-text prod-status' id='disabled-".$product["Producto_ID"]."'>Alquilado</p>";
                         else
                             echo "<p class='card-text prod-status' id='enabled-".$product["Producto_ID"]."'>Disponible</p>";

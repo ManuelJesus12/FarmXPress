@@ -1,14 +1,12 @@
 <?php
-if(!isset($c)) $c=PDOConnect($c);
-
-global $dirLocation;
+global $PDOConnect, $dirLocation;
 $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
 require_once $dir.'Models/Model_Pay.php';
 require_once $dir.'Controllers/Controller_Pay.php';
 
 
 // INITIALIZE MODEL AND CONTROLLER
-$payModel = new PayModel($c);
+$payModel = new PayModel($PDOConnect);
 $payController = new PayController($payModel);
 
 if(isset($_GET['methodPay'])){

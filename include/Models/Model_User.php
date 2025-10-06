@@ -183,7 +183,7 @@ class UserModel {
      */
     public function loginUser(&$nombre, &$contraseña){
         if($nombre=="ADMINISTRADOR" and $contraseña=="ADMINAPP") return 1;
-        else if($this->db!=false){
+        else{
             try{
                 $field="Nombre"; $user = $this->selectUser($field, $nombre);
 
@@ -195,7 +195,7 @@ class UserModel {
             }catch(PDOException $e){
                 return -1;
             }
-        }else return -1;
+        }
     }
 
     ///////////////////////////////////////////////////////////////

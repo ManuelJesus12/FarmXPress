@@ -1,12 +1,12 @@
+<?php global $PDOConnect; ?>
 <link rel="stylesheet" href="assets/css/principal.css">
-
 <!-- Sidebar Menu -->
     <nav id="navmenu" class="d-none d-lg-block navmenu">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .margin-5 class
             with font-awesome or any other icon font library -->
             
-        <?php if(PDOConnect($c)==false){ ?>
+        <?php if($PDOConnect==false){ ?>
             <li class="nav-item"><a href="include/principal.php?methodAdmin=CreateBD" target="main-frame" class="nav-link sidebar-link element-green-color" onclick="setTimeout(function() {window.location.reload();}, 250);"><i class="margin-5 fa-solid fa-database"></i><p><b>Crear Base de Datos</b></p></a></li>
         <?php }else{ ?>
             <li class="nav-item"><a href="include/principal.php?methodAdmin=DeleteBD" target="main-frame" class="nav-link sidebar-link element-red-color" onclick="setTimeout(function() {window.location.reload();}, 250);"><i class="margin-5 fa-solid fa-database"></i><p><b>Eliminar Base de Datos</b></p></a></li>

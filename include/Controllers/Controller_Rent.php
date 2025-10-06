@@ -30,10 +30,8 @@ class RentController {
         $offset--;
         if($offset>=0){
             $rentControl = $this->rentModel->listRent($offset);
-            if(isset($_GET["methodRent"]) && $_GET["methodRent"]=="select")
-                include("Views/Client_List_Rent.php");
-        }else
-            header("Location: principal.php?methodRent=select&page=1");
+            if(isset($_GET["methodRent"]) && $_GET["methodRent"]=="select") include("Views/Client_List_Rent.php");
+        }else  header("Location: principal.php?methodRent=select&page=1");
     }
 
     ///////////////////////////////////////////////////////////////
@@ -70,7 +68,7 @@ class RentController {
             $field="Producto_ID"; $active=0;
 
             if($productController -> selectProduct($field, $pId)[0]["Estado"]==0)
-                header("Location: principal.php?methodProd=viewProduct&id=".$pId."&page=1&success=0");
+                header("Location: principal.php?methodProd=viewProduct&id=".$pId."&success=0");
             else{
                 if($this->rentModel->insertRent($pId, $month, $price)==1){
                     $productController -> activeProduct($pId, $active);

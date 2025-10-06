@@ -17,7 +17,7 @@ class ProductController {
      * Return: Vista de lista de productos según el tipo de usuario
      */
     public function viewListProduct(&$offset){
-        $tipo = (!isset($_COOKIE["UserType"])) ? $tipo="C" : $_COOKIE["UserType"];
+        $tipo = (!isset($_COOKIE["UserType"])) ? "C" : $_COOKIE["UserType"];
 
         if($tipo=="P"){
             $productControl=$this->productModel->listProductP($offset);
@@ -42,12 +42,9 @@ class ProductController {
      */
     public function viewPageProduct(&$id){
         try{
-            $field = "Producto_ID";
-            $product=$this->productModel->selectProduct($field, $id)[0];
-            if(!is_array($product))
-                header("Location: principal.php?methodProd=select&page=1&error=1");
-            else
-                include("Views/View_User_Product.php");
+            $field = "Producto_ID"; $product=$this->selectProduct($field, $id);
+            if(is_array($product)) include("Views/View_User_Product.php");
+            else header("Location: principal.php?methodProd=select&error=1");
 
             return 1;
         } catch(Exception $e){
@@ -129,8 +126,8 @@ class ProductController {
             return "Error al activar/desactivar el Producto";
     }
     
-    public function activeByUser(&$uId){
-        return $this->productModel->activeByUser($uId);
+    public function liberateProduct(&$uId){
+        return $this->productModel->liberateProduct($uId);
     }
 
     ///////////////////////////////////////////////////////////////

@@ -16,11 +16,10 @@ class ReviewModel {
      * Params: $pId (ID del producto), $offset (paginación)
      * Return: Página de lista de reseñas.
      */
-    public function listReview(&$pId, &$offset){
+    public function listReview(&$pId){
         try{
-            $sql=$this->db->prepare("SELECT * FROM RESEÑAS R JOIN USUARIOS U ON R.USUARIO_ID=U.USUARIO_ID WHERE PRODUCTO_ID=? ORDER BY FECHA_HORA DESC LIMIT 11 OFFSET ?");
+            $sql=$this->db->prepare("SELECT * FROM RESEÑAS R JOIN USUARIOS U ON R.USUARIO_ID=U.USUARIO_ID WHERE PRODUCTO_ID=? ORDER BY FECHA_HORA");
             $sql->bindValue(1, $pId, PDO::PARAM_INT);
-            $sql->bindValue(2, 10*$offset, PDO::PARAM_INT);
             $sql->execute();
             
             if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);

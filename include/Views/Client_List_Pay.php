@@ -22,21 +22,10 @@
         <button class="close-btn" id="closeFormBtn" style="top: 100;">X</button>
         <h2>Mostrando Historial de Pagos</h2>
         <table style="margin:auto" class="table table-striped">
-            <thead><tr><th>Pago</th><th>Fecha</th><th>Cantidad Pagada</th><th>Meses Extendido</th></tr></thead><tbody>
+            <thead><tr><th>Pago</th><th>Fecha</th><th>Cantidad Pagada</th><th>Meses Extendido</th></tr></thead>
+            <tbody></tbody></table>
+
             <?php 
-                if(is_array($payControl)){
-                    foreach($payControl as $pay){ 
-                        echo "<tr><td>$i</td>";
-                        echo "<td>".date('d-m-Y', strtotime($pay["Fecha_Hora"]))."</td>";
-                        echo "<td>".$pay["Cantidad"]."€</td>";
-                        echo "<td>".$pay["Meses_Extra"]." meses</td></tr>";
-
-                        if($i==5) break; else $i++;
-                    }
-                }else
-                    echo "<tr><td colspan='4'>No hay pagos realizados.</td></tr>";
-                echo "</tbody></table>";
-
                 //*-----------------------------NAV BUTTONS------------------------------*//
                 $class0=$class1=$class2="btn btn-log element-green-bg ";
                 $class1=$class0."not-visible";
@@ -48,7 +37,6 @@
                     echo "<div class='btn-group'><a class='$class2' id='btn-next' href='#'>Siguiente</a></div>";
                 echo "</div>";
                 //*-----------------------------NAV BUTTONS------------------------------*//
-
             ?>
     </div>
 </div>
@@ -61,6 +49,20 @@
 <script>
     var payList = <?php echo json_encode($payControl); ?>;
     
+    /////////////////////////////CARGA INICIAL/////////////////////////////
+    $("#formPopup table tbody").on("load", function(){
+        for(let i=0; i<5; i++){
+            if(payList[i]!=undefined)
+                createPayTr(payList[i], i);
+            else break;
+
+            if(payList[i+1]==undefined) $("#btn-next").addClass("not-visible");
+            else $("#btn-next").removeClass("not-visible");
+        }
+    });
+    $("#formPopup table tbody").trigger("load");
+    /////////////////////////////CARGA INICIAL/////////////////////////////
+
     /////////////////////////////BOTÓN DERECHO/////////////////////////////
     $("#btn-next").on("click", function(){
         $("#formPopup table tbody").empty();
@@ -68,9 +70,9 @@
         let offset = (page-1)*5;
 
         for(let i=offset; i<offset+5; i++){
-            if(payList[i]!=undefined)
-                $("#formPopup table tbody").append("<tr><td>"+(i+1)+"</td><td>"+new Date(payList[i]["Fecha_Hora"]).toLocaleDateString()+"</td><td>"+payList[i]["Cantidad"]+"€</td><td>"+payList[i]["Meses_Extra"]+" meses</td></tr>");
+            if(payList[i]!=undefined) createPayTr(payList[i], i);
             else break;
+
             if(payList[i+1]==undefined) $("#btn-next").addClass("not-visible");
             else $("#btn-next").removeClass("not-visible");
         }
@@ -86,8 +88,7 @@
         let offset = (page-1)*5;
 
         for(let i=offset; i<offset+5; i++){
-            if(payList[i]!=undefined)
-                $("#formPopup table tbody").append("<tr><td>"+(i+1)+"</td><td>"+new Date(payList[i]["Fecha_Hora"]).toLocaleDateString()+"</td><td>"+payList[i]["Cantidad"]+"€</td><td>"+payList[i]["Meses_Extra"]+" meses</td></tr>");
+            if(payList[i]!=undefined) createPayTr(payList[i], i);
             else break;
         }
 
@@ -97,6 +98,13 @@
         $("#btn-page").text(page);
     });
     ////////////////////////////BOTÓN IZQUIERDO////////////////////////////
+
+    ////////////////////////////CONTENIDO////////////////////////////
+    function createPayTr(pay, i){
+        $("#formPopup table tbody").append("<tr><td>"+(i+1)+"</td><td>"+new Date(pay["Fecha_Hora"]).toLocaleDateString()+"</td><td>"+pay["Cantidad"]+"€</td><td>"+pay["Meses_Extra"]+" meses</td></tr>");
+    }
+    ////////////////////////////CONTENIDO////////////////////////////
+    
 </script>
 <!--FUNCIÓN PAGINACIÓN HISTORIAL DE PAGOS-->
 <!-------------------------------SCRIPT------------------------------->
