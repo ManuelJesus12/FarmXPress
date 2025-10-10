@@ -24,18 +24,6 @@ class PayController {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Recuperar deudas de un alquiler
-     * Params: $rId (ID del alquiler)
-     * Return: Array con el número de pagos y la cantidad total adeudada, 0 si no hay pagos, -1 en caso de error
-     */
-    public function selectDebtMoney(&$rId){
-        return $this->payModel->selectDebtMoney($rId);
-    }
-
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-
     /* Función: Seleccionar todos los pagos realizados para un alquiler
      * Params: $rId (ID del alquiler)
      * Return: Consulta con todos los datos, -1 en caso de error

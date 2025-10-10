@@ -12,27 +12,6 @@ class PayModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Recuperar deudas de un alquiler
-     * Params: $rId (ID del alquiler)
-     * Return: Cantidad total adeudada, 0 si no hay pagos, -1 en caso de error
-     */
-    public function selectDebtMoney(&$rId){
-        try{
-            $sql=$this->db->prepare("SELECT SUM(CANTIDAD) AS 'Debt_Money' FROM PAGOS WHERE ALQUILER_ID=?");
-            $sql->bindValue(1, $rId, PDO::PARAM_INT);
-            $sql->execute();
-            
-            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
-            else return 0;
-        }catch(PDOException $e) {
-            return -1;
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-
     /* Función: Seleccionar todos los pagos realizados para un alquiler
      * Params: $rId (ID del alquiler)
      * Return: Consulta con todos los datos, -1 en caso de error

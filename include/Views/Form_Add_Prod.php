@@ -9,24 +9,21 @@
 <body>
     <!-------------------------------LOGIC------------------------------->
     <?php
+        include("../funciones.php");
+        include("../_Indexes/Index_Category.php");
+        include("../_Indexes/Index_Product.php");
         $name=$desc=$ref=$price=$parent_cat="";
         
-        $dirChangeVar=1;
-        include("../funciones.php");
-        include("../_Indexes/Index_Product.php");
-        include("../_Indexes/Index_Category.php");
-
         if(isset($_GET["id"])){
             $action="principal.php?methodProd=update&prod=".$_GET["id"];
             $title="Actualizar Producto";
 
-            $field="Producto_ID";
-            $productData=$productController->selectProduct($field, $_GET["id"]);
-            $name=$productData[0]['Nombre'];
-            $desc=$productData[0]['Descripción'];
-            $ref=$productData[0]['Referencia'];
-            $price=$productData[0]['Precio_Mensual'];
-            $parent_cat=$productData[0]['Categoría_ID'];
+            $productData=$productController->selectProduct($_GET["id"]);
+            $name=$productData['Nombre'];
+            $desc=$productData['Descripción'];
+            $ref=$productData['Referencia'];
+            $price=$productData['Precio_Mensual'];
+            $parent_cat=$productData['Categoría_ID'];
         }else{
             $action="principal.php?methodProd=insert";
             $title="Añadir Producto";

@@ -13,19 +13,14 @@ class CategoryController {
     ///////////////////////////////////////////////////////////////
 
     /* Función: Listar Categorías
-     * Params: $offset (para paginación), $opt (opción de visualización)
+     * Params: $opt (opción de visualización)
      * Return: 1 si se muestra la vista, o un array de categorías si $opt es 1
      */
-    public function viewListCategory(&$offset=0, &$opt){
-        $offset--;
-        
-        $categoryControl=$this->categoryModel->listCategory($offset);
+    public function viewListCategory(&$opt=0){
+        $categoryControl=$this->categoryModel->listCategory();
         if($opt!=1){
-            if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR"){
-                include("Views/View_List_Cat.php");
-                return 1;
-            }else
-                echo "<h2>Acceso a esta sección denegado</h2>";
+            if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR") include("Views/View_List_Cat.php");
+            else echo "<h2>Acceso a esta sección denegado</h2>";
         }else
             return $categoryControl;
     }
@@ -50,7 +45,7 @@ class CategoryController {
     public function insertCategory(){
         if(isset($_COOKIE["data-cat"])){
             $data = json_decode($_COOKIE["data-cat"], true);
-            $this->categoryModel->insertCategory($data);
+            if($this->categoryModel->insertCategory($data)==1) setcookie("data-cat", "", time() - 3600, "/");
             header("Location: principal.php?methodCat=select&action=insert");
         }else
             return "No se han recibido datos para insertar la categoría.";

@@ -26,12 +26,9 @@ class RentController {
      * Params: $offset (paginación)
      * Return: Página de lista de alquileres.
      */
-    public function viewListRent(&$offset){
-        $offset--;
-        if($offset>=0){
-            $rentControl = $this->rentModel->listRent($offset);
-            if(isset($_GET["methodRent"]) && $_GET["methodRent"]=="select") include("Views/Client_List_Rent.php");
-        }else  header("Location: principal.php?methodRent=select&page=1");
+    public function viewListRent(){
+        $rentControl = $this->rentModel->listRent();
+        if(isset($_GET["methodRent"]) && $_GET["methodRent"]=="select") include("Views/Client_List_Rent.php");
     }
 
     ///////////////////////////////////////////////////////////////
@@ -45,16 +42,6 @@ class RentController {
     }
 
     ///////////////////////////////////////////////////////////////
-
-    /* Función: Seleccionar el último alquiler realizado
-     * Params: Void
-     * Return: Array con el último alquiler, 0 si no hay alquileres, -1 en caso de error
-     */
-    public function selectLastRent(){
-        return $this->rentModel->selectLastRent();
-    }
-
-    ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
@@ -64,25 +51,24 @@ class RentController {
      */
     public function insertRent(&$pId, &$month, &$price){
         if(isset($pId) && isset($month) && isset($price) && $pId!="" && $month!="" && $price!=""){
-            include("_Indexes/Index_Product.php"); 
-            $field="Producto_ID"; $active=0;
+            include("_Indexes/Index_Product.php");
 
-            if($productController -> selectProduct($field, $pId)[0]["Estado"]==0)
-                header("Location: principal.php?methodProd=viewProduct&id=".$pId."&success=0");
-            else{
+            if($productController -> selectProduct($pId)["Estado"]==1){
                 if($this->rentModel->insertRent($pId, $month, $price)==1){
-                    $productController -> activeProduct($pId, $active);
-                    $rentControl=$this->selectLastRent();
-
+                    $rentID=$this->rentModel->db->lastInsertId();
+                    $productController -> activeProduct($pId);
+                    
                     include("_Indexes/Index_Pay.php");
-                    if($payController->insertPay($rentControl[0]["Alquiler_ID"], $price, $month, $price)==1){
-                        setcookie("data-rent", 0, time() - 3600, "/");
+                    if($payController->insertPay($rentID, $price, $month, $price)==1){
+                        $rentControl = $this->rentModel->selectRent($pId);
                         include("Views/Client_Rent_Ok.php");
+                        setcookie("data-rent", 0, time() - 3600, "/");
                     }
-
+                    
                 }else
                     return "Error al alquilar producto.";
-            }
+            }else
+                header("Location: principal.php?methodProd=viewProduct&id=".$pId."&success=0");
         }else
             return "Error inesperado";
     }
@@ -112,6 +98,7 @@ class RentController {
      */
     public function activeRent(&$rId, &$pId){
         $rentControl = $this->rentModel->activeRent($rId);
+        
         if($rentControl==1){
             include("_Indexes/Index_Product.php");   $active=1;
             $productController -> activeProduct($pId, $active);

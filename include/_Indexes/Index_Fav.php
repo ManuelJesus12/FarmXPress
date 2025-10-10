@@ -18,14 +18,8 @@ if(isset($_GET['methodFav'])){
 
     // INITIALIZE VIEW
     /*--------------------------------------------------------------------------*/
-    if(in_array("select", $methods)){
-        if(!isset($_GET['page']))
-            header("Location: principal.php?methodFav=select&page=1");
-        else{ 
-            $offset=$_GET['page'];
-            $favController -> viewListFav($offset);
-        }
-    }
+    if(in_array("select", $methods))
+        $favController -> viewListFav();
     /*--------------------------------------------------------------------------*/
 }
 ?>

@@ -16,21 +16,15 @@ class CategoryModel {
      * Params: $offset (para paginación)
      * Return: Array de categorías o 0 si no hay resultados, -1 en caso de error
      */
-    public function listCategory(&$offset=0){
+    public function listCategory(){
         try{
             $query="SELECT *, (SELECT P.NOMBRE FROM CATEGORÍAS P WHERE P.CATEGORÍA_ID=C.CAT_PADRE_ID) AS Cat_Padre FROM CATEGORÍAS C";
-            if(isset($_GET["methodCat"])){
-                if($_GET["methodCat"]=="viewUpdate") $query.=" WHERE C.CATEGORÍA_ID NOT LIKE :selectID";
-                else if($_GET["methodCat"]!="viewAdd") { $query.=" LIMIT 11 OFFSET :offset"; }
-            }
+            if(isset($_GET["methodCat"]) && $_GET["methodCat"]=="viewUpdate") $query.=" WHERE C.CATEGORÍA_ID NOT LIKE :selectID";
             
             $sql=$this->db->prepare($query);
-            if(isset($_GET["methodCat"])){
-                if($_GET["methodCat"]=="viewUpdate") $sql->bindValue(":selectID", $_GET["id"], PDO::PARAM_INT);
-                else if($_GET["methodCat"]!="viewAdd") $sql->bindValue(":offset", $offset, PDO::PARAM_INT);
-            }
-            
+            if(isset($_GET["methodCat"]) && $_GET["methodCat"]=="viewUpdate")  $sql->bindValue(":selectID", $_GET["id"], PDO::PARAM_INT);
             $sql->execute();
+
             if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
             else return 0;
         }catch(PDOException $e) {
@@ -50,7 +44,7 @@ class CategoryModel {
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
 
-            return $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $sql->fetchAll(PDO::FETCH_ASSOC)[0];
         }catch(PDOException $e) {
             return -1;
         }
@@ -66,12 +60,10 @@ class CategoryModel {
      */
     public function insertCategory(&$data){
         try{
-            $data[2] = ($data[2] == 0) ? null : $data[2];
+            $data[2] = ($data[2] == "") ? null : $data[2];
 
             $sql=$this->db->prepare("INSERT INTO CATEGORÍAS (Nombre, Descripción, Cat_Padre_ID) VALUES (?, ?, ?)");
-            $sql->bindValue(1, $data[0]);
-            $sql->bindValue(2, $data[1]);
-            $sql->bindValue(3, $data[2]);
+            for($i=0;$i<3;$i++) $sql->bindValue($i+1, $data[$i]);
             $sql->execute();
 
             setcookie("data-cat", 0, time()-1,"/");

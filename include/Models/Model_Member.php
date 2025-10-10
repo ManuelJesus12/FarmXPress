@@ -66,7 +66,7 @@ class MemberModel {
             $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
             $sql->bindValue(2, $id, PDO::PARAM_INT);
             $sql->bindValue(3, date("Y-m-d H:i:s"), PDO::PARAM_STR);
-            $sql->bindValue(4, date("Y-m-d H:i:s", strtotime("+".$subController->selectSub($id)[0]['Duración_Base']." months")), PDO::PARAM_STR);
+            $sql->bindValue(4, date("Y-m-d H:i:s", strtotime("+".$subController->selectSub($id)['Duración_Base']." months")), PDO::PARAM_STR);
             $sql->bindValue(5, 1, PDO::PARAM_INT);
             $sql->execute();
 

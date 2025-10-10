@@ -30,8 +30,7 @@ if(isset($_GET['methodRent'])){
     // INITIALIZE VIEW
     /*--------------------------------------------------------------------------*/
     if(in_array("select", $methods)){
-        $offset=$_GET['page'];
-        $message = $rentController -> viewListRent($offset);
+        $message = $rentController -> viewListRent();
     }
     if(in_array("viewStripe", $methods)){
         $message = $rentController -> viewStripe();

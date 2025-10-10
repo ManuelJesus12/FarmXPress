@@ -78,9 +78,9 @@ class MemberController {
      */
     public function activeMember(){
         $member=$this->selectMember();
-        if(is_array($member) && $member[0]["Fecha_Fin"]<date("Y-m-d H:i:s")){
-            if($this->memberModel->activeMember($member[0]["Membresía_ID"])==1)
-                ?> <script>showBoxActiveMember("<?php echo $member[0]["Nombre"]; ?>")</script> <?php
+        if(is_array($member) && $member["Fecha_Fin"]<date("Y-m-d H:i:s")){
+            if($this->memberModel->activeMember($member["Membresía_ID"])==1)
+                ?> <script>showBoxActiveMember("<?php echo $member["Nombre"]; ?>")</script> <?php
         }else
             return 0;
     }

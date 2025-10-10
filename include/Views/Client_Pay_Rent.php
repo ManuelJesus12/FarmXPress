@@ -10,36 +10,30 @@
 
     <!-------------------------------LOGICA------------------------------->
     <?php
-        $dirChangeVar=1; $field="Producto_ID";
         include("../funciones.php");
         include("../_Indexes/Index_Product.php");
         include("../_Indexes/Index_Rent.php");
-        include("../_Indexes/Index_Pay.php");
 
-        $productControl=$productController->selectProduct($field, $_GET["pId"]); 
+        $productControl=$productController->selectProduct($_GET["pId"]); 
         $rentControl=$rentController->rentModel->selectRent($_GET["pId"]);
-        $mPrice=$productControl[0]["Precio_Mensual"];
-
-        $debtMoney=$payController->selectDebtMoney($rentControl[0]["Alquiler_ID"]);
-        if(is_array($debtMoney)) $debtMoney=$rentControl[0]["Precio_Total"]-$debtMoney[0]["Debt_Money"];
-        else $debtMoney=$rentControl[0]["Precio_Total"];
+        $mPrice=$productControl["Precio_Mensual"];
     ?>
     <!-------------------------------LOGICA------------------------------->
 
 <div id="formPopup" class="popup" style="top: -90;">
     <div class="popup-content">
         <button class="close-btn" id="closeFormBtn" style="top: 100;">X</button>
-        <h2>Realizando pago del alquiler del producto <?php echo $productControl[0]["Nombre"] ?></h2>
+        <h2>Realizando pago del alquiler del producto <?php echo $productControl["Nombre"] ?></h2>
         <form id="form-data-pay" action="principal.php?methodPay=viewStripe" method="post">
-            <input type="hidden" name="maxAmount" id="maxAmount" value="<?php echo $debtMoney; ?>" />
+            <input type="hidden" name="maxAmount" id="maxAmount" value="<?php echo $_GET["deuda"]; ?>" />
             
             <input type="hidden" name="rId" id="rId" value="<?php echo $_GET["rId"]; ?>" />
             <input type="hidden" name="mPrice" id="mPrice" value="<?php echo $mPrice; ?>" />
             <table style="margin:auto" class="table-form">
-                <?php if ($debtMoney > 0) { ?>
+                <?php if ($_GET["deuda"] > 0) { ?>
                     <tr>
                         <td>Cantidad a pagar (Euros): </td>
-                        <td><input type="number" name="amount" id="amount" value="1" max="<?php echo $debtMoney; ?>" /></td>
+                        <td><input type="number" name="amount" id="amount" value="1" max="<?php echo $_GET["deuda"]; ?>" /></td>
                     </tr>
                     <tr>
                         <td>Extender Alquiler (Opcional): </td>

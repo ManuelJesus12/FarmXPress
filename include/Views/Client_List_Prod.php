@@ -3,7 +3,6 @@
 include("_Indexes/Index_Category.php");
 include("_Indexes/Index_Fav.php");
 $offset=$opt=1; $productCount=0;
-$categoryControl = $categoryController->viewListCategory($offset, $opt);
 
 if(isset($_COOKIE["search-options"])){
     $search=json_decode($_COOKIE["search-options"], true);
@@ -74,26 +73,28 @@ if(isset($productControl)){
         foreach($productControl as $product){
             //*-----------------------------DATA CONTROL------------------------------*//
             $file = ($product['Imagen']!=null) ? "../assets/img/products/".$product['Imagen'] : "../assets/img/products/anon.png";
-            $category = ($product["Categoría_ID"] == null) ? "Sin categoría" : $categoryController->selectCategory($product["Categoría_ID"])[0]["Nombre"];            
+            $category = ($product["CAT"] != null) ? $product["CAT"] : "Sin Categoría";
+            $estado = ($product["Estado"]==false) ? "disabled-".$product["Producto_ID"] : "enabled-".$product["Producto_ID"];
             //*-----------------------------DATA CONTROL------------------------------*//
 
             //*-----------------------------PRODUCT CARD------------------------------*//
             echo "<div class='col-lg-5 col-md-5 col-sm-12 card card-prod element-green-border rounded'>";
+
                 if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){    
                     if($favController->selectFav($product["Producto_ID"])==0)
-                        echo "<a href='#' id='add-".$product["Producto_ID"]."'><i class='fa-regular fa-star icon-star border-5' style='color:orange !important'></i></a>";
+                        echo "<a href='#' id='add-".$product["Producto_ID"]."' onclick=\"toggleFav(".$product["Producto_ID"].", 'add')\"><i id='fav-star-".$product["Producto_ID"]."' class='fa-regular fa-star icon-star border-5' style='color:orange !important'></i></a>";
                     else
-                        echo "<a href='#' id='del-".$product["Producto_ID"]."'><i class='fas fa-star icon-star border-5' style='color:orange !important'></i></a>";
+                        echo "<a href='#' id='del-".$product["Producto_ID"]."' onclick=\"toggleFav(".$product["Producto_ID"].", 'del')\"><i id='fav-star-".$product["Producto_ID"]."' class='fas fa-star icon-star border-5' style='color:orange !important'></i></a>";
                 }
 
-                echo "<div class='card-header element-green-bg'>".$product["P1Nombre"]." - ".$product["Referencia"]."</div>";
+                echo "<div class='card-header element-green-bg'>".$product["Nombre"]." - ".$product["Referencia"]."</div>";
                 echo "<div class='row card-body'>";
                     echo "<div class='col-6'><img class='card-image img-fluid rounded shadow' src='$file' style='width: 75%;' /></div>";
                     echo "<div class='col-6'>";
                         echo "<p class='card-text'>Categoría: ".$category."</p>";
-                        echo "<p class='card-text'>Localización: ".$product["Provincia"]."</p>";
+                        echo "<p class='card-text'>Localización: ".$product["PROV"]."</p>";
                         echo "<p class='card-text' style='color: limegreen;'>".$product["Precio_Mensual"]."€ / mes</p>";
-                        if($product["P1Estado"]==false)
+                        if($product["Estado"]==false)
                             echo "<p class='card-text prod-status' id='disabled-".$product["Producto_ID"]."'>Alquilado</p>";
                         else
                             echo "<p class='card-text prod-status' id='enabled-".$product["Producto_ID"]."'>Disponible</p>";
@@ -101,9 +102,10 @@ if(isset($productControl)){
                 echo "</div>";
 
                 echo "<div class='col-12 card-buttons'>";
-                    if(isset($_SESSION["usuario"]))
+                    if(isset($_SESSION["usuario"])){
                         echo "<div class='col-6'><a href='principal.php?methodProd=viewProduct&id=".$product["Producto_ID"]."' class='btn btn-shape btn-log element-green-bg'><i class='fa-solid fa-eye border-5'></i> Ver Más</a></div>";
-                    else
+                        echo "<div class='col-6'><a href='principal.php?methodUser=viewProfile&id=".$product["Usuario_ID"]."' class='btn btn-shape btn-log element-green-bg'><i class='fa-solid fa-eye border-5'></i> Perfil Proveedor</a></div>";
+                    }else
                         echo "<div class='col-6'><a href='principal.php?methodUser=viewLogin' class='btn btn-shape btn-log element-green-bg'>Iniciar Sesión</a></div>";
                 echo "</div>";
             echo "</div>";
@@ -139,7 +141,7 @@ if(isset($productControl)){
 <!-------------------------------SCRIPT------------------------------->
     <script src="../assets/js/provinces_load.js"></script>
     <script src="../assets/js/popup_box_create.js"></script>
-
+    
     <?php if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){ ?> 
         <script src="../assets/js/prod_user_fav.js"></script> 
     <?php } ?>

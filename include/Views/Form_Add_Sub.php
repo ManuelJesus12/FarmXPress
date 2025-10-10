@@ -20,9 +20,9 @@
             $title="Actualizar Suscripción";
 
             $subData=$subController->selectSub($_GET["id"]);
-            $name=$subData[0]['Nombre'];
-            $price=$subData[0]['Precio_Mensual'];
-            $months=$subData[0]['Duración_Base'];
+            $name=$subData['Nombre'];
+            $price=$subData['Precio_Mensual'];
+            $months=$subData['Duración_Base'];
         }else{
             $action="principal.php?methodSub=insert";
             $title="Añadir Suscripción";

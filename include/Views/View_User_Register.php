@@ -7,12 +7,12 @@
         $action="principal.php?methodUser=update";
         $title="Actualizar Usuario"; $field="Nombre";
 
-        $userData=$userController->selectUser($field, $_SESSION["usuario"]);
-        $userId=$userData[0]['Usuario_ID'];
-        $email=$userData[0]['Email']; $cif=$userData[0]['CIF'];
-        $name=$userData[0]['Nombre']; $phone=$userData[0]['Teléfono'];
-        $region=$userData[0]['Comunidad']; $province=$userData[0]['Provincia']; 
-        $address=$userData[0]['Dirección'];
+        $userData=$userController->selectUser($_SESSION["usuario"], $field);
+        $userId=$userData['Usuario_ID'];
+        $email=$userData['Email']; $cif=$userData['CIF'];
+        $name=$userData['Nombre']; $phone=$userData['Teléfono'];
+        $region=$userData['Comunidad']; $province=$userData['Provincia']; 
+        $address=$userData['Dirección'];
     }else{
         $action="principal.php?methodUser=insert-login";
         $title="Registro de Usuario";

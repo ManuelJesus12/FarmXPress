@@ -1,6 +1,4 @@
 ///////////////////////////////////////////////////////////////
-async function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
 async function validateField(field, value, fieldName, idField, link) {
     if($(idField).length > 0) var id = $(idField).val().trim();
     else var id= null;
@@ -18,7 +16,7 @@ async function validateField(field, value, fieldName, idField, link) {
                     $("#" + fieldName).addClass("input-error");
                     $("#" + fieldName).focus();
                     resolve(false);
-                } else {
+                }else{
                     $("#" + fieldName).removeClass("input-error");
                     $("#error").text("");
                     resolve(true);
@@ -31,4 +29,6 @@ async function validateField(field, value, fieldName, idField, link) {
         });
     });
 }
+
+async function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 ///////////////////////////////////////////////////////////////

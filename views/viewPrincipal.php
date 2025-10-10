@@ -7,6 +7,6 @@
 </body>
 
 <script>
-    if($("#main").text().trim() == "") window.location.href = "../index.php?action=-1";
-    if($("#main").children().get(1).id == "article-error") $("#main").children().get(1).remove();
+    //if($("#main").text().trim() == "") window.location.href = "../index.php?action=-1";
+    //if($("#main").children().get(1).id == "article-error") $("#main").children().get(1).remove();
 </script>

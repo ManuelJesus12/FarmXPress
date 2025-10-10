@@ -16,14 +16,13 @@ class RentModel {
      * Params: $offset (paginación)
      * Return: Página de lista de alquileres.
      */
-    public function listRent(&$offset){
+    public function listRent(){
         try{
-            $query="SELECT *, P.PRODUCTO_ID AS 'PID' FROM ALQUILERES A JOIN PRODUCTOS P ON A.PRODUCTO_ID=P.PRODUCTO_ID WHERE A.USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND A.ESTADO=1";
-            if($offset!=-1) $query.=" LIMIT 11 OFFSET ?";
-
+            $query="SELECT  P.PRODUCTO_ID AS 'PID', A.ALQUILER_ID AS 'RID', Nombre, Referencia, Imagen, Fecha_Inicio, Fecha_Fin, Precio_Total, (PRECIO_TOTAL - SUM(CANTIDAD)) AS 'Deuda'
+            FROM ALQUILERES A JOIN PRODUCTOS P ON A.PRODUCTO_ID=P.PRODUCTO_ID LEFT JOIN PAGOS G ON A.ALQUILER_ID=G.ALQUILER_ID
+            WHERE A.USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND A.ESTADO=1 GROUP BY A.ALQUILER_ID";
             $sql=$this->db->prepare($query);
             $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
-            if($offset!=-1)$sql->bindValue(2, 10*$offset, PDO::PARAM_INT);
             $sql->execute();
 
             if($sql->rowCount()!=0)
@@ -43,34 +42,13 @@ class RentModel {
      */
     public function selectRent(&$pId){
         try{
-            $sql=$this->db->prepare("SELECT * FROM ALQUILERES WHERE USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND PRODUCTO_ID=? AND ESTADO=1");
+            $sql=$this->db->prepare("SELECT * FROM ALQUILERES A JOIN PRODUCTOS P ON A.PRODUCTO_ID=P.PRODUCTO_ID WHERE USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND PRODUCTO_ID=? AND ESTADO=1");
             $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
             $sql->bindValue(2, $pId, PDO::PARAM_INT);
             $sql->execute();
 
             if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
-            else
-                return 0;
-        }catch(PDOException $e) {
-            return -1;
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////
-
-    /* Función: Seleccionar el último alquiler realizado
-     * Params: Void
-     * Return: Array con el último alquiler, 0 si no hay alquileres, -1 en caso de error
-     */
-    public function selectLastRent(){
-        try{
-            $sql=$this->db->prepare("SELECT * FROM ALQUILERES A JOIN PRODUCTOS P ON A.PRODUCTO_ID=P.PRODUCTO_ID WHERE ALQUILER_ID=?");
-            $sql->bindValue(1, $this->db->lastInsertId(), PDO::PARAM_INT);
-            $sql->execute();
-
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
+                return $sql->fetchAll(PDO::FETCH_ASSOC)[0];
             else
                 return 0;
         }catch(PDOException $e) {

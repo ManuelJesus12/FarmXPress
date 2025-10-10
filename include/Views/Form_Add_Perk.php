@@ -9,19 +9,17 @@
 <body>
     <!-------------------------------LOGIC------------------------------->
     <?php
-        $name=$desc=" ";
-
-        $dirChangeVar=1;
         include("../funciones.php");
         include("../_Indexes/Index_Perk.php");
+        $name=$desc=" ";
 
         if(isset($_GET["id"])){
             $action="principal.php?methodPerk=update";
             $title="Actualizar Ventaja";
 
             $perkData=$perkController->selectPerk($_GET["id"]);
-            $name=$perkData[0]['Nombre'];
-            $desc=$perkData[0]['Descripción'];
+            $name=$perkData['Nombre'];
+            $desc=$perkData['Descripción'];
             $id=$_GET["id"];
         }else if (isset($_GET["subId"])){
             $action="principal.php?methodPerk=insert";

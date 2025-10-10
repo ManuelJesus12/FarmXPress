@@ -52,7 +52,7 @@ function navegacion(){
         if(!isset($_COOKIE["UserType"]) || !isset($_COOKIE["UserAvatar"])){
             include($dirNav."_Indexes/Index_User.php"); $field="Nombre";
 
-            $usuario=$userController->selectUser($field, $_SESSION["usuario"])[0];
+            $usuario=$userController->selectUser($_SESSION["usuario"], $field);
             $file = ($usuario["Avatar"]==null) ? "assets/img/users/anon.png" : "assets/img/users/".$usuario["Avatar"];
             $tipo=$usuario['Tipo'];
 

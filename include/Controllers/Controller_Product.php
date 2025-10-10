@@ -16,11 +16,11 @@ class ProductController {
      * Params: $offset (paginación)
      * Return: Vista de lista de productos según el tipo de usuario
      */
-    public function viewListProduct(&$offset){
+    public function viewListProduct(&$offset=0){
         $tipo = (!isset($_COOKIE["UserType"])) ? "C" : $_COOKIE["UserType"];
 
         if($tipo=="P"){
-            $productControl=$this->productModel->listProductP($offset);
+            $productControl=$this->productModel->listProductP($_SESSION["usuario"]);
             include("Views/View_List_Prod.php");
         }else{
             $productControl=$this->productModel->listProductC($offset);
@@ -28,10 +28,12 @@ class ProductController {
         }
     }
 
-    ///////////////////////////////////////////////////////////////
-
-    public function viewListProductCarousel(&$offset){
+    public function carouselListProduct(&$offset=0){
         return $this->productModel->listProductC($offset);
+    }
+    
+    public function listProductP(&$value, &$field = "Usuario_ID"){
+        return $this->productModel->listProductP($value, $field);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -42,7 +44,7 @@ class ProductController {
      */
     public function viewPageProduct(&$id){
         try{
-            $field = "Producto_ID"; $product=$this->selectProduct($field, $id);
+            $product=$this->selectProduct($id);
             if(is_array($product)) include("Views/View_User_Product.php");
             else header("Location: principal.php?methodProd=select&error=1");
 
@@ -58,8 +60,8 @@ class ProductController {
      * Params: $field (campo a buscar), $value (valor a buscar)
      * Return: Array con los productos encontrados, 0 si no hay productos, -1 en caso de error
      */
-    public function selectProduct(&$field, &$value){
-        return $this->productModel->selectProduct($field, $value);
+    public function selectProduct(&$value, &$field = "Producto_ID"){
+        return $this->productModel->selectProduct($value, $field);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -119,7 +121,7 @@ class ProductController {
      * Params: $id (ID del producto), $active (estado del producto)
      * Return: Mensaje de éxito o error al activar/desactivar el producto
      */
-    public function activeProduct(&$id, &$active){
+    public function activeProduct(&$id, &$active=0){
         if($this->productModel->activeProduct($id, $active)==1)
             return "Producto activado/desactivado correctamente";
         else

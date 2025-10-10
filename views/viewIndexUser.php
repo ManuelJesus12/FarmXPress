@@ -68,10 +68,10 @@ if(isset($_GET['action'])){
 
 </section><!-- /Hero Section -->
 
-<?php 
+<?php global $PDOConnect;
 if($PDOConnect!=false) { 
-  include("include/_Indexes/Index_Product.php"); $offset = 0;
-  $productControl = $productController->viewListProductCarousel($offset);
+  include("include/_Indexes/Index_Product.php"); $count=1;
+  $productControl = $productController->carouselListProduct();
 
   if(is_array($productControl) && count($productControl) > 0) {
 ?>
@@ -140,7 +140,7 @@ if($PDOConnect!=false) {
                 <a href="include/principal.php?methodUser=login" class="col-6 btn btn-log btn-shape element-green-bg" style="font-size:1em">Iniciar Sesión</a>
               <?php } ?>
             </div>
-          <?php } ?>
+          <?php if($count==5) break; else $count++; } ?>
 
           </div>
           <div class="swiper-pagination"></div>

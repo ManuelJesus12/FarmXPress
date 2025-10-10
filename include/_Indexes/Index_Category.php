@@ -23,12 +23,7 @@ if(isset($_GET['methodCat'])){
     // INITIALIZE VIEW
     /*--------------------------------------------------------------------------*/
     if(in_array("select", $methods)){
-        if(!isset($_GET['page']))
-            header("Location: principal.php?methodCat=select&page=1");
-        else{
-            $opt=0; $offset=$_GET['page'];
-            $categoryController -> viewListCategory($offset, $opt);
-        }
+        $categoryController -> viewListCategory();
     }
     /*--------------------------------------------------------------------------*/
 

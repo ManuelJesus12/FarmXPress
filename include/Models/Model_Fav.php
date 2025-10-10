@@ -16,11 +16,13 @@ class FavModel {
      * Params: $offset (para paginación)
      * Return: Array de productos favoritos o 0 si no hay resultados, -1 en caso de error
      */
-    public function viewListFav(&$offset){
+    public function viewListFav(){
         try{
-            $sql=$this->db->prepare("SELECT * FROM PRODUCTOS P JOIN SEGUIMIENTOS S ON P.Producto_ID=S.Producto_ID WHERE S.Usuario_ID=(SELECT Usuario_ID FROM USUARIOS WHERE Nombre=?) LIMIT 7 OFFSET ?");
+            $sql=$this->db->prepare("SELECT Nombre, Referencia, Precio_Mensual, Imagen, Estado, P.Producto_ID AS 'PID', P.Usuario_ID AS 'UID', 
+            (SELECT NOMBRE FROM CATEGORÍAS C WHERE C.CATEGORÍA_ID=P.CATEGORÍA_ID) AS 'CAT', 
+            (SELECT PROVINCIA FROM USUARIOS U WHERE U.USUARIO_ID=P.USUARIO_ID) AS 'PROV'
+            FROM PRODUCTOS P JOIN SEGUIMIENTOS S ON P.Producto_ID=S.Producto_ID WHERE S.Usuario_ID=(SELECT Usuario_ID FROM USUARIOS WHERE Nombre=?)");
             $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
-            $sql->bindValue(2, 6*$offset, PDO::PARAM_INT);
             $sql->execute();
             
             if($sql->rowCount()!=0)

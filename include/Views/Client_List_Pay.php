@@ -10,7 +10,6 @@
 
     <!-------------------------------LOGICA------------------------------->
     <?php
-        $dirChangeVar=1; $i=1;
         include("../funciones.php");
         include("../_Indexes/Index_Pay.php");
         $payControl = $payController -> selectPay($_GET["rId"]);
@@ -23,7 +22,7 @@
         <h2>Mostrando Historial de Pagos</h2>
         <table style="margin:auto" class="table table-striped">
             <thead><tr><th>Pago</th><th>Fecha</th><th>Cantidad Pagada</th><th>Meses Extendido</th></tr></thead>
-            <tbody></tbody></table>
+            <tbody id="boxContent"></tbody></table>
 
             <?php 
                 //*-----------------------------NAV BUTTONS------------------------------*//
@@ -44,68 +43,17 @@
 
 <!-------------------------------SCRIPT------------------------------->
 <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
+<script src="../assets/js/content_paginate.js"></script>
 
-<!--FUNCIÓN PAGINACIÓN HISTORIAL DE PAGOS-->
 <script>
     var payList = <?php echo json_encode($payControl); ?>;
+    content_paginate(payList);
     
-    /////////////////////////////CARGA INICIAL/////////////////////////////
-    $("#formPopup table tbody").on("load", function(){
-        for(let i=0; i<5; i++){
-            if(payList[i]!=undefined)
-                createPayTr(payList[i], i);
-            else break;
-
-            if(payList[i+1]==undefined) $("#btn-next").addClass("not-visible");
-            else $("#btn-next").removeClass("not-visible");
-        }
-    });
-    $("#formPopup table tbody").trigger("load");
-    /////////////////////////////CARGA INICIAL/////////////////////////////
-
-    /////////////////////////////BOTÓN DERECHO/////////////////////////////
-    $("#btn-next").on("click", function(){
-        $("#formPopup table tbody").empty();
-        let page = parseInt($("#btn-page").text())+1;
-        let offset = (page-1)*5;
-
-        for(let i=offset; i<offset+5; i++){
-            if(payList[i]!=undefined) createPayTr(payList[i], i);
-            else break;
-
-            if(payList[i+1]==undefined) $("#btn-next").addClass("not-visible");
-            else $("#btn-next").removeClass("not-visible");
-        }
-        $("#btn-prev").removeClass("not-visible");
-        $("#btn-page").text(page);
-    });
-    /////////////////////////////BOTÓN DERECHO/////////////////////////////
-
-    ////////////////////////////BOTÓN IZQUIERDO////////////////////////////
-    $("#btn-prev").on("click", function(){
-        $("#formPopup table tbody").empty();
-        let page = parseInt($("#btn-page").text())-1;
-        let offset = (page-1)*5;
-
-        for(let i=offset; i<offset+5; i++){
-            if(payList[i]!=undefined) createPayTr(payList[i], i);
-            else break;
-        }
-
-        if(page==1) $("#btn-prev").addClass("not-visible");
-        else $("#btn-prev").removeClass("not-visible");
-        $("#btn-next").removeClass("not-visible");
-        $("#btn-page").text(page);
-    });
-    ////////////////////////////BOTÓN IZQUIERDO////////////////////////////
-
     ////////////////////////////CONTENIDO////////////////////////////
-    function createPayTr(pay, i){
-        $("#formPopup table tbody").append("<tr><td>"+(i+1)+"</td><td>"+new Date(pay["Fecha_Hora"]).toLocaleDateString()+"</td><td>"+pay["Cantidad"]+"€</td><td>"+pay["Meses_Extra"]+" meses</td></tr>");
+    function createContent(pay, i=5){
+        $("#boxContent").append("<tr><td>"+(i+1)+"</td><td>"+new Date(pay["Fecha_Hora"]).toLocaleDateString()+"</td><td>"+pay["Cantidad"]+"€</td><td>"+pay["Meses_Extra"]+" meses</td></tr>");
     }
     ////////////////////////////CONTENIDO////////////////////////////
-    
 </script>
-<!--FUNCIÓN PAGINACIÓN HISTORIAL DE PAGOS-->
 <!-------------------------------SCRIPT------------------------------->
 </html>

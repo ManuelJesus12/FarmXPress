@@ -42,7 +42,7 @@ class ReviewModel {
             $sql->bindValue(2, $pId, PDO::PARAM_INT);
             $sql->execute();
 
-            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC)[0];
             else return 0;
         }catch(PDOException $e) {
             return -1;

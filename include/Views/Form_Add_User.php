@@ -9,20 +9,18 @@
 <body>
     <!-------------------------------LOGIC------------------------------->
     <?php
-        $email=$cif=$name=$passwd=$phone=$address="";
-        $dirChangeVar=1;
         include("../funciones.php");
         include("../_Indexes/Index_User.php");
+        $email=$cif=$name=$passwd=$phone=$address="";
 
         if(isset($_GET["id"])){
             $action="principal.php?methodUser=update&userId=".$_GET["id"];
-            $title="Actualizar Usuario"; $field="Usuario_ID";
+            $title="Actualizar Usuario";
 
-
-            $userData=$userController->selectUser($field, $_GET["id"]);
-            $email=$userData[0]['Email']; $cif=$userData[0]['CIF'];
-            $name=$userData[0]['Nombre']; $phone=$userData[0]['Teléfono']; 
-            $address=$userData[0]['Dirección'];
+            $userData=$userController->selectUser($_GET["id"]);
+            $email=$userData['Email']; $cif=$userData['CIF'];
+            $name=$userData['Nombre']; $phone=$userData['Teléfono']; 
+            $address=$userData['Dirección'];
         }else{
             $action="principal.php?methodUser=insert";
             $title="Registro de Usuario";
@@ -109,8 +107,8 @@
 
     <!-------------------------------SCRIPT------------------------------->
     <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
-    <script src="../assets/js/form_field_validation.js"></script>
     <script src="../assets/js/form_user_validation.js"></script>
+    <script src="../assets/js/form_field_validation.js"></script>
     <!-------------------------------SCRIPT------------------------------->
 </body>
 </html>

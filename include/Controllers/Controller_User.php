@@ -21,29 +21,24 @@ class UserController {
     public function viewUpdate(){
         require_once 'Views/View_User_Register.php';
     }
+    public function viewProfile(){
+        require_once 'Views/View_User_Profile.php';
+    }
 
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
     
     /* Función: Ver lista de usuarios
-     * Params: $offset (paginación)
-     * Return: Página de lista de usuarios o control de usuario si se llama desde el administrador.
+     * Params: void
+     * Return: Página de lista de usuarios o para Logs de Administrador
      */
-    public function viewListUser(&$offset){
+    public function viewListUser(){
         if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR"){
-            $offset--;
-            
-            if($offset>=0 || isset($_GET["methodAdmin"])){
-                $userControl=$this->userModel->listUser($offset);
-                if(!isset($_GET["methodAdmin"])){
-                    include("Views/View_List_User.php");
-                    return 1;
-                }else
-                    return $userControl;
-            
-            }else
-                header("Location: principal.php?methodUser=select&page=1");
+            $userControl=$this->userModel->listUser();
+
+            if(!isset($_GET["methodAdmin"])) include("Views/View_List_User.php");
+            else return $userControl;
         }else
             echo "<h2>Acceso a esta sección denegado</h2>";
     }
@@ -54,8 +49,8 @@ class UserController {
      * Params: $field (campo a buscar), $value (valor a buscar)
      * Return: Array con el usuario encontrado, 0 si no hay usuarios, -1 en caso de error
      */
-    public function selectUser(&$field, &$value){
-        return $this->userModel->selectUser($field, $value);
+    public function selectUser(&$value, &$field = "Usuario_ID"){
+        return $this->userModel->selectUser($value, $field);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -101,7 +96,7 @@ class UserController {
             if(isset($_GET['userId']) && $_GET['userId']!=null) $id=$_GET['userId']; 
             else{
                 $field="Nombre";
-                $id=$this->selectUser($field, $_SESSION["usuario"])[0]['Usuario_ID'];
+                $id=$this->selectUser($_SESSION["usuario"], $field)['Usuario_ID'];
             }
 
             $data = json_decode($_COOKIE["data-user"], true);
@@ -120,14 +115,14 @@ class UserController {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Eliminar un usuario
+    /* Función: Eliminar un usuario y reactivar productos en alquiler
      * Params: $id (ID del usuario a eliminar)
      * Return: Mensaje de éxito o error
      */
     public function deleteUser(&$id){
         include("_Indexes/Index_Product.php");
-        $productController -> activeByUser($id);
-        $this->userModel->deleteUser($id)==1;
+        $productController -> liberateProduct($id);
+        $this->userModel->deleteUser($id);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -172,14 +167,11 @@ class UserController {
      */
     public function logoutUser(){
         try{
-            if (isset($_SERVER['HTTP_COOKIE'])) {
-                $cookies = explode(';', $_SERVER['HTTP_COOKIE']);
-                foreach($cookies as $cookie) {
-                    $parts = explode('=', $cookie);
-                    $name = trim($parts[0]);
-                    setcookie($name, '', time()-1, '/');
-                }
-            }
+            setcookie("search-options",0,time()-1, "/");
+            setcookie("data-user",0,time()-1, "/");
+            setcookie("data-rev",0,time()-1, "/");
+            setcookie("UserType",0,time()-1, "/");
+            setcookie("UserAvatar",0,time()-1, "/");
             echo "<script>localStorage.clear();</script>";
             
             session_destroy();

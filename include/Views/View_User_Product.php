@@ -4,22 +4,20 @@ include("_Indexes/Index_Review.php");
 include("_Indexes/Index_Category.php"); 
 include("_Indexes/Index_Rent.php"); 
 
-$reviewCount=1;
+$file = ($product['Imagen']!=null) ? $product['Imagen'] : "anon.png";
+$reviewControl = $reviewController -> viewListReview($product["Producto_ID"]); //Reseñas de otros usuarios
+$categoryP = $categoryController   -> selectCategory($product["Categoría_ID"])['Nombre'] ?? "Sin Categoría"; //Categorías
+
 if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
     $reviewUser    = $reviewController -> selectReview($product["Producto_ID"]); //Ha escrito una reseña el usuario?
     $rentControl   = $rentController   -> selectRent($product["Producto_ID"]); //Ha sido alquilado el producto?
 }else  $reviewUser = $rentControl = 0;
-
-$reviewControl = $reviewController -> viewListReview($product["Producto_ID"]); //Reseñas de otros usuarios
-$categoryP = $categoryController   -> selectCategory($product["Categoría_ID"])[0]['Nombre'] ?? "Sin Categoría"; //Categorías
-
-$file = ($product['Imagen']!=null) ? $product['Imagen'] : "anon.png";
 setcookie("data-rev", 0, time() - 3600, "/");
 ?>
 <!--------------------------------------------LÓGICA--------------------------------------------->
 
 <!--------------------------------------------FICHA DETALLES--------------------------------------------->
-<?php if(isset($_GET["success"])){ ?> <script> showBoxActionRev("<?php echo $_GET["success"]; ?>"); </script> <?php } ?>
+<?php if(isset($_GET["success"])){ ?> <script> showboxContent("<?php echo $_GET["success"]; ?>"); </script> <?php } ?>
 
 <article class="col-12 list-prod form-log site-section rounded">
     <h2 class='text-center' style='margin-bottom:15px'>Detalles del Producto</h2>
@@ -93,8 +91,8 @@ setcookie("data-rev", 0, time() - 3600, "/");
 <!--------------------------------------------LISTA RESEÑAS--------------------------------------------->
     <h2>Reseñas de otros usuarios</h2>
     <div class='row d-flex justify-content-evenly mb-3 mt-3 pt-3' style='border-top:1px solid #ddd;'>
-        <?php if(is_array($reviewControl)){ ?>
-            <div id='boxActionRev' class='col-lg-6 mb-3'></div>
+        <?php if(is_array($reviewControl) && count($reviewControl)>0){ ?>
+            <div id='boxContent' class='col-lg-6 mb-3'></div>
             <div class='col-lg-3'>
                 Ordenar reseñas por:
                 <input type="radio" id="newest" name="orderRev" value="newest" checked>
@@ -124,65 +122,13 @@ setcookie("data-rev", 0, time() - 3600, "/");
 </article>
 
 <!-------------------------------SCRIPT------------------------------->
+<script src="../assets/js/content_paginate.js"></script>
+
 <script>
     var reviewControl = <?php echo json_encode($reviewControl); ?>;
     var sessionUser   = <?php echo json_encode($_SESSION['usuario']) ?? null; ?>;
-
-    /////////////////////////////CARGA INICIAL/////////////////////////////
-    $("#boxActionRev").on("load", function(){
-        for(let i=0; i<5; i++){
-            if(reviewControl[i]!=undefined)
-                createReviewDiv(reviewControl[i]);
-            else break;
-
-            if(reviewControl[i+1]==undefined) $("#btn-next").addClass("not-visible");
-            else $("#btn-next").removeClass("not-visible");
-        }
-    });
-    $("#boxActionRev").trigger("load");
-    /////////////////////////////CARGA INICIAL/////////////////////////////
-
-    /////////////////////////////BOTÓN DERECHO/////////////////////////////
-    $("#btn-next").on("click", function(){
-        event.preventDefault();
-
-        $("#boxActionRev").empty();
-        let page = parseInt($("#btn-page").text())+1;
-        let offset = (page-1)*5;
-
-        for(let i=offset; i<offset+5; i++){
-            if(reviewControl[i]!=undefined)
-                createReviewDiv(reviewControl[i]);
-            else break;
-            if(reviewControl[i+1]==undefined) $("#btn-next").addClass("not-visible");
-            else $("#btn-next").removeClass("not-visible");
-        }
-        $("#btn-prev").removeClass("not-visible");
-        $("#btn-page").text(page);
-    });
-    /////////////////////////////BOTÓN DERECHO/////////////////////////////
-
-    ////////////////////////////BOTÓN IZQUIERDO////////////////////////////
-    $("#btn-prev").on("click", function(){
-        event.preventDefault();
-        
-        $("#boxActionRev").empty();
-        let page = parseInt($("#btn-page").text())-1;
-        let offset = (page-1)*5;
-
-        for(let i=offset; i<offset+5; i++){
-            if(reviewControl[i]!=undefined)
-                createReviewDiv(reviewControl[i]);
-            else break;
-        }
-
-        if(page==1) $("#btn-prev").addClass("not-visible");
-        else $("#btn-prev").removeClass("not-visible");
-        $("#btn-next").removeClass("not-visible");
-        $("#btn-page").text(page);
-    });
-    ////////////////////////////BOTÓN IZQUIERDO////////////////////////////
-
+    content_paginate(reviewControl);
+    
     ////////////////////////////ORDENAMIENTO////////////////////////////
     $("input[name='orderRev']").on("change", function(){
         event.preventDefault();
@@ -192,10 +138,10 @@ setcookie("data-rev", 0, time() - 3600, "/");
         if(order=="oldest") reviewControl.sort((a,b) => new Date(a["Fecha_Hora"]) - new Date(b["Fecha_Hora"]));
         if(order=="highest") reviewControl.sort((a,b) => b["Calificación"] - a["Calificación"]);
 
-        $("#boxActionRev").empty();
+        $("#boxContent").empty();
         for(let i=0; i<5; i++){
             if(reviewControl[i]!=undefined)
-                createReviewDiv(reviewControl[i]);
+                createContent(reviewControl[i]);
             else break;
 
             if(reviewControl[i+1]==undefined) $("#btn-next").addClass("not-visible");
@@ -204,6 +150,59 @@ setcookie("data-rev", 0, time() - 3600, "/");
         $("#btn-page").text(1);
     });
     ////////////////////////////ORDENAMIENTO////////////////////////////
+
+    ////////////////////////////CONTENIDO////////////////////////////
+    function createContent(review){
+        let file = (review["Imagen"]!=null) ? review["Imagen"] : "anon.png";
+        let starsHtml = "";
+        for(let i=1; i<=5; i++){
+            let classStar = (i<=review['Calificación']) ? 'fas' : 'fa-regular';
+            starsHtml += "<i class='fa-star icon-rev "+classStar+"'></i>";
+        }
+
+        let deleteBtn = "";
+        if(review['Nombre']==sessionUser || sessionUser=='ADMINISTRADOR')
+            deleteBtn = "<a href='#' onclick='deleteReview("+review['Reseña_ID']+")' class='btn btn-danger btn-delete mt-2'>Eliminar</a>";
+
+        $("#boxContent").append(
+            "<div id='rev-"+review["Reseña_ID"]+"' class='review card col-lg-12 col-md-5 col-sm-10 mb-3'>"+
+                "<div class='card-body'>"+
+                    "<div class='d-flex align-items-start mb-2'>"+
+                        "<img class='img-fluid card-image me-3 review-image' src='../assets/img/users/"+file+"' alt='Imagen del usuario'>"+
+                        "<div><p class='card-title mb-1'>Escrito por: <span style='color:limegreen'>"+review['Nombre']+"</span> el día <span style='color:limegreen'>"+new Date(review["Fecha_Hora"]).toLocaleDateString()+"</span></p>"+
+                            "<div class='mb-1 text-start'> Calificación:"+
+                                starsHtml +
+                            "</div>"+
+                        "</div>"+
+                    "</div>"+
+                    "<p class='card-text text-start'>"+review['Comentario']+"</p>"+
+                    deleteBtn +
+                "</div>"+
+            "</div>"
+        );
+    }
+    ////////////////////////////CONTENIDO////////////////////////////
+</script>
+
+<script>
+    ////////////////////////////ELIMINAR RESEÑA////////////////////////////
+    function deleteReview(id) {
+        event.preventDefault()
+        
+        if(confirm("¿Estás seguro de que quieres eliminar esta reseña?")) {
+            $.ajax({
+                type: "POST",
+                url: "principal.php?methodRev=delete",
+                data: {id: id},
+                success: function(response) {
+                    showboxContent(-1);
+                    $("#rev-"+id).remove();
+                    window.location.reload();
+                }
+            });
+        }
+    }
+    ////////////////////////////ELIMINAR RESEÑA////////////////////////////
 </script>
 
 <script>
@@ -223,58 +222,5 @@ setcookie("data-rev", 0, time() - 3600, "/");
         document.cookie = "data-rev=" + id + "; path=/";
     });
     //////////////////////////////CALIFICACION////////////////////////////////
-</script>
-
-<script>
-    ////////////////////////////CONTENIDO////////////////////////////
-    function createReviewDiv(review){
-        let file = (review["Imagen"]!=null) ? review["Imagen"] : "anon.png";
-        let starsHtml = "";
-        for(let i=1; i<=5; i++){
-            let classStar = (i<=review['Calificación']) ? 'fas' : 'fa-regular';
-            starsHtml += "<i class='fa-star icon-rev "+classStar+"'></i>";
-        }
-
-        let deleteBtn = "";
-        if(review['Nombre']==sessionUser || sessionUser=='ADMINISTRADOR')
-            deleteBtn = "<a href='#' onclick='deleteReview("+review['Reseña_ID']+")' class='btn btn-danger btn-delete mt-2'>Eliminar</a>";
-
-        $("#boxActionRev").append(
-            "<div id='rev-"+review["Reseña_ID"]+"' class='review card col-lg-12 col-md-5 col-sm-10 mb-3'>"+
-                "<div class='card-body'>"+
-                    "<div class='d-flex align-items-start mb-2'>"+
-                        "<img class='img-fluid card-image me-3 review-image' src='../assets/img/users/"+file+"' alt='Imagen del usuario'>"+
-                        "<div><p class='card-title mb-1'>Escrito por: <span style='color:limegreen'>"+review['Nombre']+"</span> el día <span style='color:limegreen'>"+new Date(review["Fecha_Hora"]).toLocaleDateString()+"</span></p>"+
-                            "<div class='mb-1 text-start'> Calificación:"+
-                                starsHtml +
-                            "</div>"+
-                        "</div>"+
-                    "</div>"+
-                    "<p class='card-text text-start'>"+review['Comentario']+"</p>"+
-                    deleteBtn +
-                "</div>"+
-            "</div>"
-        );
-    }
-    ////////////////////////////CONTENIDO////////////////////////////
-
-    ////////////////////////////ELIMINAR RESEÑA////////////////////////////
-    function deleteReview(id) {
-        event.preventDefault()
-        
-        if(confirm("¿Estás seguro de que quieres eliminar esta reseña?")) {
-            $.ajax({
-                type: "POST",
-                url: "principal.php?methodRev=delete",
-                data: {id: id},
-                success: function(response) {
-                    showBoxActionRev(-1);
-                    $("#rev-"+id).remove();
-                    window.location.reload();
-                }
-            });
-        }
-    }
-    ////////////////////////////ELIMINAR RESEÑA////////////////////////////
 </script>
 <!-------------------------------SCRIPT------------------------------->

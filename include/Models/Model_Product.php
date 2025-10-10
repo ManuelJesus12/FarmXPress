@@ -17,11 +17,11 @@ class ProductModel {
      * Return: Array con los productos, 0 si no hay productos, -1 en caso de error
      */
 
-    public function listProductP($offset){
+    public function listProductP(&$value, &$field = "Nombre"){
         try{
-            $sql=$this->db->prepare("SELECT * FROM PRODUCTOS WHERE Usuario_ID=(SELECT Usuario_ID FROM USUARIOS WHERE Nombre=?) LIMIT 7 OFFSET ?");
-            $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
-            $sql->bindValue(2, $offset*6, PDO::PARAM_INT);
+            $sql=$this->db->prepare("SELECT *, (SELECT NOMBRE FROM CATEGORÍAS C WHERE C.CATEGORÍA_ID=P.CATEGORÍA_ID) AS 'CAT'
+            FROM PRODUCTOS P WHERE Usuario_ID=(SELECT Usuario_ID FROM USUARIOS WHERE $field=?)");
+            $sql->bindValue(1, $value, PDO::PARAM_STR);
             $sql->execute();
 
             if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -37,18 +37,26 @@ class ProductModel {
      * Params: $offset (paginación)
      * Return: Array con los productos, 0 si no hay productos, -1 en caso de error
      */
-    public function listProductC($offset){
+    public function listProductC(&$offset=0){
         try{
             $placeholder = "%"; $offset=$offset*10;
 
             //*-----------------------------QUERY BUILD------------------------------*//
-            $query = "SELECT *, P1.Estado AS 'P1Estado', P1.Nombre AS 'P1Nombre', U.Nombre AS 'UNombre' FROM PRODUCTOS P1 JOIN USUARIOS U ON P1.USUARIO_ID=U.USUARIO_ID WHERE (Categoría_ID LIKE ? OR Categoría_ID IS NULL)";
+            $query = "SELECT Producto_ID, Usuario_ID, Nombre, Referencia, Precio_Mensual, Estado, Imagen, 
+            (SELECT Provincia FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'PROV', 
+            (SELECT Nombre FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'PNOM', 
+            (SELECT Nombre FROM CATEGORÍAS C WHERE C.Categoría_ID=P.Categoría_ID) AS 'CAT' 
+            FROM PRODUCTOS P WHERE P.Categoría_ID LIKE ? OR P.Categoría_ID IS NULL";
             $parameters = [$placeholder];
 
             if(isset($_COOKIE["search-options"])){
                 $search=json_decode($_COOKIE["search-options"], true);
                 if ($search["category"]!="") {
-                    $query = "SELECT *, P1.Estado AS 'P1Estado', P1.Nombre AS 'P1Nombre', U.Nombre AS 'UNombre' FROM PRODUCTOS P1 JOIN USUARIOS U ON P1.USUARIO_ID=U.USUARIO_ID WHERE Categoría_ID = ?";
+                    $query = "SELECT Producto_ID, Usuario_ID, Nombre, Referencia, Precio_Mensual, Estado, Imagen, 
+                    (SELECT Provincia FROM USUARIOS U ON U.Usuario_ID=P.Usuario_ID) AS 'PROV', 
+                    (SELECT Nombre FROM USUARIOS U ON U.Usuario_ID=P.Usuario_ID) AS 'PNOM',  
+                    (SELECT Nombre FROM CATEGORÍAS C ON C.Categoría_ID=P.Categoría_ID) AS 'CAT'
+                    FROM PRODUCTOS P WHERE P.Categoría_ID = ?";
                     $parameters[0] = $search["category"];
                 }
                 if ($search["minPrice"]!="") {
@@ -91,7 +99,7 @@ class ProductModel {
      * Params: $id (ID del producto)
      * Return: Array con los productos, 0 si no hay productos, -1 en caso de error
      */
-    public function selectProduct(&$field, &$value){
+    public function selectProduct(&$value, &$field = "Producto_ID"){
         try{
             $sql=$this->db->prepare("SELECT * FROM PRODUCTOS WHERE $field=?");
             $sql->bindValue(1, $value, PDO::PARAM_INT);
@@ -118,7 +126,7 @@ class ProductModel {
             include("_Indexes/Index_User.php"); $field="Nombre";
             $data[4]=($data[4]=="") ? null : $data[4];
             $file=(isset($_COOKIE["product-image"])) ? $_COOKIE["product-image"] : null;
-            $uid=$userController->selectUser($field, $_SESSION["usuario"])[0]['Usuario_ID'];
+            $uid=$userController->selectUser($_SESSION["usuario"], $field)['Usuario_ID'];
             //*-----------------------------DATA------------------------------*//
 
             $sql=$this->db->prepare("INSERT INTO PRODUCTOS (Nombre, Descripción, Referencia, Precio_Mensual, Categoría_ID, Usuario_ID, Imagen, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
@@ -149,10 +157,8 @@ class ProductModel {
             $data[4]=($data[4]=="") ? null : $data[4];
             if(isset($_COOKIE["product-image"])) $file=$_COOKIE["product-image"]; 
             else{
-                $field="Producto_ID";
-                $prod=$this->selectProduct($field, $id);
-                if(is_array($prod)) $file=$prod[0]['Imagen'];
-                else $file=null;
+                $prod=$this->selectProduct($id);
+                $file=(is_array($prod)) ? $prod['Imagen'] : null;
             }
 
             $sql=$this->db->prepare("UPDATE PRODUCTOS SET Nombre=?, Descripción=?, Referencia=?, Precio_Mensual=?, Categoría_ID=?, Imagen=? WHERE Producto_ID=?");
@@ -179,7 +185,7 @@ class ProductModel {
      */
     public function deleteProduct($id){
         try{
-            $field="Producto_ID"; $imagen=$this->selectProduct($field, $id)[0]['Imagen'];
+            $imagen=$this->selectProduct($id)['Imagen'];
             $sql=$this->db->prepare("DELETE FROM PRODUCTOS WHERE PRODUCTO_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
@@ -197,7 +203,7 @@ class ProductModel {
      * Params: $id (ID del producto), $active (1 para activar, 0 para desactivar)
      * Return: 1 si se ha actualizado correctamente, -1 en caso de error
      */
-    public function activeProduct($id, $active){
+    public function activeProduct($id, $active=0){
         try{
             $sql=$this->db->prepare("UPDATE PRODUCTOS SET Estado=? WHERE PRODUCTO_ID=?");
             $sql->bindValue(1, $active, PDO::PARAM_INT);
@@ -240,8 +246,7 @@ class ProductModel {
      */
     public function imageProcess(&$id, &$file){
         if($id!=null && $id!=""){
-            $field="Producto_ID";
-            $oldImage = $this->selectProduct($field, $id)[0]['Imagen'];
+            $oldImage = $this->selectProduct($id)['Imagen'];
             if($oldImage) unlink("../assets/img/products/$oldImage");
             $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
             $image = $id . "." . $extension;

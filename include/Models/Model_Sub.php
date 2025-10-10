@@ -41,7 +41,7 @@ class SubModel {
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
 
-            return $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $sql->fetchAll(PDO::FETCH_ASSOC)[0];
         }catch(PDOException $e) {
             return -1;
         }

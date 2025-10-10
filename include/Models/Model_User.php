@@ -16,20 +16,13 @@ class UserModel {
      * Params: $offset (paginación)
      * Return: Página de lista de usuarios, 0 si no hay usuarios, -1 en caso de error
      */
-    public function listUser(&$offset=0){
+    public function listUser(){
         try{
-            if($offset==-1)
-                $sql=$this->db->prepare("SELECT * FROM USUARIOS ORDER BY USUARIO_ID DESC");
-            else{
-                $sql=$this->db->prepare("SELECT * FROM USUARIOS ORDER BY USUARIO_ID DESC LIMIT 11 OFFSET ?");
-                $sql->bindValue(1, 10*$offset, PDO::PARAM_INT);
-            }
-
+            $sql=$this->db->prepare("SELECT * FROM USUARIOS ORDER BY USUARIO_ID ASC");
             $sql->execute();
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
-            else
-                return 0;
+
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
+            else return 0;
         }catch(PDOException $e) {
             return -1;
         }
@@ -41,14 +34,14 @@ class UserModel {
      * Params: $field (campo a buscar), $value (valor del campo)
      * Return: Array con el usuario encontrado, 0 si no hay usuarios, -1 en caso de error
      */
-    public function selectUser(&$field, &$value){
+    public function selectUser(&$value, &$field = "Usuario_ID"){
         try{
             $sql=$this->db->prepare("SELECT * FROM USUARIOS WHERE $field=?");
             $sql->bindValue(1, $value);
             $sql->execute();
 
             if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
+                return $sql->fetchAll(PDO::FETCH_ASSOC)[0];
             else
                 return 0;
         }catch(PDOException $e) {
@@ -110,8 +103,8 @@ class UserModel {
         try{
             if(isset($_COOKIE["user-avatar"])) $file=$_COOKIE["user-avatar"]; 
             else{
-                $field="Usuario_ID"; $user=$this->selectUser($field, $id);
-                if(is_array($user)) $file=$user[0]['Avatar']; else $file=null;
+                $user=$this->selectUser($id);
+                if(is_array($user)) $file=$user['Avatar']; else $file=null;
             }
 
             $sql=$this->db->prepare("UPDATE USUARIOS SET Email=?, CIF=?, Nombre=?, Teléfono=?, Dirección=?, Comunidad=?, Provincia=?, Avatar=? WHERE USUARIO_ID=?");
@@ -142,7 +135,7 @@ class UserModel {
      */
     public function deleteUser($id){
         try{
-            $field="Usuario_ID"; $avatar=$this->selectUser($field, $id)[0]['Avatar'];
+            $avatar=$this->selectUser($id)['Avatar'];
             $sql=$this->db->prepare("DELETE FROM USUARIOS WHERE USUARIO_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
@@ -185,10 +178,10 @@ class UserModel {
         if($nombre=="ADMINISTRADOR" and $contraseña=="ADMINAPP") return 1;
         else{
             try{
-                $field="Nombre"; $user = $this->selectUser($field, $nombre);
+                $field="Nombre"; $user = $this->selectUser($nombre, $field);
 
                 if(is_array($user)){
-                    if(password_verify($contraseña, $user[0]['Contraseña']))
+                    if(password_verify($contraseña, $user['Contraseña']))
                         return 1;
                     else return 0;
                 }else   return 0;
@@ -208,8 +201,7 @@ class UserModel {
      */
     public function avatarProcess(&$id, &$file){
         if($id!=null && $id!=""){
-            $field="Usuario_ID";
-            $oldAvatar = $this->selectUser($field, $id)[0]['Avatar'];
+            $oldAvatar = $this->selectUser($id)['Avatar'];
             if($oldAvatar) unlink("../assets/img/users/$oldAvatar");
             $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
             $avatar = $id . "." . $extension;

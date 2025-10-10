@@ -16,15 +16,9 @@ class FavController {
      * Params: $offset (para paginación)
      * Return: 1 si se muestra la vista de favoritos, o un array de productos favoritos si se solicita
      */
-    public function viewListFav(&$offset){
-        $offset--;
-
-        if($offset>=0){
-            $productControl=$this->favModel->viewListFav($offset);
-            include("Views/Client_Fav_Prod.php");
-            return 1;
-        }else
-            header("Location: principal.php?methodFav=select&page=1");
+    public function viewListFav(){
+        $productControl=$this->favModel->viewListFav();
+        include("Views/Client_Fav_Prod.php");
     }
 
     ///////////////////////////////////////////////////////////////

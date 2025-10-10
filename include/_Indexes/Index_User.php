@@ -31,13 +31,10 @@ if(isset($_GET['methodUser'])){
         /*--------------------------------------------------------------------------*/
         else if(in_array("viewUpdate", $methods))
             $message = $userController -> viewUpdate();
+        else if(in_array("viewProfile", $methods))
+            $message = $userController -> viewProfile();
         else if(in_array("select", $methods)){
-            if(!isset($_GET['page']))
-                header("Location: principal.php?methodUser=select&page=1");
-            else{
-                $offset=$_GET['page']; 
-                $userController -> viewListUser($offset);
-            }
+            $message = $userController -> viewListUser();
         }
         /*--------------------------------------------------------------------------*/
     }

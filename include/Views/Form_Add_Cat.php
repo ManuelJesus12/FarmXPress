@@ -20,9 +20,9 @@
             $title="Actualizar Categoría";
 
             $categoryData=$categoryController->selectCategory($_GET["id"]);
-            $name=$categoryData[0]['Nombre'];
-            $desc=$categoryData[0]['Descripción'];
-            $parent_cat=$categoryData[0]['Cat_Padre_ID'];
+            $name=$categoryData['Nombre'];
+            $desc=$categoryData['Descripción'];
+            $parent_cat=$categoryData['Cat_Padre_ID'];
         }else{
             $action="principal.php?methodCat=insert";
             $title="Añadir Categoría";
@@ -76,6 +76,7 @@
 
     <!-------------------------------SCRIPT------------------------------->
     <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
+    
     <script>
         $("#btn-data-cat").on("click",function() {
             var name = $("#name").val().trim();
