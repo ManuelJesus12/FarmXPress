@@ -9,20 +9,14 @@
 <body>
     <!-------------------------------LOGIC------------------------------->
     <?php
-        $name=$price=$months=" ";
-
-        $dirChangeVar=1;
         include("../funciones.php");
         include("../_Indexes/Index_Sub.php");
+        $subData=['Suscripción_ID'=>'', 'Nombre'=>'', 'Precio_Mensual'=>'', 'Duración_Base'=>''];
 
         if(isset($_GET["id"])){
+            $subData=$subController->selectSub($_GET["id"]);
             $action="principal.php?methodSub=update&sub=".$_GET["id"];
             $title="Actualizar Suscripción";
-
-            $subData=$subController->selectSub($_GET["id"]);
-            $name=$subData['Nombre'];
-            $price=$subData['Precio_Mensual'];
-            $months=$subData['Duración_Base'];
         }else{
             $action="principal.php?methodSub=insert";
             $title="Añadir Suscripción";
@@ -39,15 +33,15 @@
             <form id="form-data-sub" action= <?php echo $action; ?> method="post">
                 <tr>
                     <td>Nombre Suscripción:  <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Ejemplo de Suscripción" name="name" id="name" value="<?php echo $name; ?>" required /></td>
+                    <td><input type="text" placeholder="Ejemplo de Suscripción" name="name" id="name" value="<?php echo $subData["Nombre"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Precio Mensual:  <span class="error">*</span></td>
-                    <td><input type="number" placeholder="10" name="price" id="price" value="<?php echo $price; ?>" required /></td>
+                    <td><input type="number" placeholder="10" name="price" id="price" value="<?php echo $subData["Precio_Mensual"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Duración Base (Meses):  <span class="error">*</span></td>
-                    <td><input type="number" placeholder="12" name="months" id="months" value="<?php echo $months; ?>" required /></td>
+                    <td><input type="number" placeholder="12" name="months" id="months" value="<?php echo $subData["Duración_Base"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
@@ -56,40 +50,40 @@
             </form>
         </table>
     </div>
-    </div>
-    <!-------------------------------FORM------------------------------->
+</div>
+<!-------------------------------FORM------------------------------->
 
-    <!-------------------------------SCRIPT------------------------------->
-    <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
-    <script>
-        $("#btn-data-sub").on("click",function() {
-            var name = $("#name").val().trim();
-            var price = $("#price").val().trim();;
-            var months = $("#months").val().trim();;
+<!-------------------------------SCRIPT------------------------------->
+<script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
+<script>
+    $("#btn-data-sub").on("click",function() {
+        var name = $("#name").val().trim();
+        var price = $("#price").val().trim();;
+        var months = $("#months").val().trim();;
 
-            if(name.length < 3 || name.length > 100) {
-                $("#error").text("El campo Nombre debe tener entre 3 y 100 caracteres.");
-                $("#name").focus();
-                return;
-            }
+        if(name.length < 3 || name.length > 100) {
+            $("#error").text("El campo Nombre debe tener entre 3 y 100 caracteres.");
+            $("#name").focus();
+            return;
+        }
 
-            if(isNaN(price) || price <= 0) {
-                $("#error").text("El campo Precio Mensual debe ser un número positivo.");
-                $("#price").focus();
-                return;
-            }
+        if(isNaN(price) || price <= 0) {
+            $("#error").text("El campo Precio Mensual debe ser un número positivo.");
+            $("#price").focus();
+            return;
+        }
 
-            if(isNaN(months) || months <= 0) {
-                $("#error").text("El campo Duración Base debe ser un número positivo.");
-                $("#months").focus();
-                return;
-            }
+        if(isNaN(months) || months <= 0) {
+            $("#error").text("El campo Duración Base debe ser un número positivo.");
+            $("#months").focus();
+            return;
+        }
 
-            var fieldValues = [name, price, months];
-            document.cookie = "data-sub=" + encodeURIComponent(JSON.stringify(fieldValues)) + "; path=/; max-age=" + (60);
-            $("#form-data-sub").submit();
-        });
-    </script>
-    <!-------------------------------SCRIPT------------------------------->
+        var fieldValues = [name, price, months];
+        document.cookie = "data-sub=" + encodeURIComponent(JSON.stringify(fieldValues)) + "; path=/; max-age=" + (60);
+        $("#form-data-sub").submit();
+    });
+</script>
+<!-------------------------------SCRIPT------------------------------->
 </body>
 </html>

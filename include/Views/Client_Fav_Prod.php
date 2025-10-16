@@ -7,6 +7,7 @@ if(is_array($productControl)){
     foreach($productControl as &$prod) $prod['isFav'] = $this->selectFav($prod['PID']);
     //-------------------------------PRODUCT LIST--------------------------------//
     echo "<h2>Productos en seguimiento</h2><br>";
+    echo "Buscar producto por Nombre o Referencia: <input type='text' id='inputSearch' placeholder='Buscar por Nombre o Referencia'></input>";
     echo "<div id='boxContent' class='row card-deck col-12'></div>";
     //-------------------------------PRODUCT LIST--------------------------------//
     //--------------------------------------------NAV BUTTONS--------------------------------------------->
@@ -39,6 +40,32 @@ if(is_array($productControl)){
     var sessionUser = <?php echo json_encode($_SESSION["usuario"]); ?>;
     content_paginate(productControl);
     
+    ////////////////////////////FILTRAR PRODUCTOS////////////////////////////
+    $("#inputSearch").on("keyup", function(){
+        let page = 1; let offset = (page-1)*5;
+        let value = $(this).val().toLowerCase();
+        
+        let filteredFavs = productControl.filter(prod => 
+            (prod["Nombre"].toLowerCase().includes(value) || 
+            prod["Referencia"].toLowerCase().includes(value)) );
+        
+        $("#boxContent").empty();
+        for(let i=offset; i<offset+5; i++){
+            if(filteredFavs[i]!=undefined)
+                createContent(filteredFavs[i]);
+            else break;
+        }
+        if(filteredFavs[offset+5]==undefined) $("#btn-next").addClass("not-visible");
+        else $("#btn-next").removeClass("not-visible");
+        
+        if(page==1) $("#btn-prev").addClass("not-visible");
+        else $("#btn-prev").removeClass("not-visible");
+
+        $("#btn-page").text(page);
+        event.preventDefault();
+    })
+    ////////////////////////////FILTRAR PRODUCTOS////////////////////////////
+
     ////////////////////////////CONTENIDO////////////////////////////
     function createContent(prod){
         let file = (prod["Imagen"]!=null) ? prod["Imagen"] : "anon.png";

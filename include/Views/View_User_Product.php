@@ -131,8 +131,6 @@ setcookie("data-rev", 0, time() - 3600, "/");
     
     ////////////////////////////ORDENAMIENTO////////////////////////////
     $("input[name='orderRev']").on("change", function(){
-        event.preventDefault();
-
         let order = $("input[name='orderRev']:checked").val();
         if(order=="newest") reviewControl.sort((a,b) => new Date(b["Fecha_Hora"]) - new Date(a["Fecha_Hora"]));
         if(order=="oldest") reviewControl.sort((a,b) => new Date(a["Fecha_Hora"]) - new Date(b["Fecha_Hora"]));
@@ -147,7 +145,9 @@ setcookie("data-rev", 0, time() - 3600, "/");
             if(reviewControl[i+1]==undefined) $("#btn-next").addClass("not-visible");
             else $("#btn-next").removeClass("not-visible");
         }
+        
         $("#btn-page").text(1);
+        event.preventDefault();
     });
     ////////////////////////////ORDENAMIENTO////////////////////////////
 
@@ -187,8 +187,6 @@ setcookie("data-rev", 0, time() - 3600, "/");
 <script>
     ////////////////////////////ELIMINAR RESEÑA////////////////////////////
     function deleteReview(id) {
-        event.preventDefault()
-        
         if(confirm("¿Estás seguro de que quieres eliminar esta reseña?")) {
             $.ajax({
                 type: "POST",
@@ -201,6 +199,7 @@ setcookie("data-rev", 0, time() - 3600, "/");
                 }
             });
         }
+        event.preventDefault();
     }
     ////////////////////////////ELIMINAR RESEÑA////////////////////////////
 </script>
@@ -208,18 +207,15 @@ setcookie("data-rev", 0, time() - 3600, "/");
 <script>
     //////////////////////////////CALIFICACION////////////////////////////////
     $(".icon-star-rev").on("click", function() {
-        event.preventDefault()
-
         var id = $(this).attr("id").split("-")[1];
         var stars = $(".icon-star-rev");
-        for (var i = 1; i <= id; i++) {
+        for (var i = 1; i <= id; i++)
             $(stars[i - 1]).removeClass("fa-regular").addClass("fas");
-        }
-        for (var i = parseInt(id) + 1; i <= stars.length; i++) {
+        for (var i = parseInt(id) + 1; i <= stars.length; i++) 
             $(stars[i - 1]).removeClass("fas").addClass("fa-regular");
-        }
 
         document.cookie = "data-rev=" + id + "; path=/";
+        event.preventDefault();
     });
     //////////////////////////////CALIFICACION////////////////////////////////
 </script>

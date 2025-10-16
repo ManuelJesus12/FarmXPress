@@ -16,6 +16,7 @@ if(is_array($productControl)){
     //*-----------------------------NOTIFICATIONS------------------------------*//
     //*-----------------------------PRODUCT LIST------------------------------*//
     echo "<a id='add-product' class='btn btn-shape element-green-bg'>Agregar Producto</a>";
+    echo "Buscar producto por Nombre o Referencia: <input type='text' id='inputSearch' placeholder='Buscar por Nombre o Referencia'></input>";
     echo "<div id='boxContent' class='row card-deck col-12'></div>";
     //*-----------------------------PRODUCT LIST------------------------------*//
 
@@ -45,6 +46,32 @@ if(is_array($productControl)){
 <script>
     var productControl = <?php echo json_encode($productControl); ?>;
     content_paginate(productControl);
+
+    ////////////////////////////FILTRAR PRODUCTOS////////////////////////////
+    $("#inputSearch").on("keyup", function(){
+        let page = 1; let offset = (page-1)*5;
+        let value = $(this).val().toLowerCase();
+        
+        let filteredProducts = productControl.filter(prod => 
+            (prod["Nombre"].toLowerCase().includes(value) || 
+            prod["Referencia"].toLowerCase().includes(value)) );
+        
+        $("#boxContent").empty();
+        for(let i=offset; i<offset+5; i++){
+            if(filteredProducts[i]!=undefined)
+                createContent(filteredProducts[i]);
+            else break;
+        }
+        if(filteredProducts[offset+5]==undefined) $("#btn-next").addClass("not-visible");
+        else $("#btn-next").removeClass("not-visible");
+        
+        if(page==1) $("#btn-prev").addClass("not-visible");
+        else $("#btn-prev").removeClass("not-visible");
+
+        $("#btn-page").text(page);
+        event.preventDefault();
+    })
+    ////////////////////////////FILTRAR PRODUCTOS////////////////////////////
 
     ////////////////////////////CONTENIDO////////////////////////////
     function createContent(prod){
@@ -81,12 +108,14 @@ if(is_array($productControl)){
     ////////////////////////////AÑADIR PRODUCTO////////////////////////////
     $("#add-product").on("click", function() {
         $("#modal").load("Views/Form_Add_Prod.php?methodProd", function() { $("#formPopup").fadeIn(1000); });
+        event.preventDefault();
     });
     ////////////////////////////AÑADIR PRODUCTO////////////////////////////
 
     ////////////////////////////ACTUALIZAR PRODUCTO////////////////////////////
     function updateProduct(pId){
         $("#modal").load("Views/Form_Add_Prod.php?methodProd&id="+pId, function() { $("#formPopup").fadeIn(1000); });
+        event.preventDefault();
     }
     ////////////////////////////ACTUALIZAR PRODUCTO////////////////////////////
 
@@ -104,6 +133,7 @@ if(is_array($productControl)){
                 error: function() { alert("Error inesperado."); }
             });
         }
+        event.preventDefault();
     }
     ////////////////////////////ELIMINAR PRODUCTO////////////////////////////
 </script>

@@ -12,18 +12,12 @@
         include("../funciones.php");
         include("../_Indexes/Index_Category.php");
         include("../_Indexes/Index_Product.php");
-        $name=$desc=$ref=$price=$parent_cat="";
-        
+        $productData=['Producto_ID'=>'', 'Nombre'=>'', 'Descripción'=>'', 'Referencia'=>'', 'Precio_Mensual'=>'', 'Categoría_ID'=>''];
+
         if(isset($_GET["id"])){
+            $productData=$productController->selectProduct($_GET["id"]);
             $action="principal.php?methodProd=update&prod=".$_GET["id"];
             $title="Actualizar Producto";
-
-            $productData=$productController->selectProduct($_GET["id"]);
-            $name=$productData['Nombre'];
-            $desc=$productData['Descripción'];
-            $ref=$productData['Referencia'];
-            $price=$productData['Precio_Mensual'];
-            $parent_cat=$productData['Categoría_ID'];
         }else{
             $action="principal.php?methodProd=insert";
             $title="Añadir Producto";
@@ -45,19 +39,19 @@
                 <?php } ?>
                 <tr>
                     <td>Nombre Producto:  <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Ejemplo de Producto" name="name" id="name" value="<?php echo $name; ?>" required /></td>
+                    <td><input type="text" placeholder="Ejemplo de Producto" name="name" id="name" value="<?php echo $productData["Nombre"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Referencia Producto:  <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Ejemplo de Referencia: A1234" name="ref" id="ref" value="<?php echo $ref; ?>" required /></td>
+                    <td><input type="text" placeholder="Ejemplo de Referencia: A1234" name="ref" id="ref" value="<?php echo $productData["Referencia"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Descripción Producto:  <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" value="<?php echo $desc; ?>" required /></td>
+                    <td><input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" value="<?php echo $productData["Descripción"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Precio Mensual:  <span class="error">*</span></td>
-                    <td><input type="number" placeholder="100" name="price" id="price" value="<?php echo $price; ?>" required /></td>
+                    <td><input type="number" placeholder="100" name="price" id="price" value="<?php echo $productData["Precio_Mensual"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Categoría:  <span class="error">*</span></td>
@@ -65,10 +59,10 @@
                         <option value="">Sin Categoría</option>
                         <?php
                             $offset=1;
-                            $categories = $categoryController->viewListCategory($offset, $dirChangeVar);
+                            $categoryControl = $categoryController->viewListCategory($offset);
 
-                            if($categories!=0){
-                                foreach($categories as $category){
+                            if($categoryControl!=0){
+                                foreach($categoryControl as $category){
                                     if($category['Categoría_ID'] == $parent_cat)
                                         echo "<option value='".$category['Categoría_ID']."' selected>".$category['Nombre']."</option>";
                                     else
@@ -93,9 +87,9 @@
     <!-------------------------------FORM------------------------------->
 
     <!-------------------------------SCRIPT------------------------------->
-    <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
     <script src="../assets/js/form_field_validation.js"></script>
     <script src="../assets/js/form_prod_validation.js"></script>
+    <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
     <!-------------------------------SCRIPT------------------------------->
 </body>
 

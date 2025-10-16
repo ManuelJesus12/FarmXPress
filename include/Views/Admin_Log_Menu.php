@@ -3,9 +3,8 @@
 <?php 
 $methods = explode('-', $_GET['methodAdmin']);
 if(in_array("newLog", $methods)){ 
-
-    include("_Indexes/Index_User.php"); $offset=0;
-    $users = $userController->viewListUser($offset);
+    include("_Indexes/Index_User.php"); 
+    $userControl = $userController->viewListUser();
 ?>
 <!--------------------------------------------LOGICA--------------------------------------------->
 
@@ -19,8 +18,7 @@ if(in_array("newLog", $methods)){
             <td><select name="searchUser" id="searchUser" style="width: 100%;">
                 <option value="">---</option>
                 <?php
-                    if($users!=0)
-                        foreach($users as $user) echo "<option value='".$user['Usuario_ID']."'>".$user['Nombre']."</option>";
+                    if(is_array($userControl)) foreach($userControl as $user){ echo "<option value='".$user['Usuario_ID']."'>".$user['Nombre']."</option>"; }
                 ?>
             </select></td>
         </tr>

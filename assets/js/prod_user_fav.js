@@ -1,6 +1,4 @@
 function toggleFav(id, action){
-    event.preventDefault();
-
     $.ajax({
         url: "principal.php?methodFav=toggleFav",
         type: "POST",
@@ -24,4 +22,5 @@ function toggleFav(id, action){
 
     $("#fav-star-"+id).toggleClass("fa-regular");
     $("#fav-star-"+id).toggleClass("fas");
+    event.preventDefault();
 }

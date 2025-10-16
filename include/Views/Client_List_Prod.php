@@ -3,6 +3,7 @@
 include("_Indexes/Index_Category.php");
 include("_Indexes/Index_Fav.php");
 $offset=$opt=1; $productCount=0;
+$categoryControl = $categoryController->viewListCategory($offset, $opt);
 
 if(isset($_COOKIE["search-options"])){
     $search=json_decode($_COOKIE["search-options"], true);
@@ -26,7 +27,7 @@ if(isset($_GET["error"])) echo "<script>showBoxProduct(".$_GET["error"].");</scr
                     <option value="">Todas</option>
                     <?php
                         foreach($categoryControl as $cat){
-                            if($cat["Categoría_ID"]==$category) $selected="selected"; else $selected="";
+                            $selected = ($cat["Categoría_ID"]==$category) ? "selected" : "";
                             echo "<option value='".$cat["Categoría_ID"]."' $selected>".$cat["Nombre"]."</option>";
                         }
                     ?>
@@ -111,7 +112,7 @@ if(isset($productControl)){
             echo "</div>";
             //*-----------------------------PRODUCT CARD------------------------------*//
 
-            $productCount++; if($productCount==10) break;
+            if($productCount==10) break; else $productCount++;
         }
         echo "</div>";
         //*-----------------------------PRODUCT LIST------------------------------*//
@@ -147,13 +148,13 @@ if(isset($productControl)){
     <?php } ?>
 
     <script>
-        $('#btn-filter-form').on('click', function() {
-            event.preventDefault();
-            
+        $('#btn-filter-form').on('click', function() {            
             var search = { category: $('#category').val(), minPrice: $('#minPrice').val(), maxPrice: $('#maxPrice').val(), region: $('#region').val() ?? "", province: $('#province').val() ?? "" };
             document.cookie = "search-options=" + JSON.stringify(search) + "; path=/; max-age=" + (86400 * 30);
             localStorage.setItem('search-options', JSON.stringify(search));
             $('#filter-form').submit();
+
+            event.preventDefault();
         });
     </script>
 <!-------------------------------SCRIPT------------------------------->

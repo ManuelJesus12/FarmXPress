@@ -21,44 +21,34 @@ if(isset($categoryControl)){
 
         //*-----------------------------CATEGORY LIST------------------------------*//
         echo "<a id='add-category' class='btn btn-log btn-shape element-green-bg'>Agregar Categoría</a>";
-        echo "<table class='table table-striped'><thead><tr><th>ID</th><th>Nombre</th><th>Descripción</th><th>Categoría Padre</th><th>Acciones</th></tr></thead>";
-        echo "<tbody id='boxContent'></tbody></table>";
+        echo "<table id='boxContent' class='table table-striped'><thead><tr><th>ID</th><th>Nombre</th><th>Descripción</th><th>Categoría Padre</th><th>Acciones</th></tr></thead>";
+        echo "<tbody ></tbody></table>";
         //*-----------------------------CATEGORY LIST------------------------------*//
-
-        //*-----------------------------NAV BUTTONS------------------------------*//
-        $class0=$class1=$class2="btn btn-log element-green-bg ";
-        $class1=$class0."not-visible";
-        if(count($categoryControl)<=10) $class2=$class0."not-visible";
-
-        echo "<div class='nav-buttons site-article'>";
-            echo "<div class='btn-group'><a class='$class1' id='btn-prev' href='#'>Anterior</a></div>";
-            echo "<div class='btn-group'><a class='$class0' id='btn-page' href='#'>1</a></div>";
-            echo "<div class='btn-group'><a class='$class2' id='btn-next' href='#'>Siguiente</a></div>";
-        echo "</div>";
-        //*-----------------------------NAV BUTTONS------------------------------*//
     }
 }
 ///////////////////////////////////////////////////////////////////////
 ?></article>
 
 <!-------------------------------SCRIPT------------------------------->
-<script src="../assets/js/content_paginate.js"></script>
-
 <script>
     var categoryControl = <?php echo json_encode($categoryControl); ?>;
-    content_paginate(categoryControl);
-
-    ////////////////////////////CONTENIDO////////////////////////////
-    function createContent(user){
-        let catPadre = (user['Cat_Padre'] != null) ? user['Cat_Padre'] : "Ninguna";
-        
-        $("#boxContent").append(
-            "<tr id='row-"+user["Categoría_ID"]+"'><td>"+user['Categoría_ID']+"</td><td>"+user['Nombre']+"</td><td>"+user['Descripción']+"</td><td>"+catPadre+"</td>"+
-            "<td> <a href='#' onclick='updateCategory("+user['Categoría_ID']+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>   "+
-            "<a href='#' onclick='deleteCategory("+user['Categoría_ID']+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a></td></tr>"
-        );
-    }
-    ////////////////////////////CONTENIDO////////////////////////////
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        new DataTable('#boxContent', {
+            data: categoryControl,
+            columns: [
+                { data: 'Categoría_ID' },
+                { data: 'Nombre' },
+                { data: 'Descripción' },
+                { data: 'Cat_Padre', render: function(data, type, row){ return data ? data : 'Ninguna'; }},
+                { data: null, render: function(data, type, row) {
+                        return "<a href='#' onclick='updateCategory("+row["Categoría_ID"]+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
+                        "<a href='#' onclick='deleteCategory("+row["Categoría_ID"]+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
+                    }
+                }
+            ]
+        });
+    });
 </script>
 
 <script>

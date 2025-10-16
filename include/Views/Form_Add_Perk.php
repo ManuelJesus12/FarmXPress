@@ -11,16 +11,14 @@
     <?php
         include("../funciones.php");
         include("../_Indexes/Index_Perk.php");
-        $name=$desc=" ";
-
+        $perkData=['Ventaja_ID'=>'', 'Nombre'=>'', 'Descripción'=>''];
+        
         if(isset($_GET["id"])){
+            $perkData=$perkController->selectPerk($_GET["id"]);
             $action="principal.php?methodPerk=update";
             $title="Actualizar Ventaja";
-
-            $perkData=$perkController->selectPerk($_GET["id"]);
-            $name=$perkData['Nombre'];
-            $desc=$perkData['Descripción'];
             $id=$_GET["id"];
+
         }else if (isset($_GET["subId"])){
             $action="principal.php?methodPerk=insert";
             $title="Añadir Ventaja";
@@ -39,11 +37,11 @@
                 <tr style="display:none"><td><input type="text" name="id" id="id" value="<?php echo $id; ?>" /></td></tr>
                 <tr>
                     <td>Título Ventaja:  <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Ejemplo de Ventaja" name="name" id="name" value="<?php echo $name; ?>" required /></td>
+                    <td><input type="text" placeholder="Ejemplo de Ventaja" name="name" id="name" value="<?php echo $perkData["Nombre"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Descripción:  <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" value="<?php echo $desc; ?>" required /></td>
+                    <td><input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" value="<?php echo $perkData["Descripción"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>

@@ -15,8 +15,6 @@ function content_paginate(contentList){
 
     /////////////////////////////BOTÓN DERECHO/////////////////////////////
     $("#btn-next").on("click", function(){
-        event.preventDefault();
-
         $("#boxContent").empty();
         let page = parseInt($("#btn-page").text())+1;
         let offset = (page-1)*5;
@@ -30,13 +28,13 @@ function content_paginate(contentList){
         }
         $("#btn-prev").removeClass("not-visible");
         $("#btn-page").text(page);
+
+        event.preventDefault();
     });
     /////////////////////////////BOTÓN DERECHO/////////////////////////////
 
     ////////////////////////////BOTÓN IZQUIERDO////////////////////////////
     $("#btn-prev").on("click", function(){
-        event.preventDefault();
-        
         $("#boxContent").empty();
         let page = parseInt($("#btn-page").text())-1;
         let offset = (page-1)*5;
@@ -50,6 +48,8 @@ function content_paginate(contentList){
         else $("#btn-prev").removeClass("not-visible");
         $("#btn-next").removeClass("not-visible");
         $("#btn-page").text(page);
+
+        event.preventDefault();
     });
     ////////////////////////////BOTÓN IZQUIERDO////////////////////////////
 }

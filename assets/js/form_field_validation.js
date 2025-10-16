@@ -8,7 +8,7 @@ async function validateField(field, value, fieldName, idField, link) {
             url: '../assets/js/' + link,
             type: 'POST',
             dataType: 'json',
-            data: { field: field, value: value, prodId: id },
+            data: { field: field, value: value, objectId: id },
             success: function(response) {
                 if(response.text != 0){
                     $("#error").text("Ya hay un usuario registrado con este " + field);
@@ -23,7 +23,7 @@ async function validateField(field, value, fieldName, idField, link) {
                 }
             },
             error: function(xhr, status, error) {
-                $("#error").text("Error inesperado");
+                $("#error").text("Error en la validación del campo " + field + ": " + error);
                 reject(error);
             }
         });

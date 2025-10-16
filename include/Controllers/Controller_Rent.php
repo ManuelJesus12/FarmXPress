@@ -50,18 +50,23 @@ class RentController {
      * Return: Mensaje de éxito o error
      */
     public function insertRent(&$pId, &$month, &$price){
-        if(isset($pId) && isset($month) && isset($price) && $pId!="" && $month!="" && $price!=""){
+        if(isset($pId) && isset($month) && isset($price) && $pId!="" && $month!="" && $price!=""){ // Datos recibidos correctamente
             include("_Indexes/Index_Product.php");
+            include("_Indexes/Index_User.php");
+            include("_Indexes/Index_Pay.php");
+            $product = $productController -> selectProduct($pId); // Datos del Producto
+            $user    = $userController -> selectUser($product["Usuario_ID"]); // Datos del Proveedor del Producto
 
-            if($productController -> selectProduct($pId)["Estado"]==1){
-                if($this->rentModel->insertRent($pId, $month, $price)==1){
-                    $rentID=$this->rentModel->db->lastInsertId();
-                    $productController -> activeProduct($pId);
-                    
-                    include("_Indexes/Index_Pay.php");
-                    if($payController->insertPay($rentID, $price, $month, $price)==1){
-                        $rentControl = $this->rentModel->selectRent($pId);
+            if($product["Estado"]==1){
+                if($this->rentModel->insertRent($pId, $month, $price)==1){ // Insertar Alquiler
+                    $rentID=$this->rentModel->db->lastInsertId(); // ID del Alquiler insertado
+                    $productController -> activeProduct($pId); // Desactivar Disponibilidad Producto
+
+                    if($payController->insertPay($rentID, $price, $month, $price)==1){ // Insertar Primer Pago
+                        $this -> rentModel->sendRentEmail($user["Email"], $user["Nombre"]); // Enviar correo al Proveedor del Producto
+                        $rentControl = $this->rentModel->selectRent($pId); // Datos del Alquiler para visualizar
                         include("Views/Client_Rent_Ok.php");
+
                         setcookie("data-rent", 0, time() - 3600, "/");
                     }
                     

@@ -11,16 +11,12 @@
     <?php
         include("../funciones.php");
         include("../_Indexes/Index_User.php");
-        $email=$cif=$name=$passwd=$phone=$address="";
+        $userData=['Usuario_ID'=>'', 'Nombre'=>'', 'CIF'=>'', 'Email'=>'', 'Contraseña'=>'', 'Teléfono'=>'', 'Dirección'=>''];
 
         if(isset($_GET["id"])){
+            $userData=$userController->selectUser($_GET["id"]);
             $action="principal.php?methodUser=update&userId=".$_GET["id"];
             $title="Actualizar Usuario";
-
-            $userData=$userController->selectUser($_GET["id"]);
-            $email=$userData['Email']; $cif=$userData['CIF'];
-            $name=$userData['Nombre']; $phone=$userData['Teléfono']; 
-            $address=$userData['Dirección'];
         }else{
             $action="principal.php?methodUser=insert";
             $title="Registro de Usuario";
@@ -42,29 +38,29 @@
                 <?php } ?>
                 <tr>
                     <td>Email:  <span class="error">*</span></td>
-                    <td><input type="email" placeholder="ejemplo@gmail.com" name="email" id="email" value="<?php echo $email; ?>" required /></td>
+                    <td><input type="email" placeholder="ejemplo@gmail.com" name="email" id="email" value="<?php echo $userData["Email"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>CIF:  <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Ejemplo de CIF: A12345678" name="cif" id="cif" value="<?php echo $cif; ?>" required /></td>
+                    <td><input type="text" placeholder="Ejemplo de CIF: A12345678" name="cif" id="cif" value="<?php echo $userData["CIF"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Nombre:  <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Nombre de Empresa" name="name" id="name" value="<?php echo $name; ?>" required /></td>
+                    <td><input type="text" placeholder="Nombre de Empresa" name="name" id="name" value="<?php echo $userData["Nombre"]; ?>" required /></td>
                 </tr>
                 <?php if(!isset($_GET["id"])){ ?>
                     <tr>
                         <td>Contraseña:  <span class="error">*</span></td>
-                        <td><input type="password" placeholder="Ejemplo de contraseña" name="password" id="password" value="<?php echo $passwd; ?>" required /></td>
+                        <td><input type="password" placeholder="Ejemplo de contraseña" name="password" id="password" required /></td>
                     </tr>
                 <?php } ?>
                 <tr>
                     <td>Teléfono:  <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Ejemplo de teléfono: 123456789" name="phone" id="phone" value="<?php echo $phone; ?>" required /></td>
+                    <td><input type="text" placeholder="Ejemplo de teléfono: 123456789" name="phone" id="phone" value="<?php echo $userData["Teléfono"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Dirección:  <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" value="<?php echo $address; ?>" required /></td>
+                    <td><input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" value="<?php echo $userData["Dirección"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Comunidad Autónoma: <span class="error">*</span></td>
@@ -106,9 +102,11 @@
     <!-------------------------------FORM------------------------------->
 
     <!-------------------------------SCRIPT------------------------------->
-    <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
-    <script src="../assets/js/form_user_validation.js"></script>
     <script src="../assets/js/form_field_validation.js"></script>
+    <script src="../assets/js/form_user_validation.js"></script>
+    <script src="../assets/js/provinces_load.js"></script>
+    
+    <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
     <!-------------------------------SCRIPT------------------------------->
 </body>
 </html>

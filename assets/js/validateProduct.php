@@ -3,15 +3,15 @@ $c = new PDO("mysql:host=localhost;dbname=FARMXPRESS", "root", "");
 $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 header('Content-Type: application/json');
 
-if($_POST['prodId']!=null)
-    $query="SELECT * FROM PRODUCTOS WHERE " . $_POST["field"] . " = :value AND PRODUCTO_ID != :prodId";
+if($_POST['objectId']!=null)
+    $query="SELECT * FROM PRODUCTOS WHERE " . $_POST["field"] . " = :value AND PRODUCTO_ID != :objectId";
 else
     $query="SELECT * FROM PRODUCTOS WHERE " . $_POST["field"] . " = :value";
 
 $sql= $c->prepare($query);
 $sql->bindParam(':value', $_POST["value"]);
-if($_POST['prodId']!=null)
-    $sql->bindParam(':prodId', $_POST["prodId"]);
+if($_POST['objectId']!=null)
+    $sql->bindParam(':objectId', $_POST["objectId"]);
 
 $sql->execute();
 $result = $sql->fetchAll(PDO::FETCH_ASSOC);

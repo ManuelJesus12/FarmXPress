@@ -146,5 +146,33 @@ class RentModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
+
+    /* Función: Enviar un correo electrónico al usuario
+     * Params: $email (correo electrónico del usuario), $name (nombre del usuario)
+     * Return: Mensaje de éxito o error al enviar el correo
+     */
+    public function sendRentEmail(&$email, &$name){
+        try{
+            $phpmailer = new PHPMailer();
+            $phpmailer->isSMTP();
+            $phpmailer->Host = 'smtp.gmail.com';
+            $phpmailer->SMTPAuth = true;
+            $phpmailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $phpmailer->Port = 587;
+            $phpmailer->Username = 'farmxpress0@gmail.com';
+            $phpmailer->Password = 'infofarmxpressmjfs';
+            $phpmailer->setFrom('CorreoGmail', 'Sistema de Reservas');
+            $phpmailer->addAddress($email, $name);
+            $phpmailer->isHTML(true);
+            $phpmailer->Subject = 'Asunto';
+            $phpmailer->Body = "Aqui puedes poner lo que quieras de html";
+
+            if(!$phpmailer->send())
+                echo "No existe su correo electrónico o no se ha podido enviar el correo de confirmación.";
+            
+        }catch(PDOException $e) {
+            return -1;
+        }
+    }
 }
 ?>

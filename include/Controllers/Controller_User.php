@@ -15,10 +15,7 @@ class UserController {
     public function viewLogin(){
         require_once 'Views/View_User_Login.php';
     }
-    public function viewRegister(){
-        require_once 'Views/View_User_Register.php';
-    }
-    public function viewUpdate(){
+    public function viewUserForm(){
         require_once 'Views/View_User_Register.php';
     }
     public function viewProfile(){

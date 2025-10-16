@@ -30,7 +30,7 @@ if(isset($_GET['methodUser'])){
         // INITIALIZE VIEW
         /*--------------------------------------------------------------------------*/
         else if(in_array("viewUpdate", $methods))
-            $message = $userController -> viewUpdate();
+            $message = $userController -> viewUserForm();
         else if(in_array("viewProfile", $methods))
             $message = $userController -> viewProfile();
         else if(in_array("select", $methods)){
@@ -53,7 +53,7 @@ if(isset($_GET['methodUser'])){
      // INITIALIZE VIEW
     /*--------------------------------------------------------------------------*/
     if(in_array("viewRegister", $methods))
-            $message = $userController -> viewRegister();
+            $message = $userController -> viewUserForm();
     if(in_array("viewLogin", $methods))
         $message = $userController -> viewLogin();
     /*--------------------------------------------------------------------------*/

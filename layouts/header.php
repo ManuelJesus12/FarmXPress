@@ -31,6 +31,10 @@
     <link href= <?php echo $dir."assets/css/principal.css"; ?> rel="stylesheet">
     <script src="https://kit.fontawesome.com/874dee0d68.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <!-- DataTables v1.x CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+    <!-- DataTables v1.x JS -->
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
     <script src= <?php echo $dir."assets/js/popup_box_create.js"; ?>></script>
 
     

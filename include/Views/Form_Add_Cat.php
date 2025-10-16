@@ -9,20 +9,14 @@
 <body>
     <!-------------------------------LOGIC------------------------------->
     <?php
-        $name=$desc=$parent_cat=" ";
-
-        $dirChangeVar=1;
         include("../funciones.php");
         include("../_Indexes/Index_Category.php");
+        $categoryData=['Categoría_ID'=>'', 'Nombre'=>'', 'Descripción'=>'', 'Cat_Padre_ID'=>''];
 
         if(isset($_GET["id"])){
+            $categoryData=$categoryController->selectCategory($_GET["id"]);
             $action="principal.php?methodCat=update&cat=".$_GET["id"];
             $title="Actualizar Categoría";
-
-            $categoryData=$categoryController->selectCategory($_GET["id"]);
-            $name=$categoryData['Nombre'];
-            $desc=$categoryData['Descripción'];
-            $parent_cat=$categoryData['Cat_Padre_ID'];
         }else{
             $action="principal.php?methodCat=insert";
             $title="Añadir Categoría";
@@ -39,11 +33,11 @@
             <form id="form-data-cat" action= <?php echo $action; ?> method="post">
                 <tr>
                     <td>Nombre Categoría: <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Ejemplo de Categoría" name="name" id="name" value="<?php echo $name; ?>" required /></td>
+                    <td><input type="text" placeholder="Ejemplo de Categoría" name="name" id="name" value="<?php echo $categoryData["Nombre"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Descripción Categoría:  <span class="error">*</span></td>
-                    <td><input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" value="<?php echo $desc; ?>" required /></td>
+                    <td><input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" value="<?php echo $categoryData["Descripción"]; ?>" required /></td>
                 </tr>
                 <tr>
                     <td>Categoría Padre:  <span class="error">*</span></td>
@@ -51,11 +45,11 @@
                         <option value="">Sin Padre</option>
                         <?php
                             $offset=1;
-                            $categories = $categoryController->viewListCategory($offset, $dirChangeVar);
+                            $categoryControl = $categoryController->viewListCategory($offset);
 
-                            if($categories!=0){
-                                foreach($categories as $category){
-                                    if($category['Categoría_ID'] == $parent_cat)
+                            if(is_array($categoryControl)){
+                                foreach($categoryControl as $category){
+                                    if($category['Categoría_ID'] == $categoryData['Cat_Padre_ID'])
                                         echo "<option value='".$category['Categoría_ID']."' selected>".$category['Nombre']."</option>";
                                     else
                                         echo "<option value='".$category['Categoría_ID']."'>".$category['Nombre']."</option>";

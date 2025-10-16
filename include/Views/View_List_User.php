@@ -21,49 +21,49 @@ if(isset($userControl)){
 
         //*-----------------------------USER LIST------------------------------*//
         echo "<a id='add-user' class='btn btn-log btn-shape element-green-bg'>Agregar Usuario</a>";
-        echo "<table class='table table-striped'><thead><tr><th>ID</th><th>E-Mail</th><th>CIF</th><th>Nombre</th>
-            <th>Teléfono</th><th>Fecha Registro</th><th>Avatar</th><th>Tipo</th><th>Acciones</th></tr></thead>";
-        echo "<tbody id='boxContent'></tbody></table>";
+        echo "<table id='boxContent' style='font-size:0.96em;' class='table table-striped'><thead><tr><th>ID</th><th>E-Mail</th><th>CIF</th><th>Nombre</th>
+            <th>Teléfono</th><th>Provincia</th><th>Fecha_Registro</th><th>Tipo</th><th>Acciones</th></tr></thead>";
+        echo "<tbody></tbody></table>";
         //*-----------------------------USER LIST------------------------------*//
 
-        //*-----------------------------NAV BUTTONS------------------------------*//
-            $class0=$class1=$class2="btn btn-log element-green-bg ";
-            $class1=$class0."not-visible";
-            if(count($userControl)<=10) $class2=$class0."not-visible";
-
-            echo "<div class='nav-buttons site-article'>";
-                echo "<div class='btn-group'><a class='$class1' id='btn-prev' href='#'>Anterior</a></div>";
-                echo "<div class='btn-group'><a class='$class0' id='btn-page' href='#'>1</a></div>";
-                echo "<div class='btn-group'><a class='$class2' id='btn-next' href='#'>Siguiente</a></div>";
-            echo "</div>";
-        //*-----------------------------NAV BUTTONS------------------------------*//
     }
 }
 ///////////////////////////////////////////////////////////////////////
 ?></article>
 
 <!-------------------------------SCRIPT------------------------------->
-<script src="../assets/js/content_paginate.js"></script>
-
 <script>
     var userControl = <?php echo json_encode($userControl); ?>;
-    content_paginate(userControl);
-    
-    ////////////////////////////CONTENIDO////////////////////////////
-    function createContent(user){
-        let file = (user["Avatar"]!=null) ? user["Avatar"] : "anon.png";
-        let btnId= (user["Estado"]==1) ? "enabled-" : "disabled-";
-        let type = (user["Tipo"]=="C") ? "Cliente" : (user["Tipo"]=="P") ? "Proveedor" : "No Identificado";
 
-        $("#boxContent").append(
-            "<tr id='row-"+user["Usuario_ID"]+"'><td><a href='#' id='"+btnId+user["Usuario_ID"]+"' onclick='activeUser("+user["Usuario_ID"]+")'>"+user["Usuario_ID"]+"</a></td>"+
-            "<td>"+user["Email"]+"</td><td>"+user["CIF"]+"</td><td>"+user["Nombre"]+"</td><td>"+user["Teléfono"]+"</td>"+
-            "<td>"+user["Fecha_Registro"].split(" ")[0]+"</td><td><img style='width:50px' src='../assets/img/users/"+file+"' /></td>"+
-            "<td>"+type+"</td><td> <a href='#' onclick='updateUser("+user["Usuario_ID"]+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
-            "<a href='#' onclick='deleteUser("+user["Usuario_ID"]+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a></tr>"
-        );
-    }
-    ////////////////////////////CONTENIDO////////////////////////////
+    document.addEventListener('DOMContentLoaded', function () {
+        new DataTable('#boxContent', {
+            data: userControl,
+            columns: [
+                { data: 'Usuario_ID', render: function(data, type, row) {
+                        var btnId = (row["Estado"]==1) ? "enabled-" : "disabled-";
+                        return "<a href='#' id='"+btnId+data+"' onclick='activeUser("+data+")'>"+data+"</a>";
+                    }
+                },
+                { data: 'Email' },
+                { data: 'CIF' },
+                { data: 'Nombre' },
+                { data: 'Teléfono' },
+                { data: 'Provincia' },
+                { data: 'Fecha_Registro', render: function(data, type, row) { return new Date(data).toLocaleDateString(); } },
+                { data: 'Tipo', render: function(data, type, row) {
+                        if (data === "C") return "Cliente";
+                        if (data === "P") return "Proveedor";
+                        return "No Identificado";
+                    }
+                },
+                { data: null, render: function(data, type, row) {
+                        return "<a href='#' onclick='updateUser("+row["Usuario_ID"]+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
+                        "<a href='#' onclick='deleteUser("+row["Usuario_ID"]+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
+                    }
+                }
+            ]
+        });
+    });
 </script>
 
 <script>
@@ -102,6 +102,7 @@ if(isset($userControl)){
     ////////////////////////////ACTUALIZAR USUARIO////////////////////////////
     function updateUser(id){
         $("#modal").load("Views/Form_Add_User.php?methodUser&id="+id, function() { $("#formPopup").fadeIn(1000); });
+        event.preventDefault();
     }
     ////////////////////////////ACTUALIZAR USUARIO////////////////////////////
 
@@ -121,6 +122,7 @@ if(isset($userControl)){
                 error: function() { alert("Error inesperado."); }
             });
         }
+        event.preventDefault();
     }
     ////////////////////////////BORRAR USUARIO////////////////////////////
 </script>

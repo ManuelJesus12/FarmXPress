@@ -1,6 +1,4 @@
 $("#btn-data-user").on("click", async function(event){
-    event.preventDefault();
-
     var email = $("#email").val().trim();      const emailRegex = /^[\w._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/;
     var cif = $("#cif").val().trim();          const cifRegex = /^[A-Z]{1}[0-9]{8}$/;
     var name = $("#name").val().trim();        const nameRegex = /^[A-Za-z0-9\s]+$/;
@@ -160,5 +158,7 @@ $("#btn-data-user").on("click", async function(event){
     var fieldValues = [email, cif, name, password, phone, address, region, province, $("#tipo").val() ?? "C"];
     document.cookie = "data-user=" + encodeURIComponent(JSON.stringify(fieldValues)) + "; max-age=" + (60);
     $("#form-data-user").submit();
+    
+    event.preventDefault();
 });
 ///////////////////////////////////////////////////////////////
