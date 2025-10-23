@@ -39,12 +39,10 @@ class PerkController {
      * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function insertPerk(){
-        if(isset($_COOKIE["data-perk"])){
-            $data = json_decode($_COOKIE["data-perk"], true);
-            $this->perkModel->insertPerk($data);
-            header("Location: principal.php?methodSub=select");
-        }else
-            return "No se han recibido datos para insertar la ventaja.";
+        include("../assets/php/vBackEndCatPerk.php");
+        $this->perkModel->insertPerk($data);
+        header("Location: principal.php?methodSub=select");
+        
     }
 
     ///////////////////////////////////////////////////////////////
@@ -54,12 +52,9 @@ class PerkController {
      * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function updatePerk(){
-        if(isset($_COOKIE["data-perk"])){
-            $data = json_decode($_COOKIE["data-perk"], true);
-            $this->perkModel->updatePerk($data);
-            header("Location: principal.php?methodSub=select");
-        }else
-            return "No se han recibido datos para actualizar la ventaja.";
+        include("../assets/php/vBackEndCatPerk.php");
+        $this->perkModel->updatePerk($data);
+        header("Location: principal.php?methodSub=select");
     }
 
     ///////////////////////////////////////////////////////////////

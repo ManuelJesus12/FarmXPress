@@ -59,27 +59,15 @@ class UserController {
      * Return: Redirección a la vista de lista de usuarios o login según el tipo de usuario
      */
     public function insertUser(){
-        try{
-
-            if(isset($_COOKIE["data-user"])){
-                $data = json_decode($_COOKIE["data-user"], true);
-            
-                if($this->userModel->insertUser($data)==1){
-                    setcookie("user-avatar", 0, time()-1,"/");
-
-                    if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
-                        header("Location: principal.php?methodUser=select&action=insert");
-                    else
-                        $this->loginUser($data[2], $data[3]);
-                
-                }else
-                    return "Error al registrar el usuario, datos incompletos o incorrectos.";
-            }else
-                return "No se han recibido datos para el registro de usuario.";
-            
-        }catch (Exception $e) {
-            return "Error al registrar el usuario";
-        }
+        include("../assets/php/vBackEndUser.php");
+        if($this->userModel->insertUser($data)==1){
+            if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
+                header("Location: principal.php?methodUser=select&action=insert");
+            else
+                $this->loginUser($data[2], $data[3]);
+            setcookie("user-avatar", 0, time()-1,"/");
+        }else
+            return "Error al registrar el usuario, datos incompletos o incorrectos.";
     }
 
     ///////////////////////////////////////////////////////////////
@@ -89,25 +77,18 @@ class UserController {
      * Return: Redirección a la vista de lista de usuarios o al index según el tipo de usuario
      */
     public function updateUser(){
-        if(isset($_COOKIE["data-user"])){
-            if(isset($_GET['userId']) && $_GET['userId']!=null) $id=$_GET['userId']; 
-            else{
-                $field="Nombre";
-                $id=$this->selectUser($_SESSION["usuario"], $field)['Usuario_ID'];
-            }
+        include("../assets/php/vBackEndUser.php"); $field="Nombre";
+        $id=(isset($_GET['userId']) && $_GET['userId']!=null) ? $_GET['userId'] : 
+        $this->selectUser($_SESSION["usuario"], $field)['Usuario_ID'];
 
-            $data = json_decode($_COOKIE["data-user"], true);
-            if($this->userModel->updateUser($id, $data)==1){
-                setcookie("user-avatar", 0, time()-1,"/");
-
-                if($_SESSION["usuario"]!="ADMINISTRADOR") $_SESSION["usuario"]=$data[2];
-                if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
-                    header("Location: principal.php?methodUser=select&action=update");
-                else
-                    header("Location: ../index.php?action=2");
-            }
-        }else
-            return "No se han recibido datos para actualizar el usuario.";
+        if($this->userModel->updateUser($id, $data)==1){
+            if($_SESSION["usuario"]!="ADMINISTRADOR"){
+                $_SESSION["usuario"]=$data[2];
+                header("Location: ../index.php?action=2");
+            }else
+                header("Location: principal.php?methodUser=select&action=update");
+            setcookie("user-avatar", 0, time()-1,"/");
+        }
     }
 
     ///////////////////////////////////////////////////////////////
@@ -145,15 +126,14 @@ class UserController {
      * Return: 1 si el login es exitoso, 0 si las credenciales son incorrectas, -1 si hay un error
      */
     public function loginUser(&$nombre, &$contraseña){
-        try{
-            $nombre = trim($nombre); $contraseña = trim($contraseña);
-            $loginControl=$this->userModel->loginUser($nombre, $contraseña);
-
-            if($loginControl==1) $_SESSION["usuario"]=$nombre;
-            return $loginControl;
-        }catch (Exception $e){
-            return "Login failed.";
+        $nombre = trim($nombre); $contraseña = trim($contraseña);
+        $loginControl=$this->userModel->loginUser($nombre, $contraseña);
+        
+        if($loginControl==1){
+            $_SESSION["usuario"]=$nombre;
+            $this->userModel->deleteCookies();
         }
+        return $loginControl;
     }
 
     ///////////////////////////////////////////////////////////////
@@ -164,13 +144,7 @@ class UserController {
      */
     public function logoutUser(){
         try{
-            setcookie("search-options",0,time()-1, "/");
-            setcookie("data-user",0,time()-1, "/");
-            setcookie("data-rev",0,time()-1, "/");
-            setcookie("UserType",0,time()-1, "/");
-            setcookie("UserAvatar",0,time()-1, "/");
-            echo "<script>localStorage.clear();</script>";
-            
+            $this->userModel->deleteCookies();
             session_destroy();
         }catch (Exception $e){
             return "Logout failed.";

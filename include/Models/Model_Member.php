@@ -42,7 +42,7 @@ class MemberModel {
             $sql->execute();
 
             if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC);
+                return $sql->fetchAll(PDO::FETCH_ASSOC)[0];
             else
                 return 0;
         }catch(PDOException $e) {

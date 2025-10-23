@@ -8,7 +8,7 @@ if(isset($_GET["success"])){ ?> <script> showBoxSuccessPay("<?php echo $_GET["su
 
 if(is_array($rentControl)){ ?>
     <h2>Productos Alquilados</h2><br>
-    Buscar producto por Nombre o Referencia: <input type='text' id='inputSearch' placeholder='Buscar por Nombre o Referencia'></input>
+    <input type='text' id='inputSearch' onInput='filterProduct()' placeholder='Filtrar por Nombre o Referencia'></input>
     <div id='boxContent' class='row card-deck col-12'></div>
 
     <!--------------------------------------------NAV BUTTONS--------------------------------------------->
@@ -35,8 +35,8 @@ if(is_array($rentControl)){ ?>
 <script src="../assets/js/content_paginate.js"></script>
 
 <script>
-    var rentControl = <?php echo json_encode($rentControl); ?>;
-    content_paginate(rentControl);
+    var productControl = <?php echo json_encode($rentControl); ?>;
+    content_paginate(productControl);
 
     ////////////////////////////CONTENIDO////////////////////////////
     function createContent(rent){
@@ -73,32 +73,6 @@ if(is_array($rentControl)){ ?>
 </script>
 
 <script>
-    ////////////////////////////FILTRAR ALQUILERES////////////////////////////
-    $("#inputSearch").on("keyup", function(){
-        let page = 1; let offset = (page-1)*5;
-        let value = $(this).val().toLowerCase();
-        
-        let filteredRents = rentControl.filter(rent => 
-            (rent["Nombre"].toLowerCase().includes(value) || 
-            rent["Referencia"].toLowerCase().includes(value)) );
-        
-        $("#boxContent").empty();
-        for(let i=offset; i<offset+5; i++){
-            if(filteredRents[i]!=undefined)
-                createContent(filteredRents[i]);
-            else break;
-        }
-        if(filteredRents[offset+5]==undefined) $("#btn-next").addClass("not-visible");
-        else $("#btn-next").removeClass("not-visible");
-        
-        if(page==1) $("#btn-prev").addClass("not-visible");
-        else $("#btn-prev").removeClass("not-visible");
-
-        $("#btn-page").text(page);
-        event.preventDefault();
-    })
-    ////////////////////////////FILTRAR ALQUILERES////////////////////////////
-
     ////////////////////////////AÑADIR PAGO////////////////////////////
     function insertPay(rId, pId, deuda){
         $("#modal").load("Views/Client_Pay_Rent.php?methodRent&rId="+rId+"&pId="+pId+"&deuda="+deuda, function() { $("#formPopup").fadeIn(1000); });

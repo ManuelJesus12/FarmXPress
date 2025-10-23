@@ -1,14 +1,15 @@
 ///////////////////////////////////////////////////////////////
-async function validateField(field, value, fieldName, idField, link) {
+async function validateField(field, value, fieldName, idField, type) {
     if($(idField).length > 0) var id = $(idField).val().trim();
     else var id= null;
 
+    console.log(type);
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: '../assets/js/' + link,
+            url: '../assets/php/validateField.php',
             type: 'POST',
             dataType: 'json',
-            data: { field: field, value: value, objectId: id },
+            data: { field: field, value: value, objectId: id, type: type },
             success: function(response) {
                 if(response.text != 0){
                     $("#error").text("Ya hay un usuario registrado con este " + field);

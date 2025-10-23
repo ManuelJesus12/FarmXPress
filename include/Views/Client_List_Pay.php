@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/css/formPopup.css">
+    <link rel="stylesheet" href="../assets/css/principal.css">
     <title>Form Popup</title>
 </head>
 <body>
@@ -30,8 +30,6 @@
 
 <!-------------------------------SCRIPT------------------------------->
 <script> $("#closeFormBtn").click(function() { $("#formPopup").fadeOut(); }); </script>
-<script src="../assets/js/content_paginate.js"></script>
-
 <script>
     var payControl = <?php echo json_encode($payControl); ?>;
     var payCount= 1;

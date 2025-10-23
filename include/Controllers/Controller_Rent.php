@@ -114,6 +114,32 @@ class RentController {
     }
 
     ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+
+    /* Función: Contar el número total de alquileres
+     * Params: Void
+     * Return: Número total de alquileres
+     */
+    public function countRent(){
+        return $this->rentModel->countRent();
+    }
+
+    /* Función: Recabar información de los Alquileres de un Producto
+     * Params: $id (ID del producto)
+     * Return: Consulta si se activa correctamente, 0 en caso de no encontrar datos y -1 en caso de error
+     */
+    public function listRentDataByProduct(&$id){
+        return $this->rentModel->listRentDataByProduct($id);
+    }
+    
+    public function listRentStatsByProduct(&$id){
+        return $this->rentModel->listRentStatsByProduct($id);
+    }
+
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
 
     /* Función: Comprobar si hay alquileres que deberían desactivarse y notificar al usuario
      * Params: $offset (paginación) seteado por referencia a -1 lo cual selecciona todos los alquileres del usuario
@@ -137,21 +163,5 @@ class RentController {
 
         }
     }
-
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-
-    /* Función: Contar el número total de alquileres
-     * Params: Void
-     * Return: Número total de alquileres
-     */
-    public function countRent(){
-        return $this->rentModel->countRent();
-    }
-
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
 }
 ?>

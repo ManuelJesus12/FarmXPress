@@ -4,9 +4,9 @@ $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 header('Content-Type: application/json');
 
 if($_POST['objectId']!=null)
-    $query="SELECT * FROM PRODUCTOS WHERE " . $_POST["field"] . " = :value AND PRODUCTO_ID != :objectId";
+    $query="SELECT * FROM ".$_POST["type"]."S WHERE ".$_POST["field"]." = :value AND ".$_POST["type"]."_ID != :objectId";
 else
-    $query="SELECT * FROM PRODUCTOS WHERE " . $_POST["field"] . " = :value";
+    $query="SELECT * FROM ".$_POST["type"]."S WHERE ".$_POST["field"]." = :value";
 
 $sql= $c->prepare($query);
 $sql->bindParam(':value', $_POST["value"]);

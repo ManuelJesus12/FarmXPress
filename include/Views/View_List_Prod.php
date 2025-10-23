@@ -15,8 +15,8 @@ if(is_array($productControl)){
         echo "<div id='alert-success' class='alert alert-success'>Productos cargados correctamente</div>";
     //*-----------------------------NOTIFICATIONS------------------------------*//
     //*-----------------------------PRODUCT LIST------------------------------*//
+    echo "<br><input type='text' id='inputSearch' onInput='filterProduct()' placeholder='Filtrar por Nombre o Referencia'></input>";
     echo "<a id='add-product' class='btn btn-shape element-green-bg'>Agregar Producto</a>";
-    echo "Buscar producto por Nombre o Referencia: <input type='text' id='inputSearch' placeholder='Buscar por Nombre o Referencia'></input>";
     echo "<div id='boxContent' class='row card-deck col-12'></div>";
     //*-----------------------------PRODUCT LIST------------------------------*//
 
@@ -47,42 +47,20 @@ if(is_array($productControl)){
     var productControl = <?php echo json_encode($productControl); ?>;
     content_paginate(productControl);
 
-    ////////////////////////////FILTRAR PRODUCTOS////////////////////////////
-    $("#inputSearch").on("keyup", function(){
-        let page = 1; let offset = (page-1)*5;
-        let value = $(this).val().toLowerCase();
-        
-        let filteredProducts = productControl.filter(prod => 
-            (prod["Nombre"].toLowerCase().includes(value) || 
-            prod["Referencia"].toLowerCase().includes(value)) );
-        
-        $("#boxContent").empty();
-        for(let i=offset; i<offset+5; i++){
-            if(filteredProducts[i]!=undefined)
-                createContent(filteredProducts[i]);
-            else break;
-        }
-        if(filteredProducts[offset+5]==undefined) $("#btn-next").addClass("not-visible");
-        else $("#btn-next").removeClass("not-visible");
-        
-        if(page==1) $("#btn-prev").addClass("not-visible");
-        else $("#btn-prev").removeClass("not-visible");
-
-        $("#btn-page").text(page);
-        event.preventDefault();
-    })
-    ////////////////////////////FILTRAR PRODUCTOS////////////////////////////
-
     ////////////////////////////CONTENIDO////////////////////////////
     function createContent(prod){
         let file = (prod["Imagen"]!=null) ? prod["Imagen"] : "anon.png";
-        let estado = ""; let buttons = "<div class='col-6'><a href='#' onclick='updateProduct("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-modify'><i class='fa-solid fa-gear icon-gear border-5'></i> Modificar Producto</a></div>";
+        let buttons=estado = "";
 
-        if(prod["Estado"]==false)
+        if(prod["Estado"]==false){
             estado+="<p class='card-text prod-status' id='disabled-"+prod["Producto_ID"]+"'>Alquilado</p>";
-        else{
+            buttons+= "<div class='col-6'><a href='#' onclick='updateProduct("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-modify'><i class='fa-solid fa-gear icon-gear border-5'></i> Modificar Producto</a></div>";
+            buttons+= "<div class='col-6'><a href='#' onclick='viewData("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-modify'><i class='fa-solid fa-gear icon-gear border-5'></i> Datos Producto</a></div>";
+        }else{
             estado+="<p class='card-text prod-status' id='enabled-"+prod["Producto_ID"]+"'>Disponible</p>";
-            buttons+="<div class='col-6'><a href='#' onclick='deleteProduct("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-delete'><i class='fa-solid fa-trash icon-trash border-5'></i> Eliminar Producto</a></div>";
+            buttons+="<div class='col-4'><a href='#' onclick='updateProduct("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-modify'><i class='fa-solid fa-gear icon-gear border-5'></i> Modificar Producto</a></div>";
+            buttons+="<div class='col-4'><a href='#' onclick='viewData("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-modify'><i class='fa-solid fa-gear icon-gear border-5'></i> Datos Producto</a></div>";
+            buttons+="<div class='col-4'><a href='#' onclick='deleteProduct("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-delete'><i class='fa-solid fa-trash icon-trash border-5'></i> Eliminar Producto</a></div>";
         }
 
         $("#boxContent").append(    
@@ -111,6 +89,13 @@ if(is_array($productControl)){
         event.preventDefault();
     });
     ////////////////////////////AÑADIR PRODUCTO////////////////////////////
+
+    ////////////////////////////VER DATOS PRODUCTO////////////////////////////
+    function viewData(id) {
+        $("#modal").load("Views/View_Product_Stats.php?methodProd&id="+id, function() { $("#formPopup").fadeIn(1000); });
+        event.preventDefault();
+    }
+    ////////////////////////////VER DATOS PRODUCTO////////////////////////////
 
     ////////////////////////////ACTUALIZAR PRODUCTO////////////////////////////
     function updateProduct(pId){

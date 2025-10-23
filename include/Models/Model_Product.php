@@ -125,19 +125,12 @@ class ProductModel {
             //*-----------------------------DATA------------------------------*//
             include("_Indexes/Index_User.php"); $field="Nombre";
             $data[4]=($data[4]=="") ? null : $data[4];
-            $file=(isset($_COOKIE["product-image"])) ? $_COOKIE["product-image"] : null;
-            $uid=$userController->selectUser($_SESSION["usuario"], $field)['Usuario_ID'];
+            $data[5]=$userController->selectUser($_SESSION["usuario"], $field)['Usuario_ID'];
+            $data[6]=(isset($_COOKIE["product-image"])) ? $_COOKIE["product-image"] : null;
             //*-----------------------------DATA------------------------------*//
 
-            $sql=$this->db->prepare("INSERT INTO PRODUCTOS (Nombre, Descripción, Referencia, Precio_Mensual, Categoría_ID, Usuario_ID, Imagen, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            $sql->bindValue(1, $data[0]);
-            $sql->bindValue(2, $data[1]);
-            $sql->bindValue(3, $data[2]);
-            $sql->bindValue(4, $data[3]);
-            $sql->bindValue(5, $data[4]);
-            $sql->bindValue(6, $uid);
-            $sql->bindValue(7, $file);
-            $sql->bindValue(8, 1);
+            $sql=$this->db->prepare("INSERT INTO PRODUCTOS (Nombre, Descripción, Referencia, Precio_Mensual, Categoría_ID, Usuario_ID, Imagen, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
+            for($i=0;$i<7;$i++) $sql->bindValue(($i+1), $data[$i]);
             $sql->execute();
 
             return 1;
@@ -155,19 +148,14 @@ class ProductModel {
     public function updateProduct(&$id, &$data){
         try{
             $data[4]=($data[4]=="") ? null : $data[4];
-            if(isset($_COOKIE["product-image"])) $file=$_COOKIE["product-image"]; 
+            if(isset($_COOKIE["product-image"])) $data[5]=$_COOKIE["product-image"]; 
             else{
                 $prod=$this->selectProduct($id);
-                $file=(is_array($prod)) ? $prod['Imagen'] : null;
+                $data[5]=(is_array($prod)) ? $prod['Imagen'] : null;
             }
 
             $sql=$this->db->prepare("UPDATE PRODUCTOS SET Nombre=?, Descripción=?, Referencia=?, Precio_Mensual=?, Categoría_ID=?, Imagen=? WHERE Producto_ID=?");
-            $sql->bindValue(1, $data[0]);
-            $sql->bindValue(2, $data[1]);
-            $sql->bindValue(3, $data[2]);
-            $sql->bindValue(4, $data[3]);
-            $sql->bindValue(5, $data[4]);
-            $sql->bindValue(6, $file);
+            for($i=0;$i<6;$i++) $sql->bindValue(($i+1), $data[$i]);
             $sql->bindValue(7, $id, PDO::PARAM_INT);
             $sql->execute();
 

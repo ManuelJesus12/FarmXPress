@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Popup</title>
-    <link rel="stylesheet" href="../assets/css/formPopup.css">
+    <link rel="stylesheet" href="../assets/css/principal.css">
 </head>
 <body>
     <!-------------------------------LOGIC------------------------------->
@@ -61,8 +61,8 @@
         var price = $("#price").val().trim();;
         var months = $("#months").val().trim();;
 
-        if(name.length < 3 || name.length > 100) {
-            $("#error").text("El campo Nombre debe tener entre 3 y 100 caracteres.");
+        if(name.length < 5 || name.length > 20) {
+            $("#error").text("El campo Nombre debe tener entre 5 y 20 caracteres.");
             $("#name").focus();
             return;
         }

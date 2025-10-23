@@ -18,7 +18,7 @@ class RentModel {
      */
     public function listRent(){
         try{
-            $query="SELECT  P.PRODUCTO_ID AS 'PID', A.ALQUILER_ID AS 'RID', Nombre, Referencia, Imagen, Fecha_Inicio, Fecha_Fin, Precio_Total, (PRECIO_TOTAL - SUM(CANTIDAD)) AS 'Deuda'
+            $query="SELECT P.PRODUCTO_ID AS 'PID', A.ALQUILER_ID AS 'RID', Nombre, Referencia, Imagen, Fecha_Inicio, Fecha_Fin, Precio_Total, (PRECIO_TOTAL - SUM(CANTIDAD)) AS 'Deuda'
             FROM ALQUILERES A JOIN PRODUCTOS P ON A.PRODUCTO_ID=P.PRODUCTO_ID LEFT JOIN PAGOS G ON A.ALQUILER_ID=G.ALQUILER_ID
             WHERE A.USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND A.ESTADO=1 GROUP BY A.ALQUILER_ID";
             $sql=$this->db->prepare($query);
@@ -140,6 +140,54 @@ class RentModel {
             else return 0;
         }catch(PDOException $e) {
             return 0;
+        }
+    }
+
+    /* Función: Recabar datos de los Alquileres de un Producto
+     * Params: $id (ID del producto)
+     * Return: Consulta si se activa correctamente, 0 en caso de no encontrar datos y -1 en caso de error
+     */
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+
+    /* Función: Recabar información de los Alquileres de un Producto
+     * Params: $id (ID del producto)
+     * Return: Consulta si se activa correctamente, 0 en caso de no encontrar datos y -1 en caso de error
+     */
+    public function listRentDataByProduct(&$id){
+        try{
+            $query="SELECT Nombre, Cif, Email, Teléfono, Provincia, Avatar, Fecha_Inicio, Fecha_Fin, Precio_Total, 
+            A.Estado AS 'STATRENT' FROM ALQUILERES A JOIN USUARIOS U ON U.USUARIO_ID=A.USUARIO_ID WHERE A.PRODUCTO_ID=?";
+            $sql=$this->db->prepare($query);
+            $sql->bindValue(1, $id, PDO::PARAM_INT);
+            $sql->execute();
+            
+            if($sql->rowCount()!=0)
+                return $sql->fetchAll(PDO::FETCH_ASSOC);
+            else
+                return 0;
+        }catch(PDOException $e) {
+            return -1;
+        }
+    }
+
+    public function listRentStatsByProduct(&$id){
+        try{
+            $query="SELECT IFNULL(COUNT(ALQUILER_ID),0) AS 'TOTAL_RENTS', IFNULL(SUM(PRECIO_TOTAL),0) AS 'TOTAL_EARNINGS', 
+            (SELECT AVG(CALIFICACIÓN) FROM RESEÑAS WHERE PRODUCTO_ID=A.PRODUCTO_ID) AS 'AVG_RATE', 
+            (SELECT NOMBRE FROM PRODUCTOS WHERE PRODUCTO_ID=A.PRODUCTO_ID) AS 'PNOM'
+            FROM ALQUILERES A WHERE PRODUCTO_ID=?";
+            $sql=$this->db->prepare($query);
+            $sql->bindValue(1, $id, PDO::PARAM_INT);
+            $sql->execute();
+            
+            if($sql->rowCount()!=0)
+                return $sql->fetchAll(PDO::FETCH_ASSOC)[0];
+            else
+                return 0;
+        }catch(PDOException $e) {
+            return -1;
         }
     }
 

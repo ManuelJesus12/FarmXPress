@@ -108,9 +108,7 @@ if(is_array($subControl)){
                     }
                 ], createdRow: function(row, data, dataIndex){ row.id = "perk-"+data['Ventaja_ID']; }
             });
-        }else
-            $("#div-"+id).toggle(500);
-            
+        }else $("#div-"+id).toggle(500);
         event.preventDefault();
     }
     /////////////////////////////MOSTRAR VENTAJAS/////////////////////////////

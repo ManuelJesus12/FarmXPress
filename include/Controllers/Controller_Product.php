@@ -28,6 +28,8 @@ class ProductController {
         }
     }
 
+    ///////////////////////////////////////////////////////////////
+
     public function carouselListProduct(&$offset=0){
         return $this->productModel->listProductC($offset);
     }
@@ -43,15 +45,9 @@ class ProductController {
      * Return: Array con los productos, 0 si no hay productos, -1 en caso de error
      */
     public function viewPageProduct(&$id){
-        try{
-            $product=$this->selectProduct($id);
-            if(is_array($product)) include("Views/View_User_Product.php");
-            else header("Location: principal.php?methodProd=select&error=1");
-
-            return 1;
-        } catch(Exception $e){
-            echo "<h2>Producto no identificado, lo sentimos.</h2>";
-        }
+        $product=$this->selectProduct($id);
+        if(is_array($product)) include("Views/View_User_Product.php");
+        else header("Location: principal.php?methodProd=select&error=1");
     }
 
     ///////////////////////////////////////////////////////////////
@@ -73,15 +69,12 @@ class ProductController {
      * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function insertProduct(){
-        if(isset($_COOKIE["data-prod"])){
-            $data = json_decode($_COOKIE["data-prod"], true);
-            if($this->productModel->insertProduct($data)==1){
-                setcookie("data-prod", 0, time()-1,"/");
-                setcookie("product-image", 0, time()-1,"/");
-                header("Location: principal.php?methodProd=select&action=insert");
-            }
-        }else
-            return "No se han recibido datos para insertar el producto.";
+        include("../assets/php/vBackEndProd.php");
+        if($this->productModel->insertProduct($data)==1){
+            setcookie("data-prod", 0, time()-1,"/");
+            setcookie("product-image", 0, time()-1,"/");
+            header("Location: principal.php?methodProd=select&action=insert");
+        }
     }
 
     ///////////////////////////////////////////////////////////////
@@ -91,15 +84,12 @@ class ProductController {
      * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function updateProduct(&$id){
-        if(isset($_COOKIE["data-prod"])){
-            $data = json_decode($_COOKIE["data-prod"], true);
-            if($this->productModel->updateProduct($id, $data)==1){      
-                setcookie("data-prod", 0, time()-1,"/");
-                setcookie("product-image", 0, time()-1,"/");
-                header("Location: principal.php?methodProd=select&action=update");
-            }
-        }else
-            return "No se han recibido datos para actualizar el producto.";
+        include("../assets/php/vBackEndProd.php");
+        if($this->productModel->updateProduct($id, $data)==1){      
+            setcookie("data-prod", 0, time()-1,"/");
+            setcookie("product-image", 0, time()-1,"/");
+            header("Location: principal.php?methodProd=select&action=update");
+        }
     }
 
     ///////////////////////////////////////////////////////////////

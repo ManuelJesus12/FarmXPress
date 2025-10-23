@@ -53,3 +53,29 @@ function content_paginate(contentList){
     });
     ////////////////////////////BOTÓN IZQUIERDO////////////////////////////
 }
+
+////////////////////////////FILTRAR PRODUCTOS////////////////////////////
+function filterProduct(){
+    let page = 1; let offset = (page-1)*5;
+    let value = $("#inputSearch").val().toLowerCase();
+    
+    let filteredProducts = productControl.filter(prod => 
+        (prod["Nombre"].toLowerCase().includes(value) || 
+        prod["Referencia"].toLowerCase().includes(value)) );
+    
+    $("#boxContent").empty();
+    for(let i=offset; i<offset+5; i++){
+        if(filteredProducts[i]!=undefined)
+            createContent(filteredProducts[i]);
+        else break;
+    }
+    if(filteredProducts[offset+5]==undefined) $("#btn-next").addClass("not-visible");
+    else $("#btn-next").removeClass("not-visible");
+    
+    if(page==1) $("#btn-prev").addClass("not-visible");
+    else $("#btn-prev").removeClass("not-visible");
+
+    $("#btn-page").text(page);
+    event.preventDefault();
+}
+////////////////////////////FILTRAR PRODUCTOS////////////////////////////

@@ -43,12 +43,11 @@ class CategoryController {
      * Return: Redirige a la vista de categorías después de insertar
      */
     public function insertCategory(){
-        if(isset($_COOKIE["data-cat"])){
-            $data = json_decode($_COOKIE["data-cat"], true);
-            if($this->categoryModel->insertCategory($data)==1) setcookie("data-cat", "", time() - 3600, "/");
+        include("../assets/php/vBackEndCatPerk.php");
+        if($this->categoryModel->insertCategory($data)==1){
+            setcookie("data-cat", "", time() - 3600, "/");
             header("Location: principal.php?methodCat=select&action=insert");
-        }else
-            return "No se han recibido datos para insertar la categoría.";
+        }
     }
 
     ///////////////////////////////////////////////////////////////
@@ -58,12 +57,9 @@ class CategoryController {
      * Return: Redirige a la vista de categorías después de actualizar
      */
     public function updateCategory(&$id){
-        if(isset($_COOKIE["data-cat"])){
-            $data = json_decode($_COOKIE["data-cat"], true);
-            $this->categoryModel->updateCategory($id, $data);
-            header("Location: principal.php?methodCat=select&action=update");
-        }else
-            return "No se han recibido datos para actualizar la categoría.";
+        include("../assets/php/vBackEndCatPerk.php");
+        $this->categoryModel->updateCategory($id, $data);
+        header("Location: principal.php?methodCat=select&action=update");
     }
 
     ///////////////////////////////////////////////////////////////

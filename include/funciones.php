@@ -156,7 +156,7 @@ Funcion: Incluir los índices de las visitas, miembros y alquileres para realiza
 function includeVisit(){
     global $dirLocation, $PDOConnect;
     
-    if(($PDOConnect==false && isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR")){
+    if(($PDOConnect!=false && isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR")){
         $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
         include($dir."_Indexes/Index_Visit.php");
         include($dir."_Indexes/Index_Member.php");

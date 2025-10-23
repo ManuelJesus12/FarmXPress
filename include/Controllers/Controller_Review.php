@@ -39,13 +39,9 @@ class ReviewController {
      * Return: Redirección a la vista del producto
      */
     public function insertReview(){
-        try{
-            $data = (isset($_COOKIE["data-rev"])) ? $_COOKIE["data-rev"] : 0;
-            $this->reviewModel->insertReview($data);
-            header("Location: principal.php?methodProd=viewProduct&id=".$_POST["pId"]."&success=1");
-        }catch(Exception $e){
-            return "No se han recibido datos para insertar la ventaja.";
-        }
+        include("../assets/php/validateBackEnd.php");
+        $this->reviewModel->insertReview($data);
+        header("Location: principal.php?methodProd=viewProduct&id=".$_POST["pId"]."&success=1");
     }
 
     ///////////////////////////////////////////////////////////////
@@ -55,12 +51,9 @@ class ReviewController {
      * Return: Redirección a la vista del producto
      */
     public function updateReview(){
-        if(isset($_COOKIE["data-rev"])){
-            $data = json_decode($_COOKIE["data-rev"], true);
-            $this->reviewModel->updateReview($data);
-            header("Location: principal.php?methodProd=viewProduct&id=".$_POST["pId"]);
-        }else
-            return "No se han recibido datos para actualizar la ventaja.";
+        include("../assets/php/validateBackEnd.php");
+        $this->reviewModel->updateReview($data);
+        header("Location: principal.php?methodProd=viewProduct&id=".$_POST["pId"]);
     }
 
     ///////////////////////////////////////////////////////////////

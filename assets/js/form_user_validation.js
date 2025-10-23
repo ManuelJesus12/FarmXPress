@@ -19,7 +19,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#email").focus();
         return;
     }
-    let validEmail = await validateField("Email", email, "email", "#userId", "validateUser.php");
+    let validEmail = await validateField("Email", email, "email", "#userId", "USUARIO");
     if (!validEmail) return;
     // Email validación
 
@@ -34,7 +34,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#cif").focus();
         return;
     }
-    let validCif = await validateField("CIF", cif, "cif", "#userId", "validateUser.php");
+    let validCif = await validateField("CIF", cif, "cif", "#userId", "USUARIO");
     if (!validCif) return;
     // CIF validación
 
@@ -55,15 +55,15 @@ $("#btn-data-user").on("click", async function(event){
         $("#name").focus();
         return;
     }
-    let validName = await validateField("Nombre", name, "name", "#userId", "validateUser.php");
+    let validName = await validateField("Nombre", name, "name", "#userId", "USUARIO");
     if (!validName) return;
     // Nombre validación
 
     // Contraseña validación
     if($("#password").length > 0) {
         password = $("#password").val().trim();
-        if(password.length < 3 || password.length > 20) {
-            $("#error").text("El campo Contraseña debe tener entre 3 y 20 caracteres.");
+        if(password.length < 8 || password.length > 20) {
+            $("#error").text("El campo Contraseña debe tener entre 8 y 20 caracteres.");
             $("#password").focus();
             return;
         }
@@ -81,7 +81,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#phone").focus();
         return;
     }
-    let validPhone = await validateField("Teléfono", phone, "phone", "#userId", "validateUser.php");
+    let validPhone = await validateField("Teléfono", phone, "phone", "#userId", "USUARIO");
     if (!validPhone) return;
     // Teléfono validación
 
@@ -96,7 +96,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#address").focus();
         return;
     }
-    let validAddress = await validateField("Dirección", address, "address", "#userId", "validateUser.php");
+    let validAddress = await validateField("Dirección", address, "address", "#userId", "USUARIO");
     if (!validAddress) return;
     // Dirección validación
 

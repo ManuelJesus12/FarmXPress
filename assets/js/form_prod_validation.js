@@ -26,13 +26,13 @@ $("#btn-data-prod").on("click", async function() {
         $("#ref").focus();
         return;
     }else{
-        var validRef = await validateField("Referencia", ref, "ref", "#prodId", "validateProduct.php");
+        var validRef = await validateField("Referencia", ref, "ref", "#prodId", "PRODUCTO");
         if (!validRef) return;
         else $("#ref").removeClass("input-error");
     }
 
-    if (desc.length < 3 || desc.length > 255) {
-        $("#error").text("El campo Descripción debe tener al menos 3 caracteres.");
+    if (desc.length < 5 || desc.length > 255) {
+        $("#error").text("El campo Descripción debe tener al menos 5 caracteres.");
         $("#desc").addClass("input-error");
         $("#desc").focus();
         return;

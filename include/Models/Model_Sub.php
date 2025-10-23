@@ -13,13 +13,12 @@ class SubModel {
     ///////////////////////////////////////////////////////////////
 
     /* Función: Ver lista de suscripciones
-     * Params: $offset (paginación)
+     * Params: void
      * Return: Página de lista de suscripciones.
      */
-    public function listSub(&$offset=0){
+    public function listSub(){
         try{
-            $sql=$this->db->prepare("SELECT * FROM SUSCRIPCIONES LIMIT 11 OFFSET ?");
-            $sql->bindValue(1, 10*$offset, PDO::PARAM_INT);
+            $sql=$this->db->prepare("SELECT * FROM SUSCRIPCIONES");
             $sql->execute();
 
             if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);

@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Popup</title>
-    <link rel="stylesheet" href="../assets/css/formPopup.css">
+    <link rel="stylesheet" href="../assets/css/principal.css">
 </head>
 <body>
-    <!-------------------------------LOGIC------------------------------->
+    <!-------------------------------LÓGICA------------------------------->
     <?php
         include("../funciones.php");
         include("../_Indexes/Index_User.php");
@@ -22,7 +22,7 @@
             $title="Registro de Usuario";
         }
     ?>
-    <!-------------------------------LOGIC------------------------------->
+    <!-------------------------------LÓGICA------------------------------->
 
     <!-------------------------------FORM------------------------------->
     <div id="formPopup" class="popup" style="top: -90;">

@@ -277,5 +277,13 @@ class UserModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
+    function deleteCookies(){
+        setcookie("search-options",0,time()-1, "/");
+        setcookie("data-user",0,time()-1, "/");
+        setcookie("data-rev",0,time()-1, "/");
+        setcookie("UserType",0,time()-1, "/");
+        setcookie("UserAvatar",0,time()-1, "/");
+        echo "<script>localStorage.clear();</script>";
+    }
 }
 ?>

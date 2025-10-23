@@ -16,19 +16,13 @@ class SubController {
      * Params: $offset (paginación)
      * Return: Página de lista de subscripciones.
      */
-    public function viewListSub(&$offset){
-        $offset--;
+    public function viewListSub(){
+        $subControl=$this->subModel->listSub();
 
-        if($offset>=0){
-            $subControl=$this->subModel->listSub($offset);
-            if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
-                include("Views/View_List_Sub.php");
-            else
-                include("Views/View_User_Sub.php");
-        }else
-            header("Location: principal.php?methodSub=select&page=1");
-
-        return 1;
+        if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
+            include("Views/View_List_Sub.php");
+        else
+            include("Views/View_User_Sub.php");
     }
 
     ///////////////////////////////////////////////////////////////
@@ -50,12 +44,9 @@ class SubController {
      * Return: Redirección a la lista de subscripciones
      */
     public function insertSub(){
-        if(isset($_COOKIE["data-sub"])){
-            $data = json_decode($_COOKIE["data-sub"], true);
-            $this->subModel->insertSub($data);
-            header("Location: principal.php?methodSub=select&action=insert");
-        }else
-            return "No se han recibido datos para insertar la subscripción.";
+        include("../assets/php/vBackEndSub.php");
+        $this->subModel->insertSub($data);
+        header("Location: principal.php?methodSub=select&action=insert");
     }
 
     ///////////////////////////////////////////////////////////////
@@ -65,12 +56,9 @@ class SubController {
      * Return: Redirección a la lista de subscripciones
      */
     public function updateSub(&$id){
-        if(isset($_COOKIE["data-sub"])){
-            $data = json_decode($_COOKIE["data-sub"], true);
-            $this->subModel->updateSub($id, $data);
-            header("Location: principal.php?methodSub=select&action=update");
-        }else
-            return "No se han recibido datos para actualizar la subscripción.";
+        include("../assets/php/vBackEndSub.php");
+        $this->subModel->updateSub($id, $data);
+        header("Location: principal.php?methodSub=select&action=update");
     }
 
     ///////////////////////////////////////////////////////////////
