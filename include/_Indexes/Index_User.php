@@ -13,8 +13,6 @@ if(isset($_GET['methodUser'])){
 
     if(in_array("insert", $methods))
         $message = $userController -> insertUser();
-    if(in_array("uploadAvatar", $methods))
-        $result = $userController->uploadAvatar($_POST['userId'], $_FILES["avatar"]);
 
     // CONTROLLER FUNCTION HANDLING
     if($PDOConnect!=false && isset($_SESSION["usuario"])){

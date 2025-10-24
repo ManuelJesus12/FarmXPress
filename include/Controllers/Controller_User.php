@@ -65,7 +65,6 @@ class UserController {
                 header("Location: principal.php?methodUser=select&action=insert");
             else
                 $this->loginUser($data[2], $data[3]);
-            setcookie("user-avatar", 0, time()-1,"/");
         }else
             return "Error al registrar el usuario, datos incompletos o incorrectos.";
     }
@@ -84,10 +83,10 @@ class UserController {
         if($this->userModel->updateUser($id, $data)==1){
             if($_SESSION["usuario"]!="ADMINISTRADOR"){
                 $_SESSION["usuario"]=$data[2];
+                setcookie("UserAvatar", "assets/img/users/".$data[9], time()+3600*24*7, "/");
                 header("Location: ../index.php?action=2");
             }else
                 header("Location: principal.php?methodUser=select&action=update");
-            setcookie("user-avatar", 0, time()-1,"/");
         }
     }
 
@@ -126,12 +125,15 @@ class UserController {
      * Return: 1 si el login es exitoso, 0 si las credenciales son incorrectas, -1 si hay un error
      */
     public function loginUser(&$nombre, &$contraseña){
-        $nombre = trim($nombre); $contraseña = trim($contraseña);
+        $nombre = trim($nombre); $contraseña = trim($contraseña); $field="Nombre";
         $loginControl=$this->userModel->loginUser($nombre, $contraseña);
         
         if($loginControl==1){
-            $_SESSION["usuario"]=$nombre;
-            $this->userModel->deleteCookies();
+            $user = $this->selectUser($nombre, $field);
+            $file = ($usuario["Avatar"]==null) ? "assets/img/users/anon.png" : "assets/img/users/".$usuario["Avatar"];
+            $_SESSION["usuario"]=$user["Nombre"];
+            setcookie("UserType", $user["tipo"], time()+3600*24*7, "/");
+            setcookie("UserAvatar", $file, time()+3600*24*7, "/");
         }
         return $loginControl;
     }
@@ -144,23 +146,13 @@ class UserController {
      */
     public function logoutUser(){
         try{
-            $this->userModel->deleteCookies();
+            echo "<script>localStorage.clear();</script>";
+            setcookie("UserType",-1,time()-1, "/");
+            setcookie("UserAvatar",-1,time()-1, "/");
             session_destroy();
         }catch (Exception $e){
             return "Logout failed.";
         }
-    }
-
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-
-    /* Función: Procesar la subida del avatar de usuario
-     * Params: $id (ID del usuario), $file (archivo del avatar)
-     * Return: Resultado del procesamiento del avatar
-     */
-    public function uploadAvatar(&$id, &$file){
-        return $this->userModel->avatarProcess($id, $file);
     }
 
     ///////////////////////////////////////////////////////////////

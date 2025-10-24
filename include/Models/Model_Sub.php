@@ -60,7 +60,6 @@ class SubModel {
             for($i=0;$i<3;$i++) $sql->bindValue($i+1, $data[$i]);
             $sql->execute();
 
-            setcookie("data-sub", 0, time()-1,"/");
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -80,9 +79,8 @@ class SubModel {
             $sql->bindValue(4, $id, PDO::PARAM_INT);
             $sql->execute();
 
-            setcookie("data-sub", 0, time()-1,"/");
             return 1;
-        }catch(PDOException $e) {
+        }catch(PDOException $e){
             return -1;
         }
     }

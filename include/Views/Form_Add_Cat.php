@@ -29,8 +29,8 @@
     <div class="popup-content">
         <button class="close-btn" id="closeFormBtn">X</button>
         <h2><?php echo $title ?></h2>
-        <table class="table-form" style="margin:auto">
-            <form id="form-data-cat" action= <?php echo $action; ?> method="post">
+        <form id="form-data-cat" action= <?php echo $action; ?> method="post">
+            <table class="table-form" style="margin:auto">
                 <tr>
                     <td>Nombre Categoría: <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Categoría" name="name" id="name" value="<?php echo $categoryData["Nombre"]; ?>" required /></td>
@@ -49,10 +49,8 @@
 
                             if(is_array($categoryControl)){
                                 foreach($categoryControl as $category){
-                                    if($category['Categoría_ID'] == $categoryData['Cat_Padre_ID'])
-                                        echo "<option value='".$category['Categoría_ID']."' selected>".$category['Nombre']."</option>";
-                                    else
-                                        echo "<option value='".$category['Categoría_ID']."'>".$category['Nombre']."</option>";
+                                    $selected = ($category['Categoría_ID'] == $categoryData['Cat_Padre_ID']) ? 'selected' : '';
+                                    echo "<option value='".$category['Categoría_ID']."' $selected>".$category['Nombre']."</option>";
                                 }
                             }
                         ?>
@@ -62,8 +60,8 @@
                     <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
                 </tr>
                 <tr><td colspan="2"><input type="button" class="btn-log element-green-bg" id="btn-data-cat" value="Enviar" /></td></tr>
-            </form>
-        </table>
+            </table>
+        </form>
     </div>
     </div>
     <!-------------------------------FORM------------------------------->
@@ -88,8 +86,6 @@
                 return;
             }
 
-            var fieldValues = [name, desc, $("#parent_cat").val()];
-            document.cookie = "data-cat=" + encodeURIComponent(JSON.stringify(fieldValues)) + "; path=/; max-age=" + (60);
             $("#form-data-cat").submit();
         });
     </script>

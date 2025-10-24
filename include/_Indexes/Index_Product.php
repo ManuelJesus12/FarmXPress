@@ -18,9 +18,6 @@ if(isset($_GET['methodProd'])){
         $message = $productController -> updateProduct($_GET['prod']);
     if(in_array("delete", $methods))
         $message = $productController -> deleteProduct($_POST['deleteId']);
-    
-    if(in_array("uploadImage", $methods))
-        $result = $productController->uploadImage($_POST['prodId'], $_FILES['imagen']);
     /*--------------------------------------------------------------------------*/
 
     // INITIALIZE VIEW
@@ -36,7 +33,7 @@ if(isset($_GET['methodProd'])){
     /*--------------------------------------------------------------------------*/
     if(in_array("viewProduct", $methods)){
         if(isset($_GET['id'])) $message = $productController -> viewPageProduct($_GET['id']);
-        else header("Location: principal.php?methodProd=select");
+        else header("Location: principal.php?methodProd=select&page=1");
     }
     /*--------------------------------------------------------------------------*/
 }

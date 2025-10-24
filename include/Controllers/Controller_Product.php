@@ -47,7 +47,7 @@ class ProductController {
     public function viewPageProduct(&$id){
         $product=$this->selectProduct($id);
         if(is_array($product)) include("Views/View_User_Product.php");
-        else header("Location: principal.php?methodProd=select&error=1");
+        else header("Location: principal.php?methodProd=select&page=1&error=1");
     }
 
     ///////////////////////////////////////////////////////////////
@@ -69,12 +69,9 @@ class ProductController {
      * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function insertProduct(){
-        include("../assets/php/vBackEndProd.php");
-        if($this->productModel->insertProduct($data)==1){
-            setcookie("data-prod", 0, time()-1,"/");
-            setcookie("product-image", 0, time()-1,"/");
-            header("Location: principal.php?methodProd=select&action=insert");
-        }
+        include("../assets/php/vBackEndProduct.php");
+        $this->productModel->insertProduct($data);
+        header("Location: principal.php?methodProd=select&action=insert");
     }
 
     ///////////////////////////////////////////////////////////////
@@ -84,12 +81,9 @@ class ProductController {
      * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function updateProduct(&$id){
-        include("../assets/php/vBackEndProd.php");
-        if($this->productModel->updateProduct($id, $data)==1){      
-            setcookie("data-prod", 0, time()-1,"/");
-            setcookie("product-image", 0, time()-1,"/");
-            header("Location: principal.php?methodProd=select&action=update");
-        }
+        include("../assets/php/vBackEndProduct.php");
+        $this->productModel->updateProduct($id, $data);
+        header("Location: principal.php?methodProd=select&action=update");
     }
 
     ///////////////////////////////////////////////////////////////
@@ -99,10 +93,7 @@ class ProductController {
      * Return: Mensaje de éxito o error al eliminar el producto
      */
     public function deleteProduct(&$id){
-        if($this->productModel->deleteProduct($id)==1)
-            return "Producto eliminado correctamente";
-        else
-            return "Error al eliminar el Producto";
+        return $this->productModel->deleteProduct($id);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -112,26 +103,11 @@ class ProductController {
      * Return: Mensaje de éxito o error al activar/desactivar el producto
      */
     public function activeProduct(&$id, &$active=0){
-        if($this->productModel->activeProduct($id, $active)==1)
-            return "Producto activado/desactivado correctamente";
-        else
-            return "Error al activar/desactivar el Producto";
+        return $this->productModel->activeProduct($id, $active);
     }
     
     public function liberateProduct(&$uId){
         return $this->productModel->liberateProduct($uId);
-    }
-
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-
-    /* Función: Subir una imagen de producto
-     * Params: $id (ID del producto), $file (archivo de imagen)
-     * Return: Resultado del procesamiento de la imagen
-     */
-    public function uploadImage(&$id, &$file){
-        return $this->productModel->imageProcess($id, $file);
     }
 
     ///////////////////////////////////////////////////////////////

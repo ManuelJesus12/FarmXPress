@@ -130,7 +130,6 @@ class AdminModel {
                 $sql->bindParam(2, $data[2]);
             //*-----------------------------QUERY BIND------------------------------*//
 
-            setcookie("search-log", 0, time()-1);
             $sql->execute();
             if($sql->rowCount()!=0)
                 return $sql->fetchAll(PDO::FETCH_ASSOC);

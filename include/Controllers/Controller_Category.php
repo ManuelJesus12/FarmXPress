@@ -14,7 +14,7 @@ class CategoryController {
 
     /* Función: Listar Categorías
      * Params: $opt (opción de visualización)
-     * Return: 1 si se muestra la vista, o un array de categorías si $opt es 1
+     * Return: 0 si se muestra la vista, o un array de categorías si $opt es 1
      */
     public function viewListCategory(&$opt=0){
         $categoryControl=$this->categoryModel->listCategory();
@@ -39,15 +39,13 @@ class CategoryController {
     ///////////////////////////////////////////////////////////////
 
     /* Función: Insertar Categoría
-     * Params: Ninguno (los datos se obtienen de una cookie)
+     * Params: void
      * Return: Redirige a la vista de categorías después de insertar
      */
     public function insertCategory(){
         include("../assets/php/vBackEndCatPerk.php");
-        if($this->categoryModel->insertCategory($data)==1){
-            setcookie("data-cat", "", time() - 3600, "/");
-            header("Location: principal.php?methodCat=select&action=insert");
-        }
+        $this->categoryModel->insertCategory($data);
+        header("Location: principal.php?methodCat=select&action=insert");
     }
 
     ///////////////////////////////////////////////////////////////
@@ -69,10 +67,7 @@ class CategoryController {
      * Return: Mensaje de éxito o error al eliminar la categoría
      */
     public function deleteCategory(&$id){
-        if($this->categoryModel->deleteCategory($id)==1)
-            return "Categoría eliminada correctamente";
-        else
-            return "Error al eliminar la categoría";
+        return $this->categoryModel->deleteCategory($id);
     }
 
     ///////////////////////////////////////////////////////////////

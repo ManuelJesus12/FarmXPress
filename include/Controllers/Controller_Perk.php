@@ -35,7 +35,7 @@ class PerkController {
     ///////////////////////////////////////////////////////////////
 
     /* Función: Insertar una ventaja
-     * Params: No recibe parámetros, los datos se obtienen de la cookie "data-perk"
+     * Params: void
      * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function insertPerk(){
@@ -48,7 +48,7 @@ class PerkController {
     ///////////////////////////////////////////////////////////////
 
     /* Función: Actualizar una ventaja
-     * Params: No recibe parámetros, los datos se obtienen de la cookie "data-perk"
+     * Params: void
      * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function updatePerk(){

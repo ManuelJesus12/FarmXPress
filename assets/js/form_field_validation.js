@@ -3,7 +3,6 @@ async function validateField(field, value, fieldName, idField, type) {
     if($(idField).length > 0) var id = $(idField).val().trim();
     else var id= null;
 
-    console.log(type);
     return new Promise((resolve, reject) => {
         $.ajax({
             url: '../assets/php/validateField.php',

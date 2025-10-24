@@ -131,34 +131,12 @@ $("#btn-data-user").on("click", async function(event){
             $("#error").text("El campo Avatar no puede superar el 1MB.");
             $("#avatar").focus();
             return;
-        } else {
-            var formData = new FormData();
-            var file=$("#avatar").get(0).files[0];
-            if($("#userId").length > 0) var id = $("#userId").val().trim(); else var id="";
-
-            formData.append('userId', id);
-            formData.append('avatar', file);
-
-            $.ajax({
-                url: 'principal.php?methodUser=uploadAvatar',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    console.log('Upload response:', response.text);
-                }
-            });
-
-            await sleep(500);
-        }
+        } 
+        await sleep(500);
     }
     // Subir Avatar
 
-    var fieldValues = [email, cif, name, password, phone, address, region, province, $("#tipo").val() ?? "C"];
-    document.cookie = "data-user=" + encodeURIComponent(JSON.stringify(fieldValues)) + "; max-age=" + (60);
     $("#form-data-user").submit();
-    
     event.preventDefault();
 });
 ///////////////////////////////////////////////////////////////

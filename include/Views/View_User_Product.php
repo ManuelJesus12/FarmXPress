@@ -1,23 +1,22 @@
 <!--------------------------------------------LÓGICA--------------------------------------------->
 <?php 
 include("_Indexes/Index_Review.php"); 
-include("_Indexes/Index_Category.php"); 
 include("_Indexes/Index_Rent.php"); 
 
+$cat  = $product["CAT"] ?? "Sin Categoría";
 $file = ($product['Imagen']!=null) ? $product['Imagen'] : "anon.png";
-$reviewControl = $reviewController -> viewListReview($product["Producto_ID"]); //Reseñas de otros usuarios
-$categoryP = $categoryController   -> selectCategory($product["Categoría_ID"])['Nombre'] ?? "Sin Categoría"; //Categorías
+setcookie("data-rev", 0, time() - 3600, "/");
 
+$reviewControl = $reviewController -> viewListReview($product["Producto_ID"]); //Reseñas de otros usuarios
 if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
     $reviewUser    = $reviewController -> selectReview($product["Producto_ID"]); //Ha escrito una reseña el usuario?
     $rentControl   = $rentController   -> selectRent($product["Producto_ID"]); //Ha sido alquilado el producto?
 }else  $reviewUser = $rentControl = 0;
-setcookie("data-rev", 0, time() - 3600, "/");
 ?>
 <!--------------------------------------------LÓGICA--------------------------------------------->
 
 <!--------------------------------------------FICHA DETALLES--------------------------------------------->
-<?php if(isset($_GET["success"])){ ?> <script> showboxContent("<?php echo $_GET["success"]; ?>"); </script> <?php } ?>
+<?php if(isset($_GET["success"])){ ?> <script> showBoxActionRev("<?php echo $_GET["success"]; ?>"); </script> <?php } ?>
 
 <article class="col-12 list-prod form-log site-section rounded">
     <h2 class='text-center' style='margin-bottom:15px'>Detalles del Producto</h2>
@@ -35,7 +34,7 @@ setcookie("data-rev", 0, time() - 3600, "/");
                 <div class="card-body">
                     <p class="mb-2"><strong>Precio Mensual:</strong><br><span style="color:limegreen; font-size: 1.2em"> <?php echo $product["Precio_Mensual"]; ?>€</span></p>
                     <p class="mb-2"><strong>Descripción:</strong> <?php echo $product["Descripción"]; ?></p>
-                    <p class="mb-3"><strong>Categoría:</strong> <?php echo $categoryP; ?></p>
+                    <p class="mb-3"><strong>Categoría:</strong> <?php echo $cat; ?></p>
                     <form action="principal.php?methodRent=viewStripe" method="post">
                         <input type="hidden" name="pId" value='<?php echo $product["Producto_ID"]; ?>'>
                         <input type="hidden" name="price" value='<?php echo $product["Precio_Mensual"]; ?>'>
@@ -72,7 +71,7 @@ setcookie("data-rev", 0, time() - 3600, "/");
     <?php if(!is_array($reviewUser) && is_array($rentControl) && $_SESSION["usuario"]!="ADMINISTRADOR"){ ?>
     <div class='col-6 rounded text-center mb-5' style='margin:auto;'>
         <h2>Escribir una reseña</h2>
-        <form action='principal.php?methodRev=insert' method='post'>
+        <form id='form-data-review' action='principal.php?methodRev=insert' method='post'>
             <input type="hidden" name="pId" id="pId" value='<?php echo $product["Producto_ID"]; ?>' readonly></input>
             <strong>Calificación: </strong>
             <a href="#"><i class="fa-regular fa-star icon-star-rev" id="star-1"></i></a>
@@ -81,8 +80,8 @@ setcookie("data-rev", 0, time() - 3600, "/");
             <a href="#"><i class="fa-regular fa-star icon-star-rev" id="star-4"></i></a>
             <a href="#"><i class="fa-regular fa-star icon-star-rev" id="star-5"></i></a>
             
-            <textarea placeholder="Tu mensaje..." class='form-control' id='res' name='res' rows='3' required></textarea>
-            <input type="submit" value="Enviar" class="btn btn-log element-green-bg mt-2">
+            <textarea class='form-control' name='review' id='review' rows='3' placeholder="Tu mensaje..." required></textarea>
+            <input type="button" id="btn-data-review" class="btn btn-log element-green-bg mt-2" value="Enviar">
         </form>
     </div>
     <?php } ?>
@@ -102,23 +101,24 @@ setcookie("data-rev", 0, time() - 3600, "/");
                 <input type="radio" id="highest" name="orderRev" value="highest">
                 <label for="highest">Mejor valoradas</label><br>
             </div>
+
+            <!--------------------------------------------NAV BUTTONS--------------------------------------------->
+            <?php
+                $class0=$class1=$class2="btn btn-log element-green-bg ";
+                $class1=$class0."not-visible";
+                if(count($reviewControl)<=5) $class2=$class0."not-visible";
+
+                echo "<div class='nav-buttons site-article'>";
+                    echo "<div class='btn-group'><a class='$class1' id='btn-prev' href='#'>Anterior</a></div>";
+                    echo "<div class='btn-group'><a class='$class0' id='btn-page' href='#'>1</a></div>";
+                    echo "<div class='btn-group'><a class='$class2' id='btn-next' href='#'>Siguiente</a></div>";
+                echo "</div>";
+            ?>
+            <!--------------------------------------------NAV BUTTONS--------------------------------------------->
+            
         <?php }else echo "<h4 class='text-danger'>Aún no hay reseñas para este producto</h4>"; ?>
     </div>
 <!--------------------------------------------LISTA RESEÑAS--------------------------------------------->
-
-<!--------------------------------------------NAV BUTTONS--------------------------------------------->
-<?php
-    $class0=$class1=$class2="btn btn-log element-green-bg ";
-    $class1=$class0."not-visible";
-    if(count($reviewControl)<=5) $class2=$class0."not-visible";
-
-    echo "<div class='nav-buttons site-article'>";
-        echo "<div class='btn-group'><a class='$class1' id='btn-prev' href='#'>Anterior</a></div>";
-        echo "<div class='btn-group'><a class='$class0' id='btn-page' href='#'>1</a></div>";
-        echo "<div class='btn-group'><a class='$class2' id='btn-next' href='#'>Siguiente</a></div>";
-    echo "</div>";
-?>
-<!--------------------------------------------NAV BUTTONS--------------------------------------------->
 </article>
 
 <!-------------------------------SCRIPT------------------------------->
@@ -154,16 +154,15 @@ setcookie("data-rev", 0, time() - 3600, "/");
     ////////////////////////////CONTENIDO////////////////////////////
     function createContent(review){
         let file = (review["Imagen"]!=null) ? review["Imagen"] : "anon.png";
-        let starsHtml = "";
+        let starsHtml = deleteBtn = "";
+        
+        if(review['Nombre']==sessionUser || sessionUser=='ADMINISTRADOR')
+            deleteBtn = "<a href='#' onclick='deleteReview("+review['Reseña_ID']+")' class='btn btn-danger btn-delete mt-2'>Eliminar</a>";
         for(let i=1; i<=5; i++){
             let classStar = (i<=review['Calificación']) ? 'fas' : 'fa-regular';
             starsHtml += "<i class='fa-star icon-rev "+classStar+"'></i>";
         }
-
-        let deleteBtn = "";
-        if(review['Nombre']==sessionUser || sessionUser=='ADMINISTRADOR')
-            deleteBtn = "<a href='#' onclick='deleteReview("+review['Reseña_ID']+")' class='btn btn-danger btn-delete mt-2'>Eliminar</a>";
-
+        
         $("#boxContent").append(
             "<div id='rev-"+review["Reseña_ID"]+"' class='review card col-lg-12 col-md-5 col-sm-10 mb-3'>"+
                 "<div class='card-body'>"+
@@ -193,7 +192,6 @@ setcookie("data-rev", 0, time() - 3600, "/");
                 url: "principal.php?methodRev=delete",
                 data: {id: id},
                 success: function(response) {
-                    showboxContent(-1);
                     $("#rev-"+id).remove();
                     window.location.reload();
                 }
@@ -205,7 +203,20 @@ setcookie("data-rev", 0, time() - 3600, "/");
 </script>
 
 <script>
-    //////////////////////////////CALIFICACION////////////////////////////////
+    //////////////////////////////CONTROL ESCRITURA RESEÑA////////////////////////////////
+    $("#btn-data-review").on("click", function(){
+        let review = $("#review").val().trim();
+        if (review.length < 5 || review.length > 255) {
+            $("#review").attr("placeholder","La reseña debe tener entre 5 y 255 caracteres");
+            $("#review").addClass("input-error");
+            $("#review").focus();
+            return;
+        }
+        $("#form-data-review").submit();
+    });
+    //////////////////////////////CONTROL ESCRITURA RESEÑA////////////////////////////////
+
+    //////////////////////////////CONTROL CALIFICACIÓN////////////////////////////////
     $(".icon-star-rev").on("click", function() {
         var id = $(this).attr("id").split("-")[1];
         var stars = $(".icon-star-rev");
@@ -217,6 +228,6 @@ setcookie("data-rev", 0, time() - 3600, "/");
         document.cookie = "data-rev=" + id + "; path=/";
         event.preventDefault();
     });
-    //////////////////////////////CALIFICACION////////////////////////////////
+    //////////////////////////////CONTROL CALIFICACIÓN////////////////////////////////
 </script>
 <!-------------------------------SCRIPT------------------------------->

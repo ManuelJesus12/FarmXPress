@@ -30,8 +30,8 @@
     <div class="popup-content">
         <button class="close-btn" id="closeFormBtn">X</button>
         <h2><?php echo $title ?></h2>
-        <table class="table-form" style="margin:auto">
-            <form id="form-data-prod" action= <?php echo $action; ?> method="post" enctype='multipart/form-data'>
+        <form id="form-data-prod" action= <?php echo $action; ?> method="post" enctype='multipart/form-data'>
+            <table class="table-form" style="margin:auto">
                 <?php if(isset($_GET["id"])){ ?>
                     <tr>
                         <td colspan="2"><input type="hidden" name="prodId" id="prodId" value="<?php echo $_GET["id"]; ?>" /></td>
@@ -63,11 +63,9 @@
 
                             if($categoryControl!=0){
                                 foreach($categoryControl as $category){
-                                    if($category['Categoría_ID'] == $parent_cat)
-                                        echo "<option value='".$category['Categoría_ID']."' selected>".$category['Nombre']."</option>";
-                                    else
-                                        echo "<option value='".$category['Categoría_ID']."'>".$category['Nombre']."</option>";
-                                }
+                                        $selected = ($category['Categoría_ID'] == $productData["Categoría_ID"]) ? 'selected' : '';
+                                        echo "<option value='".$category['Categoría_ID']."' $selected>".$category['Nombre']."</option>";
+                                    }
                             }
                         ?>
                     </select></td>
@@ -80,8 +78,8 @@
                     <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
                 </tr>
                 <tr><td colspan="2"><input type="button" class="btn-log element-green-bg" id="btn-data-prod" value="Enviar" /></td></tr>
-            </form>
-        </table>
+            </table>
+        </form>
     </div>
     </div>
     <!-------------------------------FORM------------------------------->

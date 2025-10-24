@@ -50,7 +50,6 @@ class MemberController {
      * Return: Redirección con mensaje de éxito o error
      */
     public function insertMember(&$sId){
-        setcookie("data-member", 0, time() - 3600, "/");
         if($this->memberModel->insertMember($sId)==1)
             header("Location: principal.php?methodSub=select&page=1&action=1");
         else

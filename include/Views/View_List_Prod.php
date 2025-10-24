@@ -50,6 +50,7 @@ if(is_array($productControl)){
     ////////////////////////////CONTENIDO////////////////////////////
     function createContent(prod){
         let file = (prod["Imagen"]!=null) ? prod["Imagen"] : "anon.png";
+        let cat  = (prod["CAT"]!=null) ? prod["CAT"] : "Ninguna";
         let buttons=estado = "";
 
         if(prod["Estado"]==false){
@@ -70,7 +71,7 @@ if(is_array($productControl)){
                     "<div class='col-6'><img class='card-image img-fluid rounded shadow' src='../assets/img/products/"+file+"' style='width: 75%; height:auto' /></div>"+
                     "<div class='col-6'>"+
                         "<h5 class='card-title'>"+prod["Descripción"]+"</h5>"+
-                        "<p class='card-text'>Categoría: <span>"+prod['CAT']+"</span></p>"+
+                        "<p class='card-text'>Categoría: <span>"+cat+"</span></p>"+
                         "<p class='card-text'>Precio Mensual: <span>"+prod['Precio_Mensual']+"€</span></p>"+
                         estado+
                         "</div>"+

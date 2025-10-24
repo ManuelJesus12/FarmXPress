@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php if(dirChangeProgram()==1) $dir="../"; else $dir=""; ?>
+<?php $dir=(dirChangeProgram()==1) ? "../" : ""; ?>
 
 <head>
     <meta charset="utf-8">

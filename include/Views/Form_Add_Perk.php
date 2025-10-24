@@ -32,8 +32,8 @@
     <div class="popup-content">
         <button class="close-btn" id="closeFormBtn">X</button>
         <h2><?php echo $title ?></h2>
-        <table class="table-form" style="margin:auto">
-            <form id="form-data-perk" action= <?php echo $action; ?> method="post">
+        <form id="form-data-perk" action= <?php echo $action; ?> method="post">
+            <table class="table-form" style="margin:auto">
                 <tr style="display:none"><td><input type="text" name="id" id="id" value="<?php echo $id; ?>" /></td></tr>
                 <tr>
                     <td>Título Ventaja:  <span class="error">*</span></td>
@@ -47,8 +47,8 @@
                     <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
                 </tr>
                 <tr><td colspan="2"><input type="button" class="btn-log element-green-bg" id="btn-data-perk" value="Enviar" /></td></tr>
-            </form>
-        </table>
+            </table>
+        </form>
     </div>
     </div>
     <!-------------------------------FORM------------------------------->
@@ -72,8 +72,6 @@
                 return;
             }
 
-            var fieldValues = [name, desc, $("#id").val()];
-            document.cookie = "data-perk=" + encodeURIComponent(JSON.stringify(fieldValues)) + "; path=/; max-age=" + (60);
             $("#form-data-perk").submit();
         });
     </script>

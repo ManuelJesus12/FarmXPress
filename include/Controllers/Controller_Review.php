@@ -39,21 +39,9 @@ class ReviewController {
      * Return: Redirección a la vista del producto
      */
     public function insertReview(){
-        include("../assets/php/validateBackEnd.php");
+        include("../assets/php/vBackEndReview.php");
         $this->reviewModel->insertReview($data);
         header("Location: principal.php?methodProd=viewProduct&id=".$_POST["pId"]."&success=1");
-    }
-
-    ///////////////////////////////////////////////////////////////
-
-    /* Función: Actualizar una reseña existente
-     * Params: No recibe parámetros, utiliza datos de la cookie
-     * Return: Redirección a la vista del producto
-     */
-    public function updateReview(){
-        include("../assets/php/validateBackEnd.php");
-        $this->reviewModel->updateReview($data);
-        header("Location: principal.php?methodProd=viewProduct&id=".$_POST["pId"]);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -63,8 +51,7 @@ class ReviewController {
      * Return: Mensaje de éxito o error
      */
     public function deleteReview(&$id){
-        if($this->reviewModel->deleteReview($id)==1) return "Ventaja eliminada correctamente";
-        else return "Error al eliminar la ventaja";
+        return $this->reviewModel->deleteReview($id);
     }
 
     ///////////////////////////////////////////////////////////////

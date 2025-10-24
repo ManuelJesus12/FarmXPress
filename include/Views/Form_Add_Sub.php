@@ -29,8 +29,8 @@
     <div class="popup-content">
         <button class="close-btn" id="closeFormBtn">X</button>
         <h2><?php echo $title ?></h2>
-        <table class="table-form" style="margin:auto">
-            <form id="form-data-sub" action= <?php echo $action; ?> method="post">
+        <form id="form-data-sub" action= <?php echo $action; ?> method="post">
+            <table class="table-form" style="margin:auto">
                 <tr>
                     <td>Nombre Suscripción:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Suscripción" name="name" id="name" value="<?php echo $subData["Nombre"]; ?>" required /></td>
@@ -47,8 +47,8 @@
                     <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
                 </tr>
                 <tr><td colspan="2"><input type="button" class="btn-log element-green-bg" id="btn-data-sub" value="Enviar" /></td></tr>
-            </form>
-        </table>
+            </table>
+        </form>
     </div>
 </div>
 <!-------------------------------FORM------------------------------->
@@ -79,8 +79,6 @@
             return;
         }
 
-        var fieldValues = [name, price, months];
-        document.cookie = "data-sub=" + encodeURIComponent(JSON.stringify(fieldValues)) + "; path=/; max-age=" + (60);
         $("#form-data-sub").submit();
     });
 </script>

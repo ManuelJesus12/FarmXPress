@@ -60,36 +60,16 @@ class ReviewModel {
     public function insertReview(&$data){
         try{
             $sql=$this->db->prepare("INSERT INTO RESEÑAS (Comentario, Calificación, Fecha_Hora, Producto_ID, Usuario_ID) VALUES (?, ?, ?, ?, (SELECT USUARIO_ID FROM USuARIOS WHERE NOMBRE=?))");
-            $sql->bindValue(1, $_POST["res"]);
-            $sql->bindValue(2, $_COOKIE["data-rev"]);
+            $sql->bindValue(1, $data[0]);
+            $sql->bindValue(2, $data[1]);
             $sql->bindValue(3, date("Y-m-d H:i:s"));
-            $sql->bindValue(4, $_POST["pId"]);
+            $sql->bindValue(4, $data[2]);
             $sql->bindValue(5, $_SESSION["usuario"], PDO::PARAM_STR);
             $sql->execute();
 
-            setcookie("data-rev", 0, time()-1,"/");
             return 1;
         }catch(PDOException $e) {
             echo $e->getMessage();
-            return -1;
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////
-
-    /* Función: Actualizar una reseña existente
-     * Params: $data (datos de la reseña)
-     * Return: 1 si se actualiza correctamente, -1 en caso de error
-     */
-    public function updateReview(&$data){
-        try{
-            $sql=$this->db->prepare("UPDATE RESEÑAS SET Nombre=?, Descripción=? WHERE RESEÑA_ID=?");
-            for($i=0;$i<3;$i++) $sql->bindValue($i+1, $data[$i]);
-            $sql->execute();
-
-            setcookie("data-rev", 0, time()-1,"/");
-            return 1;
-        }catch(PDOException $e) {
             return -1;
         }
     }

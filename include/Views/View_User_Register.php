@@ -3,9 +3,9 @@
     $userData=['Usuario_ID'=>'', 'Nombre'=>'', 'CIF'=>'', 'Email'=>'', 'Contraseña'=>'', 'Teléfono'=>'', 'Dirección'=>''];
     
     if($_GET["methodUser"]=="viewUpdate"){
+        $title="Actualizar Usuario"; $field="Nombre";
         $userData=$this->selectUser($_SESSION["usuario"], $field);
         $action="principal.php?methodUser=update";
-        $title="Actualizar Usuario"; $field="Nombre";
     }else{
         $action="principal.php?methodUser=insert-login";
         $title="Registro de Usuario";
@@ -17,8 +17,8 @@
 <article class="col-8 form-log site-section rounded pb-2">
     <?php echo "<h2>$title</h2>"; ?>
 
-    <table class="table-form" style="margin:auto">
-        <form action="<?php echo $action; ?>" method="post" enctype='multipart/form-data' id="form-data-user">
+    <form action="<?php echo $action; ?>" method="post" enctype='multipart/form-data' id="form-data-user">
+        <table class="table-form" style="margin:auto">
             <?php if($_GET["methodUser"]=="viewUpdate"){ ?>
                 <tr>
                     <td colspan="2"><input type="hidden" name="userId" id="userId" class="input-form" value="<?php echo $userData["Usuario_ID"] ?>" /></td>
@@ -85,7 +85,7 @@
                 <td><span>Acepto los <a href="../index.php?view=legal">Términos y Condiciones</a> y la <a href="../index.php?view=privacy">Política de Privacidad</a></span></td>
             </tr>
             <?php } ?>
-            <tr><td colspan="2"><input type="button" class="btn-log element-green-bg" id="btn-data-user"  class="form-input" value="Enviar" /></td></tr>
+            <tr><td colspan="2"><input type="button" id="btn-data-user" class="btn-log element-green-bg form-input" value="Enviar" /></td></tr>
             <tr>
                 <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
             </tr>
@@ -97,8 +97,8 @@
                     <td colspan="2">¿Deseas ser uno de nuestros Proveedores? <a href="../index.php?view=contact">Contáctanos</a></td>
                 </tr>
             <?php } ?>
-        </form>
-    </table>
+        </table>
+    </form>
 </article>
 <!-------------------------------FORM------------------------------->
 

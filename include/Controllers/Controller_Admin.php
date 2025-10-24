@@ -99,6 +99,8 @@ class AdminController {
             $data = json_decode($_COOKIE["search-log"], true);
             $logControl=$this->adminModel->listLog($data, $type);
             include("Views/Admin_Log_View.php");
+
+            setcookie("search-log", 0, time()-1);
         }
         return;
     }

@@ -29,8 +29,8 @@
     <div class="popup-content">
         <button class="close-btn" id="closeFormBtn" style="top: 105;">X</button>
         <h2><?php echo $title ?></h2>
-        <table class="table-form" style="margin:auto">
-            <form id="form-data-user" action= <?php echo $action; ?> method="post" enctype='multipart/form-data'>
+        <form id="form-data-user" action= <?php echo $action; ?> method="post" enctype='multipart/form-data'>
+            <table class="table-form" style="margin:auto">
                 <?php if(isset($_GET["id"])){ ?>
                     <tr>
                         <td colspan="2"><input type="hidden" name="userId" id="userId" value="<?php echo $_GET["id"]; ?>" /></td>
@@ -95,8 +95,8 @@
                     <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
                 </tr>
                 <tr><td colspan="2"><input type="button" class="btn-log element-green-bg" id="btn-data-user" value="Enviar" /></td></tr>
-            </form>
-        </table>
+            </table>
+        </form>
     </div>
     </div>
     <!-------------------------------FORM------------------------------->

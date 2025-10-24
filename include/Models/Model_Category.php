@@ -66,7 +66,6 @@ class CategoryModel {
             for($i=0;$i<3;$i++) $sql->bindValue($i+1, $data[$i]);
             $sql->execute();
 
-            setcookie("data-cat", 0, time()-1,"/");
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -90,7 +89,6 @@ class CategoryModel {
             $sql->bindValue(4, $id, PDO::PARAM_INT);
             $sql->execute();
 
-            setcookie("data-cat", 0, time()-1,"/");
             return 1;
         }catch(PDOException $e) {
             return -1;

@@ -59,17 +59,13 @@ class UserModel {
      */
     public function insertUser(&$data){
         try{
-            //*-----------------------------DATA------------------------------*//
-            if(isset($_COOKIE["user-avatar"])) $file=$_COOKIE["user-avatar"]; else $file=null;
-            $data[3]=password_hash($data[3], PASSWORD_BCRYPT);
             $date=date("Y-m-d H:i:s");
-            //*-----------------------------DATA------------------------------*//
 
             //*-----------------------------INSERT CODE------------------------------*//
             $sql=$this->db->prepare("INSERT INTO USUARIOS (Email, CIF, Nombre, Contraseña, Teléfono, Dirección, Comunidad, Provincia, Tipo, Fecha_Registro, Avatar, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for($i=0;$i<=8;$i++) $sql->bindValue($i+1, $data[$i]);
             $sql->bindValue(10, $date); //Fecha_Registro
-            $sql->bindValue(11, $file); //Avatar
+            $sql->bindValue(11, $data[9]); //Avatar
 
             if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
                 $sql->bindValue(12, 1, PDO::PARAM_INT);
@@ -98,16 +94,11 @@ class UserModel {
     /* Función: Actualizar un usuario existente
      * Params: $id (ID del usuario), $data (datos del usuario)
      * Return: 1 si se actualiza correctamente, -1 en caso de error
-     */
+     */ 
+
     public function updateUser(&$id, &$data){
         try{
-            if(isset($_COOKIE["user-avatar"])) $file=$_COOKIE["user-avatar"]; 
-            else{
-                $user=$this->selectUser($id);
-                if(is_array($user)) $file=$user['Avatar']; else $file=null;
-            }
-
-            $sql=$this->db->prepare("UPDATE USUARIOS SET Email=?, CIF=?, Nombre=?, Teléfono=?, Dirección=?, Comunidad=?, Provincia=?, Avatar=? WHERE USUARIO_ID=?");
+            $sql=$this->db->prepare("UPDATE USUARIOS SET Email=?, CIF=?, Nombre=?, Teléfono=?, Dirección=?, Comunidad=?, Provincia=?, Avatar=? WHERE USUARIO_ID=?");            
             $sql->bindValue(1, $data[0]); //Email
             $sql->bindValue(2, $data[1]); //Cif
             $sql->bindValue(3, $data[2]); //Nombre
@@ -115,7 +106,7 @@ class UserModel {
             $sql->bindValue(5, $data[5]); //Direccion
             $sql->bindValue(6, $data[6]); //Comunidad
             $sql->bindValue(7, $data[7]); //Provincia
-            $sql->bindValue(8, $file);
+            $sql->bindValue(8, $data[9]);
             $sql->bindValue(9, $id);
             $sql->execute();
 
@@ -195,45 +186,16 @@ class UserModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Procesar el avatar del usuario
-     * Params: $id (ID del usuario), $file (archivo del avatar)
-     * Return: Nombre del avatar procesado, -1 en caso de error
-     */
-    public function avatarProcess(&$id, &$file){
-        if($id!=null && $id!=""){
-            $oldAvatar = $this->selectUser($id)['Avatar'];
-            if($oldAvatar) unlink("../assets/img/users/$oldAvatar");
-            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-            $avatar = $id . "." . $extension;
-        }else{
-            $idName = $this ->db->prepare("SELECT MAX(USUARIO_ID) AS 'LastID' FROM USUARIOS");
-            $idName->execute();
-            $idName = $idName->fetch(PDO::FETCH_ASSOC)['LastID'];
-            if($idName==null) $idName=1; else $idName++;
-            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-            $avatar = $idName . "." . $extension;
-        }
-
-        $imagentemp = $file["tmp_name"];
-        move_uploaded_file($imagentemp, "../assets/img/users/".$avatar);
-        setcookie("user-avatar", $avatar, time()+3600,"/");
-        return $avatar;
-    }
-
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////
-
     /* Función: Contar el número de usuarios
      * Params: No recibe parámetros
      * Return: Número total de usuarios en la base de datos, 0 si no hay usuarios, -1 en caso de error
      */
     public function countUser(){
         try{
-            $sql=$this->db->prepare("SELECT COUNT(USUARIO_ID) AS 'COUNT' FROM USUARIOS");
+            $sql=$this->db->prepare("SELECT COUNT(USUARIO_ID) AS 'COUNT', MAX(USUARIO_ID) AS 'MAX' FROM USUARIOS");
             $sql->execute();
             
-            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC)[0]['COUNT'];
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC)[0];
             else return 0;
         }catch(PDOException $e) {
             return 0;
@@ -276,14 +238,5 @@ class UserModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
-
-    function deleteCookies(){
-        setcookie("search-options",0,time()-1, "/");
-        setcookie("data-user",0,time()-1, "/");
-        setcookie("data-rev",0,time()-1, "/");
-        setcookie("UserType",0,time()-1, "/");
-        setcookie("UserAvatar",0,time()-1, "/");
-        echo "<script>localStorage.clear();</script>";
-    }
 }
 ?>

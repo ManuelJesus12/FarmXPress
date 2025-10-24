@@ -2,12 +2,12 @@
 $("#btn-data-prod").on("click", async function() {
     var name = $("#name").val().trim();
     var desc = $("#desc").val().trim();
-    var ref = $("#ref").val().trim();
+    var ref  = $("#ref").val().trim();
     var price = $("#price").val().trim();
-    var file = $("#imagen").val().trim();
+    var file  = $("#imagen").val().trim();
 
-    if (name.length < 3 || name.length > 100) {
-        $("#error").text("El campo Nombre debe tener entre 3 y 100 caracteres.");
+    if (name.length < 5 || name.length > 100) {
+        $("#error").text("El campo Nombre debe tener entre 5 y 100 caracteres.");
         $("#name").addClass("input-error");
         $("#name").focus();
         return;
@@ -49,39 +49,19 @@ $("#btn-data-prod").on("click", async function() {
 
     if(file != "") {
         var fileExt = $("#imagen").val().split('.').pop().toLowerCase();
-        if($.inArray(fileExt, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
-            $("#error").text("El campo Imagen debe estar en formatos GIF, PNG, JPG o JPEG.");
+        if($.inArray(fileExt, ['png', 'jpg', 'jpeg']) == -1) {
+            $("#error").text("El campo Imagen debe estar en formatos PNG, JPG o JPEG.");
             $("#imagen").focus();
             return;
         } else if ($("#imagen").get(0).files[0].size > 1000000) {
             $("#error").text("El campo imagen no puede superar el 1MB.");
             $("#imagen").focus();
             return;
-        }else{
-            var formData = new FormData();
-            var file=$("#imagen").get(0).files[0];
-            if($("#prodId").length > 0) var id = $("#prodId").val().trim(); else var id="";
-
-            formData.append('prodId', id);
-            formData.append('imagen', file);
-
-            $.ajax({
-                url: 'principal.php?methodProd=uploadImage',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    console.log('Upload response:', response);
-                }
-            });
-
-            await sleep(1000);
         }
+        await sleep(1000);
     }
 
-    var fieldValues = [name, desc, ref, price, $("#cat").val()];
-    document.cookie = "data-prod=" + encodeURIComponent(JSON.stringify(fieldValues)) + "; path=/; max-age=" + (60);
-    $("#form-data-prod").submit();   
+    $("#form-data-prod").submit();
+    event.preventDefault();
 });
 ///////////////////////////////////////////////////////////////

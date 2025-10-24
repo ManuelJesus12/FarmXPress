@@ -52,7 +52,7 @@ class PerkModel {
     ///////////////////////////////////////////////////////////////
 
     /* Función: Insertar una ventaja
-     * Params: Recibe la cookie "data-perk"
+     * Params: Array con los datos de la ventaja
      * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function insertPerk(&$data){
@@ -61,7 +61,6 @@ class PerkModel {
             for($i=0;$i<3;$i++) $sql->bindValue($i+1, $data[$i]);
             $sql->execute();
 
-            setcookie("data-perk", 0, time()-1,"/");
             return 1;
         }catch(PDOException $e) {
             echo $e->getMessage();
@@ -72,7 +71,7 @@ class PerkModel {
     ///////////////////////////////////////////////////////////////
 
     /* Función: Actualizar una ventaja
-     * Params: Recibe la cookie "data-perk"
+     * Params: Array con los datos de la ventaja
      * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function updatePerk(&$data){
@@ -81,7 +80,6 @@ class PerkModel {
             for($i=0;$i<3;$i++) $sql->bindValue($i+1, $data[$i]);
             $sql->execute();
 
-            setcookie("data-perk", 0, time()-1,"/");
             return 1;
         }catch(PDOException $e) {
             return -1;
