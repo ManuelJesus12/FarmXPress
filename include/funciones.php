@@ -49,14 +49,15 @@ function navegacion(){
     $dirUrl = ($dirLocation==0) ? "include/" : "";
 
     if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
-        if(!isset($_COOKIE["UserType"]) || !isset($_COOKIE["UserAvatar"])){
+        if(!isset($_COOKIE["UserType"]) || !isset($_COOKIE["UserAvatar"]) || !isset($_COOKIE["UserStatus"])){
             include($dirNav."_Indexes/Index_User.php"); $field="Nombre";
 
             $usuario=$userController->selectUser($_SESSION["usuario"], $field);
+            $tipo=$usuario['Tipo']; $stat=$usuario['Estado'];
             $file = ($usuario["Avatar"]==null) ? "assets/img/users/anon.png" : "assets/img/users/".$usuario["Avatar"];
-            $tipo=$usuario['Tipo'];
 
             setcookie("UserType", $tipo, time()+3600*24*7, "/");
+            setcookie("UserStatus", $stat, time()+3600*24*7, "/");
             setcookie("UserAvatar", $file, time()+3600*24*7, "/");
         }else{ $tipo=$_COOKIE["UserType"]; $file=$dirNav.$_COOKIE["UserAvatar"]; }
 

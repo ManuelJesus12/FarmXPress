@@ -1,6 +1,7 @@
 <?php
 $data = array($_POST['email'], $_POST['cif'], $_POST['name'], $_POST['password'] ?? "PlaceholderPwd", $_POST['phone'], 
-            $_POST['address'], $_POST['region'], $_POST['province'], $_POST['tipo'] ?? "C");
+            $_POST['address'], $_POST['region'], $_POST['province'], $_POST['tipo'] ?? "C", null);
+$allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 
 if(filter_var($data[0], FILTER_VALIDATE_EMAIL) && !is_array($this->selectUser($data[0], $fields[0]))) 
     $data[0] = filter_var(trim($data[0]), FILTER_SANITIZE_EMAIL);
@@ -21,8 +22,8 @@ if(preg_match('/^[a-zA-Z0-9À-ÿ\s,.-]{5,200}$/', $data[5]) && !is_array($this->
     $data[5] = filter_var(trim($data[5]), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 else header("Location: principal.php?methodUser=viewRegister&action=-1");
 if(is_string($data[6]) && is_string($data[7])){
-    $data[6] = filter_var(trim($data[6]), FILTER_SANITIZE_NUMBER_INT);
-    $data[7] = filter_var(trim($data[7]), FILTER_SANITIZE_NUMBER_INT);
+    $data[6] = filter_var(trim($data[6]), FILTER_SANITIZE_STRING);
+    $data[7] = filter_var(trim($data[7]), FILTER_SANITIZE_STRING);
 }else header("Location: principal.php?methodUser=viewRegister&action=-1");
 
 if(isset($_POST['userId'])){
@@ -30,7 +31,6 @@ if(isset($_POST['userId'])){
     $data[9]=$user['Avatar'];
 
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
-        $allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
         if (in_array($_FILES['avatar']['type'], $allowedTypes) && $_FILES['avatar']['size'] <= (1024 * 1024)){
             $data[9]=$user['Usuario_ID'].".".strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
             $uploadFile = "../assets/img/users/".$data[9];
@@ -39,7 +39,6 @@ if(isset($_POST['userId'])){
     }
 }else{
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
-        $allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
         if (in_array($_FILES['avatar']['type'], $allowedTypes) && $_FILES['avatar']['size'] <= (1024 * 1024)){
             $data[9]=($this->countProduct()['MAX']+1).".".strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
             $uploadFile = "../assets/img/users/".$data[9];

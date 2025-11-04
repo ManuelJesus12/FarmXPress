@@ -40,10 +40,8 @@ class UserModel {
             $sql->bindValue(1, $value);
             $sql->execute();
 
-            if($sql->rowCount()!=0)
-                return $sql->fetchAll(PDO::FETCH_ASSOC)[0];
-            else
-                return 0;
+            if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC)[0];
+            else return 0;
         }catch(PDOException $e) {
             return -1;
         }
@@ -60,29 +58,25 @@ class UserModel {
     public function insertUser(&$data){
         try{
             $date=date("Y-m-d H:i:s");
-
-            //*-----------------------------INSERT CODE------------------------------*//
+            $estado=(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR") ? 1 : 0;
+            
+            //*-----------------------------CONSULTA DE INSERTAR------------------------------*//
             $sql=$this->db->prepare("INSERT INTO USUARIOS (Email, CIF, Nombre, Contraseña, Teléfono, Dirección, Comunidad, Provincia, Tipo, Fecha_Registro, Avatar, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for($i=0;$i<=8;$i++) $sql->bindValue($i+1, $data[$i]);
             $sql->bindValue(10, $date); //Fecha_Registro
             $sql->bindValue(11, $data[9]); //Avatar
-
-            if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
-                $sql->bindValue(12, 1, PDO::PARAM_INT);
-            else 
-                $sql->bindValue(12, 0, PDO::PARAM_INT);
+            $sql->bindValue(12, $estado, PDO::PARAM_INT);
             $sql->execute();
 
-            //*-----------------------------CLIENT / SUPPLIER------------------------------*//
-            if($data[6]=="C") $table="CLIENTES";
-            else if($data[6]=="P") $table="PROVEEDORES";
-
+            //*-----------------------------CLIENTE / PROVEEDOR------------------------------*//
+            $table = ($data[6]=="C") ? "CLIENTES" : "PROVEEDORES";
             $sql=$this->db->prepare("INSERT INTO $table (USUARIO_ID) VALUES (?)");
             $sql->bindValue(1, $this->db->lastInsertId(), PDO::PARAM_INT);
             $sql->execute();
-            //*-----------------------------CLIENT / SUPPLIER------------------------------*//
-            //*-----------------------------INSERT CODE------------------------------*//
+            //*-----------------------------CLIENTE / PROVEEDOR------------------------------*//
+            //*-----------------------------CONSULTA DE INSERTAR------------------------------*//
 
+            $this->sendRegisterMail($data[0], $data[2]);
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -127,11 +121,12 @@ class UserModel {
     public function deleteUser($id){
         try{
             $avatar=$this->selectUser($id)['Avatar'];
+            unlink("../assets/img/users/" . $avatar);
+
             $sql=$this->db->prepare("DELETE FROM USUARIOS WHERE USUARIO_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
 
-            unlink("../assets/img/users/" . $avatar);
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -149,6 +144,19 @@ class UserModel {
             $sql=$this->db->prepare("UPDATE USUARIOS SET Estado=? WHERE USUARIO_ID=?");
             $sql->bindValue(1, $active, PDO::PARAM_INT);
             $sql->bindValue(2, $id, PDO::PARAM_INT);
+            $sql->execute();
+
+            return 1;
+        }catch(PDOException $e) {
+            return -1;
+        }
+    }
+
+    public function validateUser(){
+        try{
+            $sql=$this->db->prepare("UPDATE USUARIOS SET Estado=? WHERE NOMBRE=?");
+            $sql->bindValue(1, 1, PDO::PARAM_INT);
+            $sql->bindValue(2, $_SESSION["usuario"], PDO::PARAM_INT);
             $sql->execute();
 
             return 1;
@@ -212,26 +220,37 @@ class UserModel {
      */
     public function sendRegisterMail(&$email, &$name){
         try{
-            $phpmailer = new PHPMailer();
+            require '../assets/vendor/PHPMailer/src/PHPMailer.php';
+            require '../assets/vendor/PHPMailer/src/SMTP.php';
+            require '../assets/vendor/PHPMailer/src/Exception.php';
+            
+            $phpmailer =  new \PHPMailer\PHPMailer\PHPMailer;
             $phpmailer->isSMTP();
             $phpmailer->Host = 'smtp.gmail.com';
             $phpmailer->SMTPAuth = true;
-            $phpmailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $phpmailer->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
             $phpmailer->Port = 587;
             $phpmailer->Username = 'farmxpress0@gmail.com';
-            $phpmailer->Password = 'infofarmxpressmjfs';
-            $phpmailer->setFrom('CorreoGmail', 'Sistema de Reservas');
+            $phpmailer->Password = 'btrh raeq lpko zlxk';
+            $phpmailer->setFrom('farmxpress0@gmail.com', 'FarmXPress');
             $phpmailer->addAddress($email, $name);
             $phpmailer->isHTML(true);
-            $phpmailer->Subject = 'Asunto';
-            $phpmailer->Body = "Aqui puedes poner lo que quieras de html";
+            $phpmailer->Subject = 'Gracias por su registro';
+            $phpmailer->Body = "Verifica su cuenta haciendo click 
+            <a href='https://localhost/FARMXPRESS/include/principal.php?methodUser=validate'>aquí</a>
+            para poder comenzar a alquilar productos.";
+            $phpmailer->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+            ));
 
-            if(!$phpmailer->send())
-                echo "No existe su correo electrónico o no se ha podido enviar el correo de confirmación.";
+            if($phpmailer->send()) return 1;
+            else return 0;
             
-        }catch(PDOException $e) {
-            echo $e->getMessage();
-            return -1;
+        }catch(Exception $e) {
+            return $e->getMessage();
         }
     }
 

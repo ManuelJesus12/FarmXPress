@@ -6,8 +6,8 @@ if($PDOConnect!=false){
   include ("include/_Indexes/Index_Rent.php");
   include ("include/_Indexes/Index_Member.php");
 
-  $userCount = $userController -> countUser();
-  $productCount = $productController -> countProduct();
+  $userCount = $userController -> countUser()['COUNT'];
+  $productCount = $productController -> countProduct()['COUNT'];
   $rentCount = $rentController -> countRent();
   $memberCount = $memberController -> countMember();
 }else{

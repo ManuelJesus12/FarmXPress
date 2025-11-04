@@ -3,7 +3,7 @@
 <?php include("layouts/header.php"); 
 
 if(isset($_GET['action'])){
-    if(isset($_SESSION["usuario"])) $name=$_SESSION["usuario"]; else $name="";
+    $name=(isset($_SESSION["usuario"])) ? $_SESSION["usuario"] : "";
     echo "<script>showBoxSuccessLogin('".$_GET["action"]."', '".$name."');</script>";
 }
 ?>
@@ -122,7 +122,7 @@ if($PDOConnect!=false) {
           <?php foreach($productControl as $product) { ?>
             <div class='swiper-slide card-prod element-green-border rounded text-center pt-4 pb-4' style="margin: auto; font-size: 0.8em !important;">
               <?php if($product['Imagen']!=null) $file="assets/img/products/".$product['Imagen']; else $file="assets/img/products/anon.png"; ?>
-              <img src="<?php echo $file; ?>" alt="<?php echo $file; ?>" class="img-fluid shadow element-green-border rounded mb-3">
+              <img src="<?php echo $file; ?>" class="img-fluid shadow element-green-border rounded mb-3">
               <h3 class='service-item-category' style='color: white !important;'><?php echo $product['Nombre']." - ".$product['Precio_Mensual']; ?>€</h3>
               <?php if($product["Estado"]==1){ ?>
                 <p class="card-text prod-status text-success fw-semibold mb-2" id='enabled-<?php echo $product["Producto_ID"]; ?>'>

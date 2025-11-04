@@ -21,34 +21,40 @@
         <table class="table-form" style="margin:auto">
             <?php if($_GET["methodUser"]=="viewUpdate"){ ?>
                 <tr>
-                    <td colspan="2"><input type="hidden" name="userId" id="userId" class="input-form" value="<?php echo $userData["Usuario_ID"] ?>" /></td>
+                    <td colspan="3"><input type="hidden" name="userId" id="userId" class="input-form" value="<?php echo $userData["Usuario_ID"] ?>" /></td>
                 </tr>
             <?php } ?>
             <tr>
                 <td>Email: <span class="error">*</span></td>
                 <td><input type="email" placeholder="ejemplo@gmail.com" name="email" id="email" class="input-form" value="<?php echo $userData["Email"]; ?>" required /></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <tr>
                 <td>CIF: <span class="error">*</span></td>
                 <td><input type="text" placeholder="Ejemplo de CIF: A12345678" name="cif" id="cif" class="input-form" value="<?php echo $userData["CIF"]; ?>" required /></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <tr>
                 <td>Nombre: <span class="error">*</span></td>
                 <td><input type="text" placeholder="Nombre de Empresa" name="name" id="name" class="input-form" value="<?php echo $userData["Nombre"]; ?>" required /></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <?php if($_GET["methodUser"]=="viewRegister"){ ?>
                 <tr>
                     <td>Contraseña: <span class="error">*</span></td>
                     <td><input type="password" placeholder="Ejemplo de contraseña" name="password" id="password" class="input-form" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
             <?php } ?>
             <tr>
                 <td>Teléfono: <span class="error">*</span></td>
                 <td><input type="text" placeholder="Ejemplo de teléfono: 123456789" name="phone" id="phone" class="input-form" value="<?php echo $userData["Teléfono"]; ?>" required /></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <tr>
                 <td>Dirección: <span class="error">*</span></td>
                 <td><input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" class="input-form" value="<?php echo $userData["Dirección"]; ?>" required /></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <tr>
                 <td>Comunidad Autónoma: <span class="error">*</span></td>
@@ -78,6 +84,7 @@
             <tr>
                 <td>Avatar: </td>
                 <td><input type="file" name="avatar" id="avatar" /></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <?php if($_GET["methodUser"]=="viewRegister"){ ?>
             <tr>
@@ -85,16 +92,16 @@
                 <td><span>Acepto los <a href="../index.php?view=legal">Términos y Condiciones</a> y la <a href="../index.php?view=privacy">Política de Privacidad</a></span></td>
             </tr>
             <?php } ?>
-            <tr><td colspan="2"><input type="button" id="btn-data-user" class="btn-log element-green-bg form-input" value="Enviar" /></td></tr>
+            <tr><td colspan="3"><input type="button" id="btn-data-user" class="btn-log element-green-bg form-input" value="Enviar" /></td></tr>
             <tr>
-                <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
+                <td colspan="3" id="error">Los campos marcados con un * son obligatorios</td>
             </tr>
             <?php if($_GET["methodUser"]=="viewRegister"){ ?>
                 <tr>
-                    <td colspan="2">¿Ya tienes una cuenta? <a href="principal.php?methodUser=viewLogin">Iniciar Sesión</a></td>
+                    <td colspan="3">¿Ya tienes una cuenta? <a href="principal.php?methodUser=viewLogin">Iniciar Sesión</a></td>
                 </tr>
                 <tr>
-                    <td colspan="2">¿Deseas ser uno de nuestros Proveedores? <a href="../index.php?view=contact">Contáctanos</a></td>
+                    <td colspan="3">¿Deseas ser uno de nuestros Proveedores? <a href="../index.php?view=contact">Contáctanos</a></td>
                 </tr>
             <?php } ?>
         </table>

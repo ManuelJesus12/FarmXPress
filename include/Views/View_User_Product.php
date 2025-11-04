@@ -11,7 +11,7 @@ $reviewControl = $reviewController -> viewListReview($product["Producto_ID"]); /
 if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
     $reviewUser    = $reviewController -> selectReview($product["Producto_ID"]); //Ha escrito una reseña el usuario?
     $rentControl   = $rentController   -> selectRent($product["Producto_ID"]); //Ha sido alquilado el producto?
-}else  $reviewUser = $rentControl = 0;
+}else $reviewUser  = $rentControl = 0;
 ?>
 <!--------------------------------------------LÓGICA--------------------------------------------->
 
@@ -38,28 +38,35 @@ if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
                     <form action="principal.php?methodRent=viewStripe" method="post">
                         <input type="hidden" name="pId" value='<?php echo $product["Producto_ID"]; ?>'>
                         <input type="hidden" name="price" value='<?php echo $product["Precio_Mensual"]; ?>'>
-                        <?php if($product["Estado"]==1 && $_SESSION["usuario"]!="ADMINISTRADOR" && isset($_COOKIE["UserType"]) && $_COOKIE["UserType"]=="C") { ?>
-                            <div class="mb-2">
-                                <strong>Duración del alquiler:</strong>
-                                <select name="month" class="form-select d-inline-block w-auto ms-2 me-1" style="width:80px;">
-                                    <option value="1">1</option>
-                                    <option value="3">3</option>
-                                    <option value="6">6</option>
-                                    <option value="12">12</option>
-                                    <option value="24">24</option>
-                                </select>
-                                <span>meses</span>
-                            </div>
-                            <p class="card-text prod-status text-success fw-semibold mb-2" id='enabled-<?php echo $product["Producto_ID"]; ?>'>
-                                <i class="fa fa-check-circle me-1"></i>Estado: Disponible
-                            </p>
-                            <button type="submit" class="col-6 btn btn-log btn-shape element-green-bg text-center py-2 mb-0">Alquilar</button>
-                        <?php }else if($product["Estado"]==0 && $_SESSION["usuario"]!="ADMINISTRADOR"){ ?>
-                            <p class="card-text prod-status text-danger fw-semibold mb-2" id='disabled-<?php echo $product["Producto_ID"]; ?>'>
-                                <i class="fa fa-times-circle me-1"></i>Estado: Alquilado
-                            </p>
-                            <div class="col-6 btn btn-shape btn-log btn-danger text-center py-2 mb-0">Producto no disponible</div>
-                        <?php } ?>
+
+                        <?php if($product["Estado"]==1){
+                            if($_SESSION["usuario"]!="ADMINISTRADOR"){
+                                echo "<div class='mb-2'>";
+                                    echo "<strong>Duración del alquiler:</strong>";
+                                    echo "<select name='month' class='form-select d-inline-block w-auto ms-2 me-1' style='width:80px;'>";
+                                        echo "<option value='1'>1</option>";
+                                        echo "<option value='3'>3</option>";
+                                        echo "<option value='6'>6</option>";
+                                        echo "<option value='12'>12</option>";
+                                        echo "<option value='24'>24</option>";
+                                    echo "</select><span>meses</span>";
+                                echo "</div>";
+                            }
+
+                            echo "<p class='card-text prod-status text-success fw-semibold mb-2' id='enabled-".$product["Producto_ID"]."'>";
+                                echo "<i class='fa fa-check-circle me-1'></i>Estado: Disponible</p>";
+
+                            if(isset($_COOKIE["UserType"]) && isset($_COOKIE["UserStatus"]) && $_COOKIE["UserType"]=="C" && $_COOKIE["UserStatus"]==1)
+                                echo "<button type='submit' class='col-6 btn btn-log btn-shape element-green-bg text-center py-2 mb-0'>Alquilar</button>";
+                            else
+                                echo "<div class='col-6 btn btn-shape btn-log btn-danger text-center py-2 mb-0'>Verifica tu cuenta primero</div>";
+
+                        }else{
+                            echo "<p class='card-text prod-status text-danger fw-semibold mb-2' id='disabled-".$product["Producto_ID"]."'>";
+                                echo "<i class='fa fa-times-circle me-1'></i>Estado: Alquilado</p>";
+                            echo "<div class='col-6 btn btn-shape btn-log btn-danger text-center py-2 mb-0'>Producto no disponible</div>";
+                        } ?>
+
                     </form>
                 </div>
             </div>
@@ -170,7 +177,7 @@ if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
                         "<img class='img-fluid card-image me-3 review-image' src='../assets/img/users/"+file+"' alt='Imagen del usuario'>"+
                         "<div><p class='card-title mb-1'>Escrito por: <span style='color:limegreen'>"+review['Nombre']+"</span> el día <span style='color:limegreen'>"+new Date(review["Fecha_Hora"]).toLocaleDateString()+"</span></p>"+
                             "<div class='mb-1 text-start'> Calificación:"+
-                                starsHtml +
+                                starsHtml+
                             "</div>"+
                         "</div>"+
                     "</div>"+

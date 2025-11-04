@@ -33,34 +33,40 @@
             <table class="table-form" style="margin:auto">
                 <?php if(isset($_GET["id"])){ ?>
                     <tr>
-                        <td colspan="2"><input type="hidden" name="userId" id="userId" value="<?php echo $_GET["id"]; ?>" /></td>
+                        <td colspan="3"><input type="hidden" name="userId" id="userId" value="<?php echo $_GET["id"]; ?>" /></td>
                     </tr>
                 <?php } ?>
                 <tr>
                     <td>Email:  <span class="error">*</span></td>
                     <td><input type="email" placeholder="ejemplo@gmail.com" name="email" id="email" value="<?php echo $userData["Email"]; ?>" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>CIF:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de CIF: A12345678" name="cif" id="cif" value="<?php echo $userData["CIF"]; ?>" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Nombre:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Nombre de Empresa" name="name" id="name" value="<?php echo $userData["Nombre"]; ?>" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <?php if(!isset($_GET["id"])){ ?>
                     <tr>
                         <td>Contraseña:  <span class="error">*</span></td>
                         <td><input type="password" placeholder="Ejemplo de contraseña" name="password" id="password" required /></td>
-                    </tr>
+                        <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                </tr>
                 <?php } ?>
                 <tr>
                     <td>Teléfono:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de teléfono: 123456789" name="phone" id="phone" value="<?php echo $userData["Teléfono"]; ?>" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Dirección:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" value="<?php echo $userData["Dirección"]; ?>" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Comunidad Autónoma: <span class="error">*</span></td>
@@ -90,11 +96,12 @@
                 <tr>
                     <td>Avatar: </td>
                     <td><input type="file" name="avatar" id="avatar" /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
-                    <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
+                    <td colspan="3" id="error">Los campos marcados con un * son obligatorios</td>
                 </tr>
-                <tr><td colspan="2"><input type="button" class="btn-log element-green-bg" id="btn-data-user" value="Enviar" /></td></tr>
+                <tr><td colspan="3"><input type="button" class="btn-log element-green-bg" id="btn-data-user" value="Enviar" /></td></tr>
             </table>
         </form>
     </div>

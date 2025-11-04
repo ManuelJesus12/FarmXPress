@@ -34,24 +34,28 @@
             <table class="table-form" style="margin:auto">
                 <?php if(isset($_GET["id"])){ ?>
                     <tr>
-                        <td colspan="2"><input type="hidden" name="prodId" id="prodId" value="<?php echo $_GET["id"]; ?>" /></td>
+                        <td colspan="3"><input type="hidden" name="prodId" id="prodId" value="<?php echo $_GET["id"]; ?>" /></td>
                     </tr>
                 <?php } ?>
                 <tr>
                     <td>Nombre Producto:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Producto" name="name" id="name" value="<?php echo $productData["Nombre"]; ?>" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Referencia Producto:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Referencia: A1234" name="ref" id="ref" value="<?php echo $productData["Referencia"]; ?>" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Descripción Producto:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" value="<?php echo $productData["Descripción"]; ?>" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Precio Mensual:  <span class="error">*</span></td>
                     <td><input type="number" placeholder="100" name="price" id="price" value="<?php echo $productData["Precio_Mensual"]; ?>" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Categoría:  <span class="error">*</span></td>
@@ -69,15 +73,17 @@
                             }
                         ?>
                     </select></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Imagen: </td>
                     <td><input type="file" name="imagen" id="imagen" /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
-                    <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
+                    <td colspan="3" id="error">Los campos marcados con un * son obligatorios</td>
                 </tr>
-                <tr><td colspan="2"><input type="button" class="btn-log element-green-bg" id="btn-data-prod" value="Enviar" /></td></tr>
+                <tr><td colspan="3"><input type="button" class="btn-log element-green-bg" id="btn-data-prod" value="Enviar" /></td></tr>
             </table>
         </form>
     </div>

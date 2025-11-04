@@ -42,8 +42,8 @@ if(isset($categoryControl)){
                 { data: 'Descripción' },
                 { data: 'Cat_Padre', render: function(data, type, row){ return data ? data : 'Ninguna'; }},
                 { data: null, render: function(data, type, row) {
-                        return "<a href='#' onclick='updateCategory("+row["Categoría_ID"]+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
-                        "<a href='#' onclick='deleteCategory("+row["Categoría_ID"]+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
+                        return "<a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría' onclick='updateCategory("+row["Categoría_ID"]+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>" +
+                        "<a href='#' class='has-tooltip' data-tooltip='Eliminar Categoría' onclick='deleteCategory("+row["Categoría_ID"]+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
                     }
                 }
             ]
@@ -66,15 +66,13 @@ if(isset($categoryControl)){
 
     ////////////////////////////ELIMINAR CATEGORIA////////////////////////////
     function deleteCategory(id){
-        let row = $("#row-"+id);
-
         if(confirm("¿Está seguro de que desea eliminar la categoría con ID: "+id+"?")){
             $.ajax({
                 url: "principal.php?methodCat=delete",
                 type: "POST",
                 data: { deleteId: id },
                 success: function(response) {
-                        row.fadeOut(300);
+                        $("#row-"+id).fadeOut(300);
                         window.location.reload();
                 },
                 error: function() { alert("Error inesperado."); }

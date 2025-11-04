@@ -109,10 +109,12 @@ class UserController {
      * Return: Mensaje de éxito o error
      */
     public function activeUser(&$id, &$active){
-        if($this->userModel->activeUser($id, $active)==1)
-            return "Usuario activado/desactivado correctamente";
-        else
-            return "Error al activar/desactivar el usuario";
+        return $this->userModel->activeUser($id, $active);
+    }
+
+    public function validateUser(){
+        $this->userModel->validateUser();
+        header("Location: ../index.php?action=3");
     }
 
 
@@ -127,12 +129,13 @@ class UserController {
     public function loginUser(&$nombre, &$contraseña){
         $nombre = trim($nombre); $contraseña = trim($contraseña); $field="Nombre";
         $loginControl=$this->userModel->loginUser($nombre, $contraseña);
-        
-        if($loginControl==1){
+        $_SESSION["usuario"]=$nombre;
+
+        if($loginControl==1 && $nombre!='ADMINISTRADOR'){
             $user = $this->selectUser($nombre, $field);
             $file = ($usuario["Avatar"]==null) ? "assets/img/users/anon.png" : "assets/img/users/".$usuario["Avatar"];
-            $_SESSION["usuario"]=$user["Nombre"];
-            setcookie("UserType", $user["tipo"], time()+3600*24*7, "/");
+            setcookie("UserType", $user["Tipo"], time()+3600*24*7, "/");
+            setcookie("UserStatus", $user["Estado"],time()+3600*24*7, "/");
             setcookie("UserAvatar", $file, time()+3600*24*7, "/");
         }
         return $loginControl;
@@ -149,6 +152,7 @@ class UserController {
             echo "<script>localStorage.clear();</script>";
             setcookie("UserType",-1,time()-1, "/");
             setcookie("UserAvatar",-1,time()-1, "/");
+            setcookie("UserStatus",-1,time()-1, "/");
             session_destroy();
         }catch (Exception $e){
             return "Logout failed.";

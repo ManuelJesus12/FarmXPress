@@ -21,7 +21,7 @@ if(isset($userControl)){
 
         //*-----------------------------USER LIST------------------------------*//
         echo "<a id='add-user' class='btn btn-log btn-shape element-green-bg'>Agregar Usuario</a>";
-        echo "<table id='boxContent' style='font-size:0.96em;' class='table table-striped'><thead><tr><th>ID</th><th>E-Mail</th><th>CIF</th><th>Nombre</th>
+        echo "<table id='boxContent' style='font-size: 0.9em;' class='table table-striped'><thead><tr><th>ID</th><th>E-Mail</th><th>CIF</th><th>Nombre</th>
             <th>Teléfono</th><th>Provincia</th><th>Fecha_Registro</th><th>Tipo</th><th>Acciones</th></tr></thead>";
         echo "<tbody></tbody></table>";
         //*-----------------------------USER LIST------------------------------*//
@@ -57,8 +57,8 @@ if(isset($userControl)){
                     }
                 },
                 { data: null, render: function(data, type, row) {
-                        return "<a href='#' onclick='updateUser("+row["Usuario_ID"]+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
-                        "<a href='#' onclick='deleteUser("+row["Usuario_ID"]+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
+                        return "<a href='#' class='has-tooltip' data-tooltip='Actualizar Usuario' onclick='updateUser("+row["Usuario_ID"]+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
+                        "<a href='#' class='has-tooltip' data-tooltip='Eliminar Usuario' onclick='deleteUser("+row["Usuario_ID"]+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
                     }
                 }
             ]

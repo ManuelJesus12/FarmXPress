@@ -518,24 +518,6 @@
 										},
 										{
 											"_type": "UMLOperationView",
-											"_id": "AAAAAAGZqTq9/MdVTzI=",
-											"_parent": {
-												"$ref": "AAAAAAGZqS8v0saJOpg="
-											},
-											"model": {
-												"$ref": "AAAAAAGZqTq99sdSGVg="
-											},
-											"font": "Arial;13;0",
-											"parentStyle": true,
-											"left": 421,
-											"top": 458,
-											"width": 151,
-											"height": 13,
-											"text": "+SubirAvatar()",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
 											"_id": "AAAAAAGZqTsGkMdcGUU=",
 											"_parent": {
 												"$ref": "AAAAAAGZqS8v0saJOpg="
@@ -546,10 +528,28 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 421,
-											"top": 473,
+											"top": 458,
 											"width": 151,
 											"height": 13,
 											"text": "+ContarCantidad()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGaNbaBxGPB4zU=",
+											"_parent": {
+												"$ref": "AAAAAAGZqS8v0saJOpg="
+											},
+											"model": {
+												"$ref": "AAAAAAGaNbaBsmO+vOk="
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 421,
+											"top": 473,
+											"width": 151,
+											"height": 13,
+											"text": "+ContarIDMaximo()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3098,25 +3098,7 @@
 											"top": 569,
 											"width": 168.248046875,
 											"height": 13,
-											"text": "+Liberar()",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAGZqVTZ/v2gCxI=",
-											"_parent": {
-												"$ref": "AAAAAAGZqU+M/uzIvog="
-											},
-											"model": {
-												"$ref": "AAAAAAGZqVTZ9v2R0gs="
-											},
-											"font": "Arial;13;0",
-											"parentStyle": true,
-											"left": 637,
-											"top": 584,
-											"width": 168.248046875,
-											"height": 13,
-											"text": "+SubirImagen()",
+											"text": "+LiberarFinalizarAlquiler()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3131,10 +3113,28 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 637,
+											"top": 584,
+											"width": 168.248046875,
+											"height": 13,
+											"text": "+ContarCantidad()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGZqVTZ/v2gCxI=",
+											"_parent": {
+												"$ref": "AAAAAAGZqU+M/uzIvog="
+											},
+											"model": {
+												"$ref": "AAAAAAGZqVTZ9v2R0gs="
+											},
+											"font": "Arial;13;0",
+											"parentStyle": true,
+											"left": 637,
 											"top": 599,
 											"width": 168.248046875,
 											"height": 13,
-											"text": "+ContarTodos()",
+											"text": "+ContarIDMaximo()",
 											"horizontalAlignment": 0
 										}
 									],
@@ -7016,19 +7016,19 @@
 						},
 						{
 							"_type": "UMLOperation",
-							"_id": "AAAAAAGZqTq99sdSGVg=",
-							"_parent": {
-								"$ref": "AAAAAAGZqS8vz8aAn4s="
-							},
-							"name": "SubirAvatar"
-						},
-						{
-							"_type": "UMLOperation",
 							"_id": "AAAAAAGZqTsGiMdZj50=",
 							"_parent": {
 								"$ref": "AAAAAAGZqS8vz8aAn4s="
 							},
 							"name": "ContarCantidad"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGaNbaBsmO+vOk=",
+							"_parent": {
+								"$ref": "AAAAAAGZqS8vz8aAn4s="
+							},
+							"name": "ContarIDMaximo"
 						},
 						{
 							"_type": "UMLOperation",
@@ -7593,15 +7593,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGZqU+M/ey/GaQ="
 							},
-							"name": "Liberar"
-						},
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAGZqVTZ9v2R0gs=",
-							"_parent": {
-								"$ref": "AAAAAAGZqU+M/ey/GaQ="
-							},
-							"name": "SubirImagen"
+							"name": "LiberarFinalizarAlquiler"
 						},
 						{
 							"_type": "UMLOperation",
@@ -7609,7 +7601,15 @@
 							"_parent": {
 								"$ref": "AAAAAAGZqU+M/ey/GaQ="
 							},
-							"name": "ContarTodos"
+							"name": "ContarCantidad"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGZqVTZ9v2R0gs=",
+							"_parent": {
+								"$ref": "AAAAAAGZqU+M/ey/GaQ="
+							},
+							"name": "ContarIDMaximo"
 						}
 					]
 				},

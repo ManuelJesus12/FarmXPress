@@ -54,6 +54,7 @@ class RentController {
             include("_Indexes/Index_Product.php");
             include("_Indexes/Index_User.php");
             include("_Indexes/Index_Pay.php");
+            $mailType= 1;
             $product = $productController -> selectProduct($pId); // Datos del Producto
             $user    = $userController -> selectUser($product["Usuario_ID"]); // Datos del Proveedor del Producto
 
@@ -63,19 +64,16 @@ class RentController {
                     $productController -> activeProduct($pId); // Desactivar Disponibilidad Producto
 
                     if($payController->insertPay($rentID, $price, $month, $price)==1){ // Insertar Primer Pago
-                        $this -> rentModel->sendRentEmail($user["Email"], $user["Nombre"]); // Enviar correo al Proveedor del Producto
+                        $this -> rentModel->sendRentEmail($user["Email"], $product["Nombre"], $mailType); // Enviar correo al Proveedor del Producto
                         $rentControl = $this->rentModel->selectRent($pId); // Datos del Alquiler para visualizar
                         include("Views/Client_Rent_Ok.php");
 
                         setcookie("data-rent", 0, time() - 3600, "/");
                     }
-                    
-                }else
-                    return "Error al alquilar producto.";
-            }else
-                header("Location: principal.php?methodProd=viewProduct&id=".$pId."&success=0");
-        }else
-            return "Error inesperado";
+
+                }else return "Error al alquilar producto.";
+            }else header("Location: principal.php?methodProd=viewProduct&id=".$pId."&success=0");
+        }else return "Error inesperado";
     }
 
     ///////////////////////////////////////////////////////////////
@@ -97,20 +95,20 @@ class RentController {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Desactivar un alquiler
+    /* Función: Desactivar un alquiler y reactivar producto
      * Params: $rId (ID del alquiler), $pId (ID del producto)
      * Return: Mensaje de éxito o error
      */
     public function activeRent(&$rId, &$pId){
-        $rentControl = $this->rentModel->activeRent($rId);
-        
-        if($rentControl==1){
-            include("_Indexes/Index_Product.php");   $active=1;
-            $productController -> activeProduct($pId, $active);
+        include("_Indexes/Index_Product.php");
+        include("_Indexes/Index_User.php");
+        $mailType= 0; $active=1;
+        $producto=$productController->selectProduct($pId); //Recoger datos producto
+        $usuario=$userController->selectUser($producto["Proveedor_ID"]); //Recoger datos proveedor
 
-            return 1;
-        }else
-            return "Error inesperado";
+        $rentControl = $this->rentModel->activeRent($rId); //Desactivar alquiler 
+        $productControl=$productController->activeProduct($pId, $active); //Reactivar Producto
+        $this->sendRentEmail($usuario["Email"], $producto["Nombre"], $mailType);  //Enviar correo al proveedor
     }
 
     ///////////////////////////////////////////////////////////////

@@ -23,6 +23,8 @@ if(isset($_GET['methodUser'])){
             $message = $userController -> deleteUser($_POST["deleteId"]);
         if(in_array("active", $methods))
             $message = $userController -> activeUser($_POST['userId'], $_POST['userBool']);
+        if(in_array("validate", $methods))
+            $message = $userController -> validateUser();
         /*--------------------------------------------------------------------------*/
 
         // INITIALIZE VIEW

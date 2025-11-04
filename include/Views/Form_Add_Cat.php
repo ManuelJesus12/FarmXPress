@@ -34,10 +34,12 @@
                 <tr>
                     <td>Nombre Categoría: <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Categoría" name="name" id="name" value="<?php echo $categoryData["Nombre"]; ?>" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Descripción Categoría:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" value="<?php echo $categoryData["Descripción"]; ?>" required /></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Categoría Padre:  <span class="error">*</span></td>
@@ -55,11 +57,12 @@
                             }
                         ?>
                     </select></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
-                    <td colspan="2" id="error">Los campos marcados con un * son obligatorios</td>
+                    <td colspan="3" id="error">Los campos marcados con un * son obligatorios</td>
                 </tr>
-                <tr><td colspan="2"><input type="button" class="btn-log element-green-bg" id="btn-data-cat" value="Enviar" /></td></tr>
+                <tr><td colspan="3"><input type="button" class="btn-log element-green-bg" id="btn-data-cat" value="Enviar" /></td></tr>
             </table>
         </form>
     </div>

@@ -200,26 +200,40 @@ class RentModel {
      * Params: $email (correo electrónico del usuario), $name (nombre del usuario)
      * Return: Mensaje de éxito o error al enviar el correo
      */
-    public function sendRentEmail(&$email, &$name){
+    public function sendRentEmail(&$email, &$name, &$bool){
         try{
-            $phpmailer = new PHPMailer();
+            require '../assets/vendor/PHPMailer/src/PHPMailer.php';
+            require '../assets/vendor/PHPMailer/src/SMTP.php';
+            require '../assets/vendor/PHPMailer/src/Exception.php';
+
+            //1=Nuevo Alquiler, 0=Alquiler Anulado//
+            if($bool==1){
+                $subject="Nuevo Alquiler";
+                $body="Su producto $name ha sido alquilado.";
+            }else{
+                $subject="Uno de sus productos vuelve a estar disponible";
+                $body="Su producto $name vuelve a estar disponible al haber sido anulado su alquiler previo.";
+            }
+
+            $phpmailer = new \PHPMailer\PHPMailer\PHPMailer;
             $phpmailer->isSMTP();
             $phpmailer->Host = 'smtp.gmail.com';
             $phpmailer->SMTPAuth = true;
-            $phpmailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $phpmailer->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
             $phpmailer->Port = 587;
             $phpmailer->Username = 'farmxpress0@gmail.com';
-            $phpmailer->Password = 'infofarmxpressmjfs';
-            $phpmailer->setFrom('CorreoGmail', 'Sistema de Reservas');
+            $phpmailer->Password = 'btrh raeq lpko zlxk';
+            $phpmailer->setFrom('farmxpress0@gmail.com', 'FarmXPress');
             $phpmailer->addAddress($email, $name);
             $phpmailer->isHTML(true);
-            $phpmailer->Subject = 'Asunto';
-            $phpmailer->Body = "Aqui puedes poner lo que quieras de html";
+            $phpmailer->Subject = $subject;
+            $phpmailer->Body = $body;
 
-            if(!$phpmailer->send())
-                echo "No existe su correo electrónico o no se ha podido enviar el correo de confirmación.";
+            if($phpmailer->send()) return 1;
+            else return 0;
             
-        }catch(PDOException $e) {
+        }catch(Exception $e) {
+            echo $e->getMessage();
             return -1;
         }
     }

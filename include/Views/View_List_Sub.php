@@ -41,10 +41,10 @@ if(is_array($subControl)){
                 { data: 'Precio_Mensual', render: function(data, type, row) { return data+"€"; } },
                 { data: 'Duración_Base', render: function(data, type, row) { return data+" meses"; } },
                 { data: null, render: function(data, type, row) {
-                    return "<a href='#' onclick='addPerk("+row['Suscripción_ID']+")'><i class='fa-solid fa-plus icon-plus border-5'></i></a>"+
-                    "<a href='#' onclick='showPerk("+row['Suscripción_ID']+")' class='toggle-perks'><i class='fa-solid fa-eye icon-eye border-5'></i></a>"+
-                    "<a href='#' onclick='updateSub("+row['Suscripción_ID']+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
-                    "<a href='#' onclick='deleteSub("+row['Suscripción_ID']+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
+                    return "<a href='#' class='has-tooltip' data-tooltip='Añadir Ventaja' onclick='addPerk("+row['Suscripción_ID']+")'><i class='fa-solid fa-plus icon-plus border-5'></i></a>"+
+                    "<a href='#' class='has-tooltip' data-tooltip='Mostrar Ventajas' onclick='showPerk("+row['Suscripción_ID']+")' class='toggle-perks'><i class='fa-solid fa-eye icon-eye border-5'></i></a>"+
+                    "<a href='#' class='has-tooltip' data-tooltip='Actualizar Suscripción' onclick='updateSub("+row['Suscripción_ID']+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
+                    "<a href='#' class='has-tooltip' data-tooltip='Eliminar Suscripción' onclick='deleteSub("+row['Suscripción_ID']+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
                     }
                 }
             ], createdRow: function(row, data, dataIndex){ row.id = "sub-"+data['Suscripción_ID']; }
@@ -102,8 +102,8 @@ if(is_array($subControl)){
                     { data: 'Nombre' },
                     { data: 'Descripción' },
                     { data: null, render: function(data, type, row) {
-                        return "<a href='#' onclick='updatePerk("+row['Ventaja_ID']+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
-                        "<a href='#' onclick='deletePerk("+row['Ventaja_ID']+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
+                        return "<a href='#' class='has-tooltip' data-tooltip='Actualizar Ventaja' onclick='updatePerk("+row['Ventaja_ID']+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
+                        "<a href='#' class='has-tooltip' data-tooltip='Eliminar Ventaja' onclick='deletePerk("+row['Ventaja_ID']+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
                         }
                     }
                 ], createdRow: function(row, data, dataIndex){ row.id = "perk-"+data['Ventaja_ID']; }
