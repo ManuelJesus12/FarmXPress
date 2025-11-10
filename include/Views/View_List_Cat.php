@@ -5,6 +5,8 @@
 ///////////////////////////////////////////////////////////////////////
 if(isset($categoryControl)){
     //*-----------------------------NOTIFICATIONS------------------------------*//
+    if(isset($_GET["error"])) echo "<script>showFieldError('".$_GET["error"]."');</script>";
+    
     if($categoryControl==0){
         echo "<h2>No hay categorías registradas</h2><br>";
         echo "<a id='add-category' class='btn btn-log btn-shape element-green-bg'>Agregar Categoría</a>";

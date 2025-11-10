@@ -25,7 +25,7 @@ if(is_array($subControl)){
         //--------------------------------------------NAV BUTTONS--------------------------------------------->
         $class0=$class1=$class2="btn btn-log element-green-bg ";
         $class1=$class0."not-visible";
-        if(count($subControl)<=5) $class2=$class0."not-visible";
+        if(count($subControl)<=8) $class2=$class0."not-visible";
 
         echo "<div class='nav-buttons site-article'>";
             echo "<div class='btn-group'><a class='$class1' id='btn-prev' href='#'>Anterior</a></div>";
@@ -44,7 +44,7 @@ else if($subControl==-1)
 <script>
     var subControl = <?php echo json_encode($subControl); ?>;
     var member = <?php echo json_encode($member); ?>;
-    content_paginate(subControl);
+    content_paginate(subControl, 8);
 
     ////////////////////////////CONTENIDO////////////////////////////
     function createContent(sub){

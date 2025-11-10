@@ -40,22 +40,22 @@
                 <tr>
                     <td>Nombre Producto:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Producto" name="name" id="name" value="<?php echo $productData["Nombre"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Entre 5 y 20 caracteres'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Referencia Producto:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Referencia: A1234" name="ref" id="ref" value="<?php echo $productData["Referencia"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Una letra mayúscula y 4 dígitos'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Descripción Producto:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" value="<?php echo $productData["Descripción"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Entre 5 y 25 caracteres'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Precio Mensual:  <span class="error">*</span></td>
                     <td><input type="number" placeholder="100" name="price" id="price" value="<?php echo $productData["Precio_Mensual"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Un número positivo'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Categoría:  <span class="error">*</span></td>
@@ -73,12 +73,12 @@
                             }
                         ?>
                     </select></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Puede ser nulo'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Imagen: </td>
                     <td><input type="file" name="imagen" id="imagen" /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='PNG o JPEG de máximo 1MB'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td colspan="3" id="error">Los campos marcados con un * son obligatorios</td>

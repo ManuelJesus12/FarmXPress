@@ -4,7 +4,7 @@
         <li><a href="<?php echo $dirUrl."principal.php?methodProd=select&page=1"; ?>"><span><i class="margin-5 fa-solid fa-bag-shopping"></i>Consultar Catálogo</span></a></li>
         <li><a href="<?php echo $dirUrl."principal.php?methodRent=select&page=1"; ?>"><span><i class="margin-5 fa-solid fa-rectangle-list"></i>Mis Alquileres</span></a></li>
         <li><a href="<?php echo $dirUrl."principal.php?methodFav=select&page=1"; ?>"><span><i class="margin-5 fa-solid fa-star"></i>Productos Seguidos</span></a></li>
-        <li class="dropdown"><a href="#"><span><img class="user-avatar margin-5" src="<?php echo $file; ?>"></img><?php echo $_SESSION["usuario"]; ?></span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+        <li class="dropdown"><a href="#"><span><img class="user-avatar margin-5" src="<?php echo $dirFile; ?>"></img><?php echo $_SESSION["User"]["Nombre"]; ?></span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
                 <li><a href="<?php echo $dirUrl."principal.php?methodUser=viewUpdate"; ?>">Modificar Datos</a></li>
                 <li><a href="<?php echo $dirUrl."principal.php?methodSub=select"; ?>">Gestionar Suscripción</a></li>

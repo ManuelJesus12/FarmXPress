@@ -7,6 +7,8 @@
 if(is_array($productControl)){
     echo "<h2>Tus Productos</h2>";
     //*-----------------------------NOTIFICATIONS------------------------------*//
+    if(isset($_GET["error"])) echo "<script>showFieldError('".$_GET["error"]."');</script>";
+    
     if(isset($_GET["action"]) && $_GET["action"]=="insert")
         echo "<div id='alert-success' class='alert alert-success'>Producto agregado correctamente</div>";
     else if(isset($_GET["action"]) && $_GET["action"]=="update")
@@ -23,7 +25,7 @@ if(is_array($productControl)){
     //--------------------------------------------NAV BUTTONS--------------------------------------------//
     $class0=$class1=$class2="btn btn-log element-green-bg ";
     $class1=$class0."not-visible";
-    if(count($productControl)<=5) $class2=$class0."not-visible";
+    if(count($productControl)<=8) $class2=$class0."not-visible";
 
     echo "<div class='nav-buttons site-article'>";
         echo "<div class='btn-group'><a class='$class1' id='btn-prev' href='#'>Anterior</a></div>";
@@ -45,7 +47,7 @@ if(is_array($productControl)){
 
 <script>
     var productControl = <?php echo json_encode($productControl); ?>;
-    content_paginate(productControl);
+    content_paginate(productControl, 8);
 
     ////////////////////////////CONTENIDO////////////////////////////
     function createContent(prod){
@@ -54,29 +56,29 @@ if(is_array($productControl)){
         let buttons=estado = "";
 
         if(prod["Estado"]==false){
-            estado+="<p class='card-text prod-status' id='disabled-"+prod["Producto_ID"]+"'>Alquilado</p>";
-            buttons+= "<div class='col-6'><a href='#' onclick='updateProduct("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-modify'><i class='fa-solid fa-gear icon-gear border-5'></i> Modificar Producto</a></div>";
-            buttons+= "<div class='col-6'><a href='#' onclick='viewData("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-modify'><i class='fa-solid fa-gear icon-gear border-5'></i> Datos Producto</a></div>";
+            estado+="<span class='badge bg-danger status-type'>Alquilado</span>";
+            buttons+= "<div class='col-6'><a href='#' onclick='updateProduct("+prod["Producto_ID"]+")' class='btn btn-sm btn-product-modify btn-shape w-33'><i class='fa-solid fa-gear icon-gear border-5'></i> Modificar</a></div>";
+            buttons+= "<div class='col-6'><a href='#' onclick='viewData("+prod["Producto_ID"]+")' class='btn btn-sm btn-product-modify btn-shape w-33'><i class='fa-solid fa-gear icon-gear border-5'></i> Datos Producto</a></div>";
         }else{
-            estado+="<p class='card-text prod-status' id='enabled-"+prod["Producto_ID"]+"'>Disponible</p>";
-            buttons+="<div class='col-4'><a href='#' onclick='updateProduct("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-modify'><i class='fa-solid fa-gear icon-gear border-5'></i> Modificar Producto</a></div>";
-            buttons+="<div class='col-4'><a href='#' onclick='viewData("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-modify'><i class='fa-solid fa-gear icon-gear border-5'></i> Datos Producto</a></div>";
-            buttons+="<div class='col-4'><a href='#' onclick='deleteProduct("+prod["Producto_ID"]+")' class='btn btn-shape btn-product-delete'><i class='fa-solid fa-trash icon-trash border-5'></i> Eliminar Producto</a></div>";
+            estado+="<span class='badge bg-success status-type'>Disponible</span>";
+            buttons+="<div class='col-4'><a href='#' onclick='updateProduct("+prod["Producto_ID"]+")' class='btn btn-sm btn-product-modify btn-shape w-33'><i class='fa-solid fa-gear icon-gear border-5'></i> Modificar</a></div>";
+            buttons+="<div class='col-4'><a href='#' onclick='viewData("+prod["Producto_ID"]+")' class='btn btn-sm btn-product-modify btn-shape w-33'><i class='fa-solid fa-gear icon-gear border-5'></i> Datos Producto</a></div>";
+            buttons+="<div class='col-4'><a href='#' onclick='deleteProduct("+prod["Producto_ID"]+")' class='btn btn-sm btn-product-delete btn-shape w-33'><i class='fa-solid fa-trash icon-trash border-5'></i> Eliminar</a></div>";
         }
 
         $("#boxContent").append(    
-            "<div id='product"+prod['Producto_ID']+"' class='col-lg-5 col-md-5 col-sm-12 card card-prod element-green-border rounded'>"+
-                "<div class='card-header element-green-bg'><a class='element-green-bg text-decoration-underline' href='principal.php?methodProd=viewProduct&id="+prod['Producto_ID']+"'>"+prod["Nombre"]+" - "+prod["Referencia"]+"</a></div>"+
-                "<div class='row card-body'>"+
-                    "<div class='col-6'><img class='card-image img-fluid rounded shadow' src='../assets/img/products/"+file+"' style='width: 75%; height:auto' /></div>"+
-                    "<div class='col-6'>"+
-                        "<h5 class='card-title'>"+prod["Descripción"]+"</h5>"+
-                        "<p class='card-text'>Categoría: <span>"+cat+"</span></p>"+
-                        "<p class='card-text'>Precio Mensual: <span>"+prod['Precio_Mensual']+"€</span></p>"+
-                        estado+
-                        "</div>"+
-                    "<div class='col-12 card-buttons'>"+buttons+"</div>"+
-                "</div>"+
+            "<div id='product-"+prod['Producto_ID']+"' class='col-12 col-md-6 col-lg-4'>"+
+                "<div class='card h-100 element-green-border'>" +
+                    "<div class='card-header element-green-bg'>"+prod["Nombre"]+" - "+prod["Referencia"]+"</div>"+
+                    "<div class='card-body d-flex flex-column'>" +
+                        "<img src='../assets/img/products/"+file+"' class='card-img-top mb-3' alt='"+prod["Nombre"]+"'/>" +
+                        "<p class='card-text mb-1'>Descripción: <strong>"+prod['Descripción']+"</strong></p>" +
+                        "<p class='card-text mb-1'>Categoría: <strong>"+cat+"</strong></p>" +
+                        "<p class='card-text mb-1'>Precio Mensual: <strong>"+prod['Precio_Mensual']+"€</strong></p>" +
+                        estado +
+                        "<div class='mt-auto row'>" + buttons + "</div>" +
+                    "</div>" +
+                "</div>" +
             "</div>"
         );
     }

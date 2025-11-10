@@ -42,21 +42,21 @@ class ProductModel {
             $placeholder = "%"; $offset=$offset*10;
 
             //*-----------------------------QUERY BUILD------------------------------*//
-            $query = "SELECT Producto_ID, Usuario_ID, Nombre, Referencia, Precio_Mensual, Estado, Imagen, 
+            $query = "SELECT Producto_ID, U.Usuario_ID AS 'UID', P.Nombre AS 'PNOM', Referencia, Precio_Mensual, P.Estado AS 'PEST', Imagen, 
             (SELECT Provincia FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'PROV', 
-            (SELECT U.Nombre FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'PNOM', 
+            (SELECT U.Nombre FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'UNOM', 
             (SELECT C.Nombre FROM CATEGORÍAS C WHERE C.Categoría_ID=P.Categoría_ID) AS 'CAT' 
-            FROM PRODUCTOS P WHERE P.Categoría_ID LIKE ? OR P.Categoría_ID IS NULL";
+            FROM PRODUCTOS P JOIN USUARIOS U ON P.USUARIO_ID=U.USUARIO_ID WHERE P.Categoría_ID LIKE ? OR P.Categoría_ID IS NULL";
             $parameters = [$placeholder];
 
             if(isset($_COOKIE["search-options"])){
                 $search=json_decode($_COOKIE["search-options"], true);
                 if ($search["category"]!="") {
-                    $query = "SELECT Producto_ID, Usuario_ID, Nombre, Referencia, Precio_Mensual, Estado, Imagen, 
+                    $query = "SELECT Producto_ID, U.Usuario_ID AS 'UID', P.Nombre AS 'PNOM', Referencia, Precio_Mensual, P.Estado AS 'PEST', Imagen, 
                     (SELECT Provincia FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'PROV', 
-                    (SELECT U.Nombre FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'PNOM',  
+                    (SELECT U.Nombre FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'UNOM',  
                     (SELECT C.Nombre FROM CATEGORÍAS C WHERE C.Categoría_ID=P.Categoría_ID) AS 'CAT' 
-                    FROM PRODUCTOS P WHERE P.Categoría_ID = ?";
+                    FROM PRODUCTOS P ON P.USUARIO_ID=U.USUARIO_ID WHERE P.Categoría_ID = ?";
                     $parameters[0] = $search["category"];
                 }
                 if ($search["minPrice"]!="") {
@@ -126,7 +126,7 @@ class ProductModel {
             //*-----------------------------DATA------------------------------*//
             include("_Indexes/Index_User.php"); $field="Nombre";
             $data[4]=($data[4]=="") ? null : $data[4];
-            $data[5]=$userController->selectUser($_SESSION["usuario"], $field)['Usuario_ID'];
+            $data[5]=$userController->selectUser($_SESSION["User"]["Nombre"], $field)['Usuario_ID'];
             //*-----------------------------DATA------------------------------*//
 
             $sql=$this->db->prepare("INSERT INTO PRODUCTOS (Nombre, Descripción, Referencia, Precio_Mensual, Categoría_ID, Usuario_ID, Imagen, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, 1)");

@@ -38,12 +38,12 @@
                 <tr>
                     <td>Título Ventaja:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Ventaja" name="name" id="name" value="<?php echo $perkData["Nombre"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Entre 5 y 20 caracteres'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Descripción:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" value="<?php echo $perkData["Descripción"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Entre 5 y 255 caracteres'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td colspan="3" id="error">Los campos marcados con un * son obligatorios</td>

@@ -34,17 +34,17 @@
                 <tr>
                     <td>Nombre Suscripción:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Suscripción" name="name" id="name" value="<?php echo $subData["Nombre"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Entre 5 y 20 caracteres'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Precio Mensual:  <span class="error">*</span></td>
                     <td><input type="number" placeholder="10" name="price" id="price" value="<?php echo $subData["Precio_Mensual"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Debe ser un número positivo'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Duración Base (Meses):  <span class="error">*</span></td>
                     <td><input type="number" placeholder="12" name="months" id="months" value="<?php echo $subData["Duración_Base"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Debe ser un número positivo'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td colspan="3" id="error">Los campos marcados con un * son obligatorios</td>

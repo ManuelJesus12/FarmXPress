@@ -19,7 +19,7 @@ class SubController {
     public function viewListSub(){
         $subControl=$this->subModel->listSub();
 
-        if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
+        if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR")
             include("Views/View_List_Sub.php");
         else
             include("Views/View_User_Sub.php");

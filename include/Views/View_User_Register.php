@@ -1,15 +1,17 @@
 <!-------------------------------LOGIC------------------------------->
 <?php
     $userData=['Usuario_ID'=>'', 'Nombre'=>'', 'CIF'=>'', 'Email'=>'', 'Contraseña'=>'', 'Teléfono'=>'', 'Dirección'=>''];
-    
     if($_GET["methodUser"]=="viewUpdate"){
         $title="Actualizar Usuario"; $field="Nombre";
-        $userData=$this->selectUser($_SESSION["usuario"], $field);
+        $userData=$this->selectUser($_SESSION["User"]["Nombre"], $field);
         $action="principal.php?methodUser=update";
     }else{
         $action="principal.php?methodUser=insert-login";
         $title="Registro de Usuario";
     }
+    echo '<script>console.log('.json_encode($userData).');</script>';
+
+    if(isset($_GET["error"])) echo "<script>showFieldError('".$_GET["error"]."');</script>";
 ?>
 <!-------------------------------LOGIC------------------------------->
 
@@ -27,34 +29,34 @@
             <tr>
                 <td>Email: <span class="error">*</span></td>
                 <td><input type="email" placeholder="ejemplo@gmail.com" name="email" id="email" class="input-form" value="<?php echo $userData["Email"]; ?>" required /></td>
-                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='Debe ser una dirección de correo válida'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <tr>
                 <td>CIF: <span class="error">*</span></td>
                 <td><input type="text" placeholder="Ejemplo de CIF: A12345678" name="cif" id="cif" class="input-form" value="<?php echo $userData["CIF"]; ?>" required /></td>
-                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='Una letra mayúscula y 8 dígitos'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <tr>
                 <td>Nombre: <span class="error">*</span></td>
                 <td><input type="text" placeholder="Nombre de Empresa" name="name" id="name" class="input-form" value="<?php echo $userData["Nombre"]; ?>" required /></td>
-                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='Entre 5 y 100 caracteres'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <?php if($_GET["methodUser"]=="viewRegister"){ ?>
                 <tr>
                     <td>Contraseña: <span class="error">*</span></td>
                     <td><input type="password" placeholder="Ejemplo de contraseña" name="password" id="password" class="input-form" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Entre 8 y 20 caracteres'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
             <?php } ?>
             <tr>
                 <td>Teléfono: <span class="error">*</span></td>
                 <td><input type="text" placeholder="Ejemplo de teléfono: 123456789" name="phone" id="phone" class="input-form" value="<?php echo $userData["Teléfono"]; ?>" required /></td>
-                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='9 caracteres numéricos'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <tr>
                 <td>Dirección: <span class="error">*</span></td>
                 <td><input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" class="input-form" value="<?php echo $userData["Dirección"]; ?>" required /></td>
-                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='Entre 5 y 255 caracteres'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <tr>
                 <td>Comunidad Autónoma: <span class="error">*</span></td>
@@ -72,7 +74,7 @@
                     </select>
                 </td>
             </tr>
-            <?php if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR"){ ?>
+            <?php if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR"){ ?>
             <tr>
                 <td>Tipo: </td>
                 <td><select name="tipo" id="tipo" class="input-form" equired>
@@ -84,7 +86,7 @@
             <tr>
                 <td>Avatar: </td>
                 <td><input type="file" name="avatar" id="avatar" /></td>
-                <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                <td><a href='#' class='has-tooltip' data-tooltip='PNG o JPG de máximo 1MB'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
             </tr>
             <?php if($_GET["methodUser"]=="viewRegister"){ ?>
             <tr>

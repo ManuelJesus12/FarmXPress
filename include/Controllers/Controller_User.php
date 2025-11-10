@@ -31,7 +31,7 @@ class UserController {
      * Return: Página de lista de usuarios o para Logs de Administrador
      */
     public function viewListUser(){
-        if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR"){
+        if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR"){
             $userControl=$this->userModel->listUser();
 
             if(!isset($_GET["methodAdmin"])) include("Views/View_List_User.php");
@@ -61,7 +61,7 @@ class UserController {
     public function insertUser(){
         include("../assets/php/vBackEndUser.php");
         if($this->userModel->insertUser($data)==1){
-            if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
+            if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR")
                 header("Location: principal.php?methodUser=select&action=insert");
             else
                 $this->loginUser($data[2], $data[3]);
@@ -76,14 +76,13 @@ class UserController {
      * Return: Redirección a la vista de lista de usuarios o al index según el tipo de usuario
      */
     public function updateUser(){
-        include("../assets/php/vBackEndUser.php"); $field="Nombre";
-        $id=(isset($_GET['userId']) && $_GET['userId']!=null) ? $_GET['userId'] : 
-        $this->selectUser($_SESSION["usuario"], $field)['Usuario_ID'];
+        include("../assets/php/vBackEndUser.php");
 
-        if($this->userModel->updateUser($id, $data)==1){
-            if($_SESSION["usuario"]!="ADMINISTRADOR"){
-                $_SESSION["usuario"]=$data[2];
-                setcookie("UserAvatar", "assets/img/users/".$data[9], time()+3600*24*7, "/");
+        if($this->userModel->updateUser($_POST['userId'], $data)==1){
+            if ($_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
+                $_SESSION["User"]["Email"] =$data[0];
+                $_SESSION["User"]["Nombre"]=$data[2];
+                $_SESSION["User"]["Avatar"]=$data[9];
                 header("Location: ../index.php?action=2");
             }else
                 header("Location: principal.php?methodUser=select&action=update");
@@ -129,14 +128,15 @@ class UserController {
     public function loginUser(&$nombre, &$contraseña){
         $nombre = trim($nombre); $contraseña = trim($contraseña); $field="Nombre";
         $loginControl=$this->userModel->loginUser($nombre, $contraseña);
-        $_SESSION["usuario"]=$nombre;
 
-        if($loginControl==1 && $nombre!='ADMINISTRADOR'){
-            $user = $this->selectUser($nombre, $field);
-            $file = ($usuario["Avatar"]==null) ? "assets/img/users/anon.png" : "assets/img/users/".$usuario["Avatar"];
-            setcookie("UserType", $user["Tipo"], time()+3600*24*7, "/");
-            setcookie("UserStatus", $user["Estado"],time()+3600*24*7, "/");
-            setcookie("UserAvatar", $file, time()+3600*24*7, "/");
+        if($loginControl==1){
+            if($nombre!='ADMINISTRADOR'){
+                $user = $this->selectUser($nombre, $field);
+                $_SESSION["User"]=$user;
+            }else{
+                $_SESSION["User"]["Nombre"]="ADMINISTRADOR";
+                $_SESSION["User"]["Tipo"]="C";
+            }
         }
         return $loginControl;
     }
@@ -150,9 +150,6 @@ class UserController {
     public function logoutUser(){
         try{
             echo "<script>localStorage.clear();</script>";
-            setcookie("UserType",-1,time()-1, "/");
-            setcookie("UserAvatar",-1,time()-1, "/");
-            setcookie("UserStatus",-1,time()-1, "/");
             session_destroy();
         }catch (Exception $e){
             return "Logout failed.";

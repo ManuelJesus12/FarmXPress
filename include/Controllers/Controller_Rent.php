@@ -144,7 +144,7 @@ class RentController {
      * Return: Notificación de alquiler activo si corresponde
      */
     public function checkActiveRent(&$offset=-1){
-        if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
+        if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
             $rentControl = $this->rentModel->listRent($offset);
             
             if(is_array($rentControl)){

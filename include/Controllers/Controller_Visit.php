@@ -17,7 +17,7 @@ class VisitController {
      * Return: Página de lista de visitas si el usuario es administrador, mensaje de acceso denegado en caso contrario
      */
     public function listVisit(){
-        if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR"){
+        if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR"){
             $controlVisit = $this->visitModel->listVisit();
             include("Views/View_List_Visit.php");
             return 1;

@@ -48,21 +48,11 @@ function navegacion(){
     $dirNav = ($dirLocation==0) ? "" : "../";
     $dirUrl = ($dirLocation==0) ? "include/" : "";
 
-    if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
-        if(!isset($_COOKIE["UserType"]) || !isset($_COOKIE["UserAvatar"]) || !isset($_COOKIE["UserStatus"])){
-            include($dirNav."_Indexes/Index_User.php"); $field="Nombre";
-
-            $usuario=$userController->selectUser($_SESSION["usuario"], $field);
-            $tipo=$usuario['Tipo']; $stat=$usuario['Estado'];
-            $file = ($usuario["Avatar"]==null) ? "assets/img/users/anon.png" : "assets/img/users/".$usuario["Avatar"];
-
-            setcookie("UserType", $tipo, time()+3600*24*7, "/");
-            setcookie("UserStatus", $stat, time()+3600*24*7, "/");
-            setcookie("UserAvatar", $file, time()+3600*24*7, "/");
-        }else{ $tipo=$_COOKIE["UserType"]; $file=$dirNav.$_COOKIE["UserAvatar"]; }
-
-        if($tipo=="C") include($dirNav."views/navBar/navCliente.php");
-        else if($tipo=="P") include($dirNav."views/navBar/navProveedor.php");
+    if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
+        $dirFile = ($_SESSION["User"]["Avatar"]!=null) ? $dirNav."assets/img/users/".$_SESSION["User"]["Avatar"] : $dirNav."assets/img/users/anon.png";
+        
+        if($_SESSION["User"]["Tipo"]=="C") include($dirNav."views/navBar/navCliente.php");
+        else if($_SESSION["User"]["Tipo"]=="P") include($dirNav."views/navBar/navProveedor.php");
     }else
         include($dirNav."views/navBar/navInvitado.php");
 }
@@ -79,7 +69,7 @@ Funcion: Mostrar el contenido principal de la pagina, dependiendo de si es un us
 function seleccionarContenidoPrincipal(){
     global $PDOConnect;
 
-    if($PDOConnect!=false && isset($_SESSION["usuario"])){
+    if($PDOConnect!=false && isset($_SESSION["User"])){
         if(isset($_GET["methodCat"]))
             include("_Indexes/Index_Category.php");
         if(isset($_GET["methodSub"]))
@@ -103,7 +93,7 @@ function seleccionarContenidoPrincipal(){
     if(isset($_GET["methodUser"]))
         include("_Indexes/Index_User.php");
     if(isset($_GET["methodAdmin"])){
-        if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR"){
+        if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR"){
             include("_Indexes/Index_Admin.php");
         }else
             echo "<article class='col-12 list-user form-log site-section rounded'><h2>Acceso a esta sección denegado</h2></article>";
@@ -136,7 +126,7 @@ function seleccionarContenidoIndex(){
         if($_GET["view"]=="privacy")
             include("views/pages/politica-privacidad.php");
     }else{
-        if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR")
+        if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR")
             include("views/viewIndexAdmin.php");
         else
             include("views/viewIndexUser.php");
@@ -157,7 +147,7 @@ Funcion: Incluir los índices de las visitas, miembros y alquileres para realiza
 function includeVisit(){
     global $dirLocation, $PDOConnect;
     
-    if(($PDOConnect!=false && isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR")){
+    if(($PDOConnect!=false && isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR")){
         $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
         include($dir."_Indexes/Index_Visit.php");
         include($dir."_Indexes/Index_Member.php");
@@ -171,7 +161,4 @@ function includeVisit(){
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-function console_log($data){
-    echo '<script>console.log('.$data.')</script>';
-}
 ?>

@@ -38,7 +38,7 @@ class MemberModel {
     public function selectMember(){
         try{
             $sql=$this->db->prepare("SELECT * FROM MEMBRESÍAS M JOIN SUSCRIPCIONES S ON S.Suscripción_ID=M.Suscripción_ID WHERE USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND ESTADO=1");
-            $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
+            $sql->bindValue(1, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->execute();
 
             if($sql->rowCount()!=0)
@@ -63,7 +63,7 @@ class MemberModel {
         try{
             include("_Indexes/Index_Sub.php");
             $sql=$this->db->prepare("INSERT INTO MEMBRESÍAS (USUARIO_ID, SUSCRIPCIÓN_ID, FECHA_INICIO, FECHA_FIN, ESTADO) VALUES ((SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?), ?, ?, ?, ?)");
-            $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
+            $sql->bindValue(1, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->bindValue(2, $id, PDO::PARAM_INT);
             $sql->bindValue(3, date("Y-m-d H:i:s"), PDO::PARAM_STR);
             $sql->bindValue(4, date("Y-m-d H:i:s", strtotime("+".$subController->selectSub($id)['Duración_Base']." months")), PDO::PARAM_STR);
@@ -87,7 +87,7 @@ class MemberModel {
         try{
             $sql=$this->db->prepare("UPDATE MEMBRESÍAS SET FECHA_FIN = ADDDATE(FECHA_FIN, INTERVAL ? MONTH) WHERE USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND ESTADO=1");
             $sql->bindValue(1, $month, PDO::PARAM_INT);
-            $sql->bindValue(2, $_SESSION["usuario"], PDO::PARAM_STR);
+            $sql->bindValue(2, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->execute();
 
             return 1;

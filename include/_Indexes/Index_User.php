@@ -15,7 +15,7 @@ if(isset($_GET['methodUser'])){
         $message = $userController -> insertUser();
 
     // CONTROLLER FUNCTION HANDLING
-    if($PDOConnect!=false && isset($_SESSION["usuario"])){
+    if($PDOConnect!=false && isset($_SESSION["User"])){
         /*--------------------------------------------------------------------------*/
         if(in_array("update", $methods))
             $message = $userController -> updateUser();

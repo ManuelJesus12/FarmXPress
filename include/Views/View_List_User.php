@@ -5,6 +5,8 @@
 ///////////////////////////////////////////////////////////////////////
 if(isset($userControl)){
     //*-----------------------------NOTIFICATIONS------------------------------*//
+    if(isset($_GET["error"])) echo "<script>showFieldError('".$_GET["error"]."');</script>";
+    
     if($userControl==0){
         echo "<h2>No hay usuarios registrados</h2><br>";
         echo "<a id='add-user' class='btn btn-log btn-shape element-green-bg'>Agregar Usuario</a>";

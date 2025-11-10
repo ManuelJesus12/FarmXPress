@@ -39,8 +39,8 @@ $("#btn-data-user").on("click", async function(event){
     // CIF validación
 
     // Nombre validación
-    if(name.length < 3 || name.length > 100) {
-        $("#error").text("El campo Nombre debe tener entre 3 y 100 caracteres.");
+    if(name.length < 5 || name.length > 100) {
+        $("#error").text("El campo Nombre debe tener entre 5 y 100 caracteres.");
         $("#name").focus();
         return;
     }
@@ -86,8 +86,8 @@ $("#btn-data-user").on("click", async function(event){
     // Teléfono validación
 
     // Dirección validación
-    if(address.length < 3 || address.length > 255) {
-        $("#error").text("El campo Dirección debe tener entre 3 y 255 caracteres.");
+    if(address.length < 5 || address.length > 255) {
+        $("#error").text("El campo Dirección debe tener entre 5 y 255 caracteres.");
         $("#address").focus();
         return;
     }

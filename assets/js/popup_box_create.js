@@ -149,6 +149,14 @@ function showBoxProduct(bool){
     showBoxAux(warning);
 };
 
+function showFieldError(field){
+    const warning = document.createElement("div");
+    warning.textContent="Fallo al procesar el campo "+field+".";
+    warning.setAttribute("class", "warning alert alert-danger");
+
+    showBoxAux(warning);
+};
+
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////

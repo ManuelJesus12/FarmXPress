@@ -1,7 +1,7 @@
-function content_paginate(contentList){
+function content_paginate(contentList, itemAmount){
     /////////////////////////////CARGA INICIAL/////////////////////////////
     $("#boxContent").on("load", function(){
-        for(let i=0; i<5; i++){
+        for(let i=0; i<itemAmount; i++){
             if(contentList[i]!=undefined)
                 createContent(contentList[i]);
             else break;
@@ -17,9 +17,9 @@ function content_paginate(contentList){
     $("#btn-next").on("click", function(){
         $("#boxContent").empty();
         let page = parseInt($("#btn-page").text())+1;
-        let offset = (page-1)*5;
+        let offset = (page-1)*itemAmount;
 
-        for(let i=offset; i<offset+5; i++){
+        for(let i=offset; i<offset+itemAmount; i++){
             if(contentList[i]!=undefined)
                 createContent(contentList[i]);
             else break;
@@ -37,9 +37,9 @@ function content_paginate(contentList){
     $("#btn-prev").on("click", function(){
         $("#boxContent").empty();
         let page = parseInt($("#btn-page").text())-1;
-        let offset = (page-1)*5;
+        let offset = (page-1)*itemAmount;
 
-        for(let i=offset; i<offset+5; i++){
+        for(let i=offset; i<offset+itemAmount; i++){
             if(contentList[i]!=undefined)
                 createContent(contentList[i]);
             else break;
@@ -64,7 +64,7 @@ function filterProduct(){
         prod["Referencia"].toLowerCase().includes(value)) );
     
     $("#boxContent").empty();
-    for(let i=offset; i<offset+5; i++){
+    for(let i=offset; i<offset+itemAmount; i++){
         if(filteredProducts[i]!=undefined)
             createContent(filteredProducts[i]);
         else break;

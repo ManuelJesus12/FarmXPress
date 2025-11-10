@@ -58,7 +58,7 @@ class UserModel {
     public function insertUser(&$data){
         try{
             $date=date("Y-m-d H:i:s");
-            $estado=(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR") ? 1 : 0;
+            $estado=(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR") ? 1 : 0;
             
             //*-----------------------------CONSULTA DE INSERTAR------------------------------*//
             $sql=$this->db->prepare("INSERT INTO USUARIOS (Email, CIF, Nombre, Contraseña, Teléfono, Dirección, Comunidad, Provincia, Tipo, Fecha_Registro, Avatar, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -103,9 +103,7 @@ class UserModel {
             $sql->bindValue(8, $data[9]);
             $sql->bindValue(9, $id);
             $sql->execute();
-
-            if($file==null) $file="anon.png";
-            setcookie("UserAvatar", "assets/img/users/".$file, time()+3600*24*7, "/");
+            
             return 1;
         }catch(PDOException $e) {
             return -1;
@@ -156,7 +154,7 @@ class UserModel {
         try{
             $sql=$this->db->prepare("UPDATE USUARIOS SET Estado=? WHERE NOMBRE=?");
             $sql->bindValue(1, 1, PDO::PARAM_INT);
-            $sql->bindValue(2, $_SESSION["usuario"], PDO::PARAM_INT);
+            $sql->bindValue(2, $_SESSION["User"]["Nombre"], PDO::PARAM_INT);
             $sql->execute();
 
             return 1;

@@ -8,124 +8,141 @@ $file = ($product['Imagen']!=null) ? $product['Imagen'] : "anon.png";
 setcookie("data-rev", 0, time() - 3600, "/");
 
 $reviewControl = $reviewController -> viewListReview($product["Producto_ID"]); //Reseñas de otros usuarios
-if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
+if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
     $reviewUser    = $reviewController -> selectReview($product["Producto_ID"]); //Ha escrito una reseña el usuario?
     $rentControl   = $rentController   -> selectRent($product["Producto_ID"]); //Ha sido alquilado el producto?
 }else $reviewUser  = $rentControl = 0;
 ?>
-<!--------------------------------------------LÓGICA--------------------------------------------->
+<!--------------------------------------------FICHA DETALLES + RESEÑAS--------------------------------------------->
+<article class="container site-section catalog-bg rounded p-4">
+    <h2 class="text-center mb-4">Detalles del Producto</h2>
 
-<!--------------------------------------------FICHA DETALLES--------------------------------------------->
-<?php if(isset($_GET["success"])){ ?> <script> showBoxActionRev("<?php echo $_GET["success"]; ?>"); </script> <?php } ?>
+    <div class="row g-4">
+        <!-- Main content: reviews -->
+        <section class="col-lg-6">
+            <!-- Write a review -->
+            <?php if(!is_array($reviewUser) && is_array($rentControl) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){ ?>
+                <div style="margin-top: -60px;">
+                    <div class="fw-bold mt-1">Escribir una reseña</div>
+                    <div class="card-body">
+                        <form id="form-data-review" action="principal.php?methodRev=insert" method="post">
+                            <input type="hidden" name="pId" id="pId" value="<?php echo $product["Producto_ID"]; ?>" readonly>
+                            <div class="mb-2">
+                                <strong>Calificación:</strong>
+                                <div class="ms-2 d-inline-block">
+                                    <a href="#" class="me-1"><i class="fa-regular fa-star icon-star-rev" id="star-1"></i></a>
+                                    <a href="#" class="me-1"><i class="fa-regular fa-star icon-star-rev" id="star-2"></i></a>
+                                    <a href="#" class="me-1"><i class="fa-regular fa-star icon-star-rev" id="star-3"></i></a>
+                                    <a href="#" class="me-1"><i class="fa-regular fa-star icon-star-rev" id="star-4"></i></a>
+                                    <a href="#"><i class="fa-regular fa-star icon-star-rev" id="star-5"></i></a>
+                                </div>
+                            </div>
 
-<article class="col-12 list-prod form-log site-section rounded">
-    <h2 class='text-center' style='margin-bottom:15px'>Detalles del Producto</h2>
+                            <div class="mb-2">
+                                <textarea class="form-control" name="review" id="review" rows="3" placeholder="Tu mensaje..." required></textarea>
+                            </div>
 
-    <div class="row justify-content-center align-items-center g-4 mb-5">
-        <div class="col-lg-6 col-md-6 text-center mb-3 mb-md-0">
-            <img class="img-fluid rounded shadow" style="max-width:350px; width:100%; object-fit:cover;" src="<?php echo "../assets/img/products/".$file; ?>" alt="Imagen del producto">
-        </div>
-
-        <div class="col-lg-5 col-md-6">
-            <div class="card shadow element-green-border rounded-4">
-                <div class="card-header element-green-bg text-white fw-bold fs-5">
-                    <?php echo $product["Nombre"]." - ".$product["Referencia"]; ?>
+                            <div class="d-flex justify-content-end">
+                                <input type="button" id="btn-data-review" class="btn btn-log element-green-bg" value="Enviar">
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p class="mb-2"><strong>Precio Mensual:</strong><br><span style="color:limegreen; font-size: 1.2em"> <?php echo $product["Precio_Mensual"]; ?>€</span></p>
-                    <p class="mb-2"><strong>Descripción:</strong> <?php echo $product["Descripción"]; ?></p>
-                    <p class="mb-3"><strong>Categoría:</strong> <?php echo $cat; ?></p>
-                    <form action="principal.php?methodRent=viewStripe" method="post">
+            <?php } ?>
+
+            <!-- Reviews list header -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Reseñas de otros usuarios</h5>
+                <div class="d-flex align-items-center">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="newest" name="orderRev" value="newest" checked>
+                        <label class="form-check-label small" for="newest">Más recientes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="oldest" name="orderRev" value="oldest">
+                        <label class="form-check-label small" for="oldest">Más antiguas</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="highest" name="orderRev" value="highest">
+                        <label class="form-check-label small" for="highest">Mejor valoradas</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews container -->
+            <div class="row">
+                <div id="boxContent" class="col-12"></div>
+            </div>
+
+            <!-- Pagination nav -->
+            <?php if(is_array($reviewControl) && count($reviewControl)>0){ 
+                $class0=$class1=$class2="btn btn-log element-green-bg ";
+                $class1=$class0."not-visible";
+                if(count($reviewControl)<=5) $class2=$class0."not-visible"; ?>
+                <div class="nav-buttons mt-3">
+                    <div class="btn-group"><a class="<?php echo $class1; ?>" id="btn-prev" href="#">Anterior</a></div>
+                    <div class="btn-group"><a class="<?php echo $class0; ?>" id="btn-page" href="#">1</a></div>
+                    <div class="btn-group"><a class="<?php echo $class2; ?>" id="btn-next" href="#">Siguiente</a></div>
+                </div>
+            <?php } else { echo "<h5 class='text-danger'>Aún no hay reseñas para este producto</h5>"; } ?>
+        </section>
+
+        <!-- Sticky aside: image + action -->
+        <aside class="col-lg-6 sticky-aside">
+            <div class="card element-green-border mb-4">
+                <h4 class="fw-bold mb-1 card-header element-green-bg"><?php echo $product["Nombre"]." - ".$product["Referencia"]; ?></h4>
+                <div class="card-body text-center">
+                    <img class="img-fluid rounded shadow mb-3 card-image" style="max-height:320px; object-fit:cover;" src="<?php echo "../assets/img/products/".$file; ?>" alt="Imagen del producto">
+                    <p class="mb-2 text-muted small"><?php echo $cat; ?></p>
+                    <p class="mb-1"><strong>Precio Mensual:</strong> <span style="color:limegreen; font-size:1.2em"><?php echo $product["Precio_Mensual"]; ?>€</span></p>
+
+                    <form action="principal.php?methodRent=viewStripe" method="post" class="mt-3">
                         <input type="hidden" name="pId" value='<?php echo $product["Producto_ID"]; ?>'>
                         <input type="hidden" name="price" value='<?php echo $product["Precio_Mensual"]; ?>'>
 
-                        <?php if($product["Estado"]==1){
-                            if($_SESSION["usuario"]!="ADMINISTRADOR"){
-                                echo "<div class='mb-2'>";
-                                    echo "<strong>Duración del alquiler:</strong>";
-                                    echo "<select name='month' class='form-select d-inline-block w-auto ms-2 me-1' style='width:80px;'>";
-                                        echo "<option value='1'>1</option>";
-                                        echo "<option value='3'>3</option>";
-                                        echo "<option value='6'>6</option>";
-                                        echo "<option value='12'>12</option>";
-                                        echo "<option value='24'>24</option>";
-                                    echo "</select><span>meses</span>";
-                                echo "</div>";
-                            }
+                        <?php if($product["Estado"]==1){ 
+                            if($_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){ ?>
+                                <div class="mb-2 d-flex justify-content-center align-items-center">
+                                    <label class="me-2 mb-0"><strong>Duración:</strong></label>
+                                    <select name="month" class="form-select d-inline-block w-auto">
+                                        <option value="1">1</option>
+                                        <option value="3">3</option>
+                                        <option value="6">6</option>
+                                        <option value="12">12</option>
+                                        <option value="24">24</option>
+                                    </select>
+                                    <span class="ms-2">meses</span>
+                                </div>
+                            <?php } ?>
 
-                            echo "<p class='card-text prod-status text-success fw-semibold mb-2' id='enabled-".$product["Producto_ID"]."'>";
-                                echo "<i class='fa fa-check-circle me-1'></i>Estado: Disponible</p>";
+                            <p class="prod-status mb-2" id="enabled-<?php echo $product["Producto_ID"]; ?>">
+                                <i class="fa fa-check-circle me-1"></i>Disponible</p>
 
-                            if(isset($_COOKIE["UserType"]) && isset($_COOKIE["UserStatus"]) && $_COOKIE["UserType"]=="C" && $_COOKIE["UserStatus"]==1)
-                                echo "<button type='submit' class='col-6 btn btn-log btn-shape element-green-bg text-center py-2 mb-0'>Alquilar</button>";
-                            else
-                                echo "<div class='col-6 btn btn-shape btn-log btn-danger text-center py-2 mb-0'>Verifica tu cuenta primero</div>";
+                            <?php if($_SESSION["User"]["Nombre"]!=="ADMINISTRADOR"){
+                                if($_SESSION["User"]["Tipo"]=="C" && $_SESSION["User"]["Estado"]==1){ ?>
+                                <button type="submit" class="btn btn-log btn-shape element-green-bg w-100">Alquilar</button>
+                            <?php }else{ ?>
+                                <div class="btn btn-shape btn-log btn-danger w-100">Verifica tu cuenta primero</div>
+                            <?php }} ?>
 
-                        }else{
-                            echo "<p class='card-text prod-status text-danger fw-semibold mb-2' id='disabled-".$product["Producto_ID"]."'>";
-                                echo "<i class='fa fa-times-circle me-1'></i>Estado: Alquilado</p>";
-                            echo "<div class='col-6 btn btn-shape btn-log btn-danger text-center py-2 mb-0'>Producto no disponible</div>";
-                        } ?>
-
+                        <?php }else{ ?>
+                            <p class="prod-status text-danger mb-2" id="disabled-<?php echo $product["Producto_ID"]; ?>">
+                                <i class="fa fa-times-circle me-1"></i>Alquilado</p>
+                            <div class="btn btn-shape btn-log btn-danger w-100">Producto no disponible</div>
+                        <?php } ?>
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
-<!--------------------------------------------FICHA DETALLES--------------------------------------------->
 
-<!--------------------------------------------ESCRIBIR RESEÑA--------------------------------------------->
-    <?php if(!is_array($reviewUser) && is_array($rentControl) && $_SESSION["usuario"]!="ADMINISTRADOR"){ ?>
-    <div class='col-6 rounded text-center mb-5' style='margin:auto;'>
-        <h2>Escribir una reseña</h2>
-        <form id='form-data-review' action='principal.php?methodRev=insert' method='post'>
-            <input type="hidden" name="pId" id="pId" value='<?php echo $product["Producto_ID"]; ?>' readonly></input>
-            <strong>Calificación: </strong>
-            <a href="#"><i class="fa-regular fa-star icon-star-rev" id="star-1"></i></a>
-            <a href="#"><i class="fa-regular fa-star icon-star-rev" id="star-2"></i></a>
-            <a href="#"><i class="fa-regular fa-star icon-star-rev" id="star-3"></i></a>
-            <a href="#"><i class="fa-regular fa-star icon-star-rev" id="star-4"></i></a>
-            <a href="#"><i class="fa-regular fa-star icon-star-rev" id="star-5"></i></a>
-            
-            <textarea class='form-control' name='review' id='review' rows='3' placeholder="Tu mensaje..." required></textarea>
-            <input type="button" id="btn-data-review" class="btn btn-log element-green-bg mt-2" value="Enviar">
-        </form>
-    </div>
-    <?php } ?>
-<!--------------------------------------------ESCRIBIR RESEÑA--------------------------------------------->
-
-<!--------------------------------------------LISTA RESEÑAS--------------------------------------------->
-    <h2>Reseñas de otros usuarios</h2>
-    <div class='row d-flex justify-content-evenly mb-3 mt-3 pt-3' style='border-top:1px solid #ddd;'>
-        <?php if(is_array($reviewControl) && count($reviewControl)>0){ ?>
-            <div id='boxContent' class='col-lg-6 mb-3'></div>
-            <div class='col-lg-3'>
-                Ordenar reseñas por:
-                <input type="radio" id="newest" name="orderRev" value="newest" checked>
-                <label for="newest">Más recientes</label><br>
-                <input type="radio" id="oldest" name="orderRev" value="oldest">
-                <label for="oldest">Más antiguas</label><br>
-                <input type="radio" id="highest" name="orderRev" value="highest">
-                <label for="highest">Mejor valoradas</label><br>
+            <div class="card p-3">
+                <div class="card-body small text-muted">
+                    <h6 class="fw-bold">Descripción</h6>
+                    <p class="mb-0"><?php echo $product["Descripción"]; ?></p>
+                </div>
             </div>
+        </aside>
 
-            <!--------------------------------------------NAV BUTTONS--------------------------------------------->
-            <?php
-                $class0=$class1=$class2="btn btn-log element-green-bg ";
-                $class1=$class0."not-visible";
-                if(count($reviewControl)<=5) $class2=$class0."not-visible";
-
-                echo "<div class='nav-buttons site-article'>";
-                    echo "<div class='btn-group'><a class='$class1' id='btn-prev' href='#'>Anterior</a></div>";
-                    echo "<div class='btn-group'><a class='$class0' id='btn-page' href='#'>1</a></div>";
-                    echo "<div class='btn-group'><a class='$class2' id='btn-next' href='#'>Siguiente</a></div>";
-                echo "</div>";
-            ?>
-            <!--------------------------------------------NAV BUTTONS--------------------------------------------->
-            
-        <?php }else echo "<h4 class='text-danger'>Aún no hay reseñas para este producto</h4>"; ?>
     </div>
-<!--------------------------------------------LISTA RESEÑAS--------------------------------------------->
 </article>
 
 <!-------------------------------SCRIPT------------------------------->
@@ -133,11 +150,11 @@ if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
 
 <script>
     var reviewControl = <?php echo json_encode($reviewControl); ?>;
-    var sessionUser   = <?php echo json_encode($_SESSION['usuario']) ?? null; ?>;
-    content_paginate(reviewControl);
+    var sessionUser   = <?php echo json_encode($_SESSION["User"]["Nombre"]); ?>;
+    content_paginate(reviewControl, 5);
     
     ////////////////////////////ORDENAMIENTO////////////////////////////
-    $("input[name='orderRev']").on("change", function(){
+    $("input[name='orderRev']").on("change", function(event){
         let order = $("input[name='orderRev']:checked").val();
         if(order=="newest") reviewControl.sort((a,b) => new Date(b["Fecha_Hora"]) - new Date(a["Fecha_Hora"]));
         if(order=="oldest") reviewControl.sort((a,b) => new Date(a["Fecha_Hora"]) - new Date(b["Fecha_Hora"]));
@@ -171,12 +188,12 @@ if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
         }
         
         $("#boxContent").append(
-            "<div id='rev-"+review["Reseña_ID"]+"' class='review card col-lg-12 col-md-5 col-sm-10 mb-3'>"+
+            "<div id='rev-"+review["Reseña_ID"]+"' class='review card mb-3'>"+
                 "<div class='card-body'>"+
                     "<div class='d-flex align-items-start mb-2'>"+
-                        "<img class='img-fluid card-image me-3 review-image' src='../assets/img/users/"+file+"' alt='Imagen del usuario'>"+
-                        "<div><p class='card-title mb-1'>Escrito por: <span style='color:limegreen'>"+review['Nombre']+"</span> el día <span style='color:limegreen'>"+new Date(review["Fecha_Hora"]).toLocaleDateString()+"</span></p>"+
-                            "<div class='mb-1 text-start'> Calificación:"+
+                        "<img class='img-fluid review-image me-3' src='../assets/img/users/"+file+"' alt='Imagen del usuario'>"+
+                        "<div><p class='card-title mb-1'>Escrito por: <span style='color:limegreen'><a href='principal.php?methodUser=viewProfile&id="+review['Usuario_ID']+"' class='text-decoration-underline'>"+review['Nombre']+"</a></span> <small class='text-muted'>el "+ new Date(review['Fecha_Hora']).toLocaleDateString() +"</small></p>"+
+                            "<div class='mb-1 text-start'> Calificación: "+
                                 starsHtml+
                             "</div>"+
                         "</div>"+
@@ -224,7 +241,7 @@ if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"){
     //////////////////////////////CONTROL ESCRITURA RESEÑA////////////////////////////////
 
     //////////////////////////////CONTROL CALIFICACIÓN////////////////////////////////
-    $(".icon-star-rev").on("click", function() {
+    $(".icon-star-rev").on("click", function(event) {
         var id = $(this).attr("id").split("-")[1];
         var stars = $(".icon-star-rev");
         for (var i = 1; i <= id; i++)

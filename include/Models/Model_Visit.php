@@ -36,7 +36,7 @@ class VisitModel {
         $sql=$this->db->prepare("INSERT INTO VISITAS (RUTA, FECHA_HORA, USUARIO_ID) VALUES (?, ?, (SELECT USUARIO_ID FROM USUARIOS WHERE NOMBRE = ?))");
         $sql->bindParam(1, $url);
         $sql->bindParam(2, $date);
-        $sql->bindParam(3, $_SESSION["usuario"], PDO::PARAM_STR);
+        $sql->bindParam(3, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);
         $sql->execute();
     }
 

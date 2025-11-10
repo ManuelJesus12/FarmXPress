@@ -22,7 +22,7 @@ class FavModel {
             (SELECT NOMBRE FROM CATEGORÍAS C WHERE C.CATEGORÍA_ID=P.CATEGORÍA_ID) AS 'CAT', 
             (SELECT PROVINCIA FROM USUARIOS U WHERE U.USUARIO_ID=P.USUARIO_ID) AS 'PROV'
             FROM PRODUCTOS P JOIN SEGUIMIENTOS S ON P.Producto_ID=S.Producto_ID WHERE S.Usuario_ID=(SELECT Usuario_ID FROM USUARIOS WHERE Nombre=?)");
-            $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
+            $sql->bindValue(1, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->execute();
             
             if($sql->rowCount()!=0)
@@ -45,7 +45,7 @@ class FavModel {
         try{            
             $sql=$this->db->prepare("SELECT * FROM SEGUIMIENTOS WHERE Producto_ID=? AND Usuario_ID=(SELECT Usuario_ID FROM USUARIOS WHERE Nombre=?)");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
-            $sql->bindValue(2, $_SESSION["usuario"], PDO::PARAM_STR);
+            $sql->bindValue(2, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->execute();
 
             if($sql->rowCount()!=0) return 1; 
@@ -72,7 +72,7 @@ class FavModel {
             
             $sql=$this->db->prepare($query);
             $sql->bindValue(1, $id, PDO::PARAM_INT);
-            $sql->bindValue(2, $_SESSION["usuario"], PDO::PARAM_STR);
+            $sql->bindValue(2, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->execute();
             
             return 1;

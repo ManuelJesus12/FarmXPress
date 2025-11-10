@@ -1,6 +1,6 @@
 <article class="col-4 form-log site-section rounded mb-3">
-    <h2>Iniciar Sesión</h2>
-    <table style="margin:auto" >
+    <h2 style='padding: 10px'>Iniciar Sesión</h2>
+    <table style="margin:auto; ">
         <form action="principal.php?methodUser=login" method="post">
             <tr>
                 <td>Empresa: </td>
@@ -24,3 +24,4 @@
             </tr>
     </table>
 </article>
+<div style='height:50px'></div>

@@ -39,34 +39,34 @@
                 <tr>
                     <td>Email:  <span class="error">*</span></td>
                     <td><input type="email" placeholder="ejemplo@gmail.com" name="email" id="email" value="<?php echo $userData["Email"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Debe ser una dirección de correo válida'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>CIF:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de CIF: A12345678" name="cif" id="cif" value="<?php echo $userData["CIF"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Una letra mayúscula y 8 dígitos'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Nombre:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Nombre de Empresa" name="name" id="name" value="<?php echo $userData["Nombre"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Entre 5 y 100 caracteres'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <?php if(!isset($_GET["id"])){ ?>
                     <tr>
                         <td>Contraseña:  <span class="error">*</span></td>
                         <td><input type="password" placeholder="Ejemplo de contraseña" name="password" id="password" required /></td>
-                        <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                        <td><a href='#' class='has-tooltip' data-tooltip='Entre 8 y 20 caracteres'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <?php } ?>
                 <tr>
                     <td>Teléfono:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de teléfono: 123456789" name="phone" id="phone" value="<?php echo $userData["Teléfono"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='9 caracteres numéricos'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Dirección:  <span class="error">*</span></td>
                     <td><input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" value="<?php echo $userData["Dirección"]; ?>" required /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='Entre 5 y 255 caracteres'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td>Comunidad Autónoma: <span class="error">*</span></td>
@@ -84,7 +84,7 @@
                         </select>
                     </td>
                 </tr>
-                    <?php if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR" && !isset($_GET["id"])){ ?>
+                    <?php if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR" && !isset($_GET["id"])){ ?>
                     <tr>
                         <td>Tipo:  <span class="error">*</span></td>
                         <td><select name="tipo" id="tipo" style="width: 100%;">
@@ -96,7 +96,7 @@
                 <tr>
                     <td>Avatar: </td>
                     <td><input type="file" name="avatar" id="avatar" /></td>
-                    <td><a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
+                    <td><a href='#' class='has-tooltip' data-tooltip='PNG o JPG de máximo 1MB'><i class='fa-solid fa-question icon-plus border-5'></i></a></td>
                 </tr>
                 <tr>
                     <td colspan="3" id="error">Los campos marcados con un * son obligatorios</td>

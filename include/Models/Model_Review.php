@@ -38,7 +38,7 @@ class ReviewModel {
     public function selectReview(&$pId){
         try{
             $sql=$this->db->prepare("SELECT * FROM RESEÑAS WHERE USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE NOMBRE=?) AND PRODUCTO_ID=?");
-            $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
+            $sql->bindValue(1, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->bindValue(2, $pId, PDO::PARAM_INT);
             $sql->execute();
 
@@ -64,7 +64,7 @@ class ReviewModel {
             $sql->bindValue(2, $data[1]);
             $sql->bindValue(3, date("Y-m-d H:i:s"));
             $sql->bindValue(4, $data[2]);
-            $sql->bindValue(5, $_SESSION["usuario"], PDO::PARAM_STR);
+            $sql->bindValue(5, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->execute();
 
             return 1;

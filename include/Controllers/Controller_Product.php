@@ -17,10 +17,8 @@ class ProductController {
      * Return: Vista de lista de productos según el tipo de usuario
      */
     public function viewListProduct(&$offset=0){
-        $tipo = (!isset($_COOKIE["UserType"])) ? "C" : $_COOKIE["UserType"];
-
-        if($tipo=="P"){
-            $productControl=$this->productModel->listProductP($_SESSION["usuario"]);
+        if($_SESSION["User"]["Tipo"]=="P"){
+            $productControl=$this->productModel->listProductP($_SESSION["User"]["Nombre"]);
             include("Views/View_List_Prod.php");
         }else{
             $productControl=$this->productModel->listProductC($offset);

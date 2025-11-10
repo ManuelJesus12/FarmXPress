@@ -19,7 +19,7 @@ class CategoryController {
     public function viewListCategory(&$opt=0){
         $categoryControl=$this->categoryModel->listCategory();
         if($opt!=1){
-            if(isset($_SESSION["usuario"]) && $_SESSION["usuario"]=="ADMINISTRADOR") include("Views/View_List_Cat.php");
+            if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR") include("Views/View_List_Cat.php");
             else echo "<h2>Acceso a esta sección denegado</h2>";
         }else
             return $categoryControl;

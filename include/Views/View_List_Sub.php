@@ -6,6 +6,8 @@
 if(is_array($subControl)){
     foreach($subControl as &$sub){ $sub["PerkList"]=$perkController->viewListPerk($sub['Suscripción_ID']); }
     //*-----------------------------NOTIFICATIONS------------------------------*//
+    if(isset($_GET["error"])) echo "<script>showFieldError('".$_GET["error"]."');</script>";
+
     if(isset($_GET["action"]) && $_GET["action"]=="insert")
         echo "<div id='alert-success' class='col-10 alert alert-success'>Suscripción agregada correctamente</div>";
     else if(isset($_GET["action"]) && $_GET["action"]=="update")

@@ -22,7 +22,7 @@ class RentModel {
             FROM ALQUILERES A JOIN PRODUCTOS P ON A.PRODUCTO_ID=P.PRODUCTO_ID LEFT JOIN PAGOS G ON A.ALQUILER_ID=G.ALQUILER_ID
             WHERE A.USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND A.ESTADO=1 GROUP BY A.ALQUILER_ID";
             $sql=$this->db->prepare($query);
-            $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
+            $sql->bindValue(1,$_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->execute();
 
             if($sql->rowCount()!=0)
@@ -44,7 +44,7 @@ class RentModel {
         try{
             $sql=$this->db->prepare("SELECT * FROM ALQUILERES A JOIN PRODUCTOS P ON A.PRODUCTO_ID=P.PRODUCTO_ID 
             WHERE A.USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND A.PRODUCTO_ID=? AND A.ESTADO=1");
-            $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
+            $sql->bindValue(1,$_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->bindValue(2, $pId, PDO::PARAM_INT);
             $sql->execute();
 
@@ -68,7 +68,7 @@ class RentModel {
     public function insertRent(&$id, &$month, &$price){
         try{
             $sql=$this->db->prepare("INSERT INTO ALQUILERES (USUARIO_ID, PRODUCTO_ID, FECHA_INICIO, FECHA_FIN, ESTADO, PRECIO_TOTAL) VALUES ((SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?), ?, ?, ?, ?, ?)");
-            $sql->bindValue(1, $_SESSION["usuario"], PDO::PARAM_STR);
+            $sql->bindValue(1,$_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->bindValue(2, $id, PDO::PARAM_INT);
             $sql->bindValue(3, date("Y-m-d H:i:s"), PDO::PARAM_STR);
             $sql->bindValue(4, date("Y-m-d H:i:s", strtotime("+".$month." months")), PDO::PARAM_STR);

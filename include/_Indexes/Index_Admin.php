@@ -26,7 +26,7 @@ if(isset($_GET['methodAdmin'])){
         $message = $adminController -> listLog($_GET['type']);
     /*--------------------------------------------------------------------------*/
 
-    if($PDOConnect!=false && isset($_SESSION["usuario"])){
+    if($PDOConnect!=false && isset($_SESSION["User"])){
         // INITIALIZE VIEW
         /*--------------------------------------------------------------------------*/
         if(in_array("newLog", $methods)  || in_array("viewLog", $methods))
