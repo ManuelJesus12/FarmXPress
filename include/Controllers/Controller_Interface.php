@@ -135,7 +135,7 @@ class InterfaceController {
         
         if(($PDOConnect!=false)){
             $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
-            include_once($dir."_Indexes/Index_Rent.php");
+            include($dir."_Indexes/Index_Rent.php");
             $rentController -> checkActiveRents();
         }
     }

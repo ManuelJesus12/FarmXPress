@@ -58,7 +58,7 @@ class RentModel {
         try{
             $sql=$this->db->prepare("SELECT * FROM ALQUILERES A JOIN PRODUCTOS P ON A.PRODUCTO_ID=P.PRODUCTO_ID 
             WHERE A.USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND A.PRODUCTO_ID=? AND A.ESTADO=1");
-            $sql->bindValue(1,$_SESSION["User"]["Nombre"], PDO::PARAM_STR);
+            $sql->bindValue(1, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->bindValue(2, $pId, PDO::PARAM_INT);
             $sql->execute();
 
