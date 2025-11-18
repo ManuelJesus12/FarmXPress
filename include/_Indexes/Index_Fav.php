@@ -1,0 +1,25 @@
+<?php
+global $PDOConnect, $dirLocation;
+$dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
+require_once $dir.'Models/Model_Fav.php';
+require_once $dir.'Controllers/Controller_Fav.php';
+
+// INITIALIZE MODEL AND CONTROLLER
+$favModel = new FavModel($PDOConnect);
+$favController = new FavController($favModel);
+
+if(isset($_GET['methodFav'])){
+    $methods = explode('-', $_GET['methodFav']);
+    // CONTROLLER FUNCTION HANDLING
+    /*--------------------------------------------------------------------------*/
+    if(in_array("toggleFav", $methods))
+        $message = $favController -> toggleFav($_POST['prodId'], $_POST['action']);
+    /*--------------------------------------------------------------------------*/
+
+    // INITIALIZE VIEW
+    /*--------------------------------------------------------------------------*/
+    if(in_array("select", $methods))
+        $favController -> viewListFav();
+    /*--------------------------------------------------------------------------*/
+}
+?>
