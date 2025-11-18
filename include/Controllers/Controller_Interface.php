@@ -73,7 +73,9 @@ class InterfaceController {
         }else{
             $type = (isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR") ? "Admin" : "User";
             include("views/viewIndex$type.php");
-        }  
+        } 
+        
+        $this->checkRentsActive();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,6 +91,7 @@ class InterfaceController {
         global $PDOConnect;
 
         if($PDOConnect!=false && isset($_SESSION["User"])){
+            $this->checkRentsActive();
             if(isset($_GET["methodCat"]))
                 include("_Indexes/Index_Category.php");
             if(isset($_GET["methodSub"]))
@@ -102,7 +105,6 @@ class InterfaceController {
             if(isset($_GET["methodPay"]))
                 include("_Indexes/Index_Pay.php");
         }
-
         if(isset($_GET["methodProd"]))
             include("_Indexes/Index_Product.php");
         if(isset($_GET["methodUser"]))

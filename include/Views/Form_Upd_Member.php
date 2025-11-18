@@ -19,8 +19,8 @@
 
     <!-------------------------------FORM------------------------------->
     <div id="formPopup" class="popup">
-    <div class="popup-content">
-        <button class="close-btn" id="closeFormBtn">X</button>
+    <div class="popup-content" style='position:relative; top: -40;'>
+        <button class="close-btn" id="closeFormBtn" style="position:fixed;">X</button>
         <h2>Extender Suscripción</h2>
 
         <form action="principal.php?methodMember=update" method="post">

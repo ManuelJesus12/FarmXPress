@@ -30,9 +30,9 @@
 
     <!-------------------------------FORM------------------------------->
     <div id="formPopup" class="popup">
-    <div class="popup-content">
-        <button class="close-btn" id="closeFormBtn">X</button>
-        <h2><?php echo $title ?></h2>
+    <div class="popup-content" style='position:relative; top: -40;'>
+        <button class="close-btn" id="closeFormBtn" style="position:fixed;">X</button>
+        <h2 style='margin-top: -30px'><?php echo $title ?></h2>
         <form id="form-data-perk" action= <?php echo $action; ?> method="post" class="needs-validation" novalidate>
             <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
 

@@ -17,9 +17,9 @@
     ?>
     <!-------------------------------LOGICA------------------------------->
 
-<div id="formPopup" class="popup" style="top: -90;">
-    <div class="popup-content">
-        <button class="close-btn" id="closeFormBtn" style="top: 100;">X</button>
+<div id="formPopup" class="popup">
+    <div class="popup-content" style='position:relative; top: -40;'>
+        <button class="close-btn" id="closeFormBtn" style="position:fixed;">X</button>
         <h2>Mostrando Historial de Pagos</h2>
         <table id="boxContent" style="margin:auto" class="table table-striped">
             <thead><tr><th>Pago</th><th>Fecha</th><th>Cantidad Pagada</th><th>Meses Extendido</th></tr></thead>
@@ -45,6 +45,16 @@
             ],
             lengthMenu: [3, 5, 7]
         });
+</script>
+
+<script>
+    $("#boxContent_length").find("select").on("change", function() {
+        const selectedValue = $(this).val();
+        
+        if(selectedValue == 3) $("popup-content").css("top", "-40");
+        else if(selectedValue == 5) $("popup-content").css("top", "-80");
+        else if(selectedValue == 7) $("popup-content").css("top", "-120");
+    });
 </script>
 <!-------------------------------SCRIPT------------------------------->
 </html>

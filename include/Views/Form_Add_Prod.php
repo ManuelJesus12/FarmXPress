@@ -27,9 +27,9 @@
     <!-------------------------------LOGIC------------------------------->
 
     <!-------------------------------FORM------------------------------->
-    <div id="formPopup" class="popup" style="top: -130; font-size: 0.9em">
-    <div class="popup-content">
-        <button class="close-btn" id="closeFormBtn" style='top: 140;'>X</button>
+    <div id="formPopup" class="popup">
+    <div class="popup-content" style='position:relative; top: -130;'>
+        <button class="close-btn" id="closeFormBtn" style="position:fixed;">X</button>
         <h2 style='margin-top: -30px'><?php echo $title ?></h2>
         <form id="form-data-prod" action= <?php echo $action; ?> method="post" enctype='multipart/form-data' class="needs-validation" novalidate>
             

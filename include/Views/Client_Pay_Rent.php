@@ -21,9 +21,9 @@
     ?>
     <!-------------------------------LOGICA------------------------------->
 
-<div id="formPopup" class="popup" style="top: -90;">
-    <div class="popup-content">
-        <button class="close-btn" id="closeFormBtn" style="top: 100;">X</button>
+<div id="formPopup" class="popup">
+    <div class="popup-content" style='position:relative; top: -40;'>
+        <button class="close-btn" id="closeFormBtn" style="position:fixed;">X</button>
         <h2>Realizando pago del alquiler del producto <?php echo $productControl["Nombre"] ?></h2>
         <form id="form-data-pay" action="principal.php?methodPay=viewStripe" method="post">
             <input type="hidden" name="maxAmount" id="maxAmount" value="<?php echo $_GET["deuda"]; ?>" />

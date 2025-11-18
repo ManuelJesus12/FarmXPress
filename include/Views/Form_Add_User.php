@@ -26,9 +26,9 @@
     <!-------------------------------LÓGICA------------------------------->
 
     <!-------------------------------FORM------------------------------->
-    <div id="formPopup" class="popup" style="top: -90; font-size: 0.9em">
-    <div class="popup-content" style='width: 900px'>
-        <button class="close-btn" id="closeFormBtn" style="top: 105;">X</button>
+    <div id="formPopup" class="popup">
+    <div class="popup-content" style='position:relative; top: -100; width: 900px'>
+        <button class="close-btn" id="closeFormBtn" style="position:fixed;">X</button>
         <h2 style='margin-top: -30px'><?php echo $title ?></h2>
         <form action="<?php echo $action; ?>" method="post" enctype='multipart/form-data' id="form-data-user" novalidate>
             <?php if($_GET["methodUser"]=="viewUpdate"){ ?>

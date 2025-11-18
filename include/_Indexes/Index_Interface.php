@@ -6,5 +6,4 @@
     $interfaceController = new InterfaceController();
     $PDOConnect  = $interfaceController->PDOConnect();
     $interfaceController->includeVisit();
-    $interfaceController->checkRentsActive();
 ?>
