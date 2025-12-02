@@ -23,7 +23,7 @@
                 <div class="card-body">
                     <h3 class="card-header element-green-bg mb-3 lead"><?php echo $rentControl["Nombre"].' - '.$rentControl["Referencia"]; ?></h3>
 
-                    <div class="row">
+                    <div class="row" id="rent-details">
                         <div class="col-6 mb-2"><strong>Precio Total</strong></div>
                         <div class="col-6 mb-2 text-end" style="color:limegreen;"><strong><?php echo $rentControl["Precio_Total"]; ?> €</strong></div>
 
@@ -47,5 +47,5 @@
     </div>
 </article>
 
-<script src="<?php echo $basePath; ?>/assets/js/pdf24.js"></script>
-<script src="<?php echo $basePath; ?>/assets/js/pdfCreate.js"></script>
+<script src="../assets/js/pdf24.js"></script>
+<script src="../assets/js/pdfCreate.js"></script>

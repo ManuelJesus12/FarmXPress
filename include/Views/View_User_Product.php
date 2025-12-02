@@ -105,13 +105,12 @@ if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
                                 <div class="mb-2 d-flex justify-content-center align-items-center">
                                     <label class="me-2 mb-0"><strong>Duración:</strong></label>
                                     <select name="month" class="form-select d-inline-block w-auto">
-                                        <option value="1">1</option>
-                                        <option value="3">3</option>
-                                        <option value="6">6</option>
-                                        <option value="12">12</option>
-                                        <option value="24">24</option>
+                                        <option value="1">1 meses</option>
+                                        <option value="3">3 meses</option>
+                                        <option value="6">6 meses</option>
+                                        <option value="12">12 meses</option>
+                                        <option value="24">24 meses</option>
                                     </select>
-                                    <span class="ms-2">meses</span>
                                 </div>
                             <?php } ?>
 
@@ -137,7 +136,7 @@ if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
             <div class="card p-3">
                 <div class="card-body small text-muted">
                     <h6 class="fw-bold">Descripción</h6>
-                    <p class="mb-0"><?php echo $product["Descripción"]; ?></p>
+                    <p class="mb-0"><?php echo $product["Descripcion"]; ?></p>
                 </div>
             </div>
         </aside>

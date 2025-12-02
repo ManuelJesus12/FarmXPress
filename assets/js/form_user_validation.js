@@ -25,7 +25,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#email").addClass('input-error').focus();
         return;
     }
-    let validEmail = await validateField("Email", email, "email", "#userId", "USUARIO");
+    let validEmail = await validateField("Email", email, "email", "#userId", "Usuario");
     if (!validEmail) return;
     // Email validación
 
@@ -46,7 +46,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#name").addClass('input-error').focus();
         return;
     }
-    let validName = await validateField("Nombre", name, "name", "#userId", "USUARIO");
+    let validName = await validateField("Nombre", name, "name", "#userId", "Usuario");
     if (!validName) return;
     // Nombre validación
 
@@ -61,7 +61,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#cif").addClass('input-error').focus();
         return;
     }
-    let validCif = await validateField("CIF", cif, "cif", "#userId", "USUARIO");
+    let validCif = await validateField("CIF", cif, "cif", "#userId", "Usuario");
     if (!validCif) return;
     // CIF validación
 
@@ -71,7 +71,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#phone").addClass('input-error').focus();
         return;
     }
-    let validPhone = await validateField("Teléfono", phone, "phone", "#userId", "USUARIO");
+    let validPhone = await validateField("Telefono", phone, "phone", "#userId", "Usuario");
     if (!validPhone) return;
     // Teléfono validación
 
@@ -86,7 +86,7 @@ $("#btn-data-user").on("click", async function(event){
         $("#address").addClass('input-error').focus();
         return;
     }
-    let validAddress = await validateField("Dirección", address, "address", "#userId", "USUARIO");
+    let validAddress = await validateField("Direccion", address, "address", "#userId", "Usuario");
     if (!validAddress) return;
     // Dirección validación
 

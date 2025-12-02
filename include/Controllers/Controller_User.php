@@ -57,9 +57,10 @@ class UserController {
     public function insertUser(){
         include("../assets/php/vBackEndUser.php");
         if($this->userModel->insertUser($data)==1){
-            if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
-                $this->loginUser($data[2], $data[3]);
-                $this->userModel-sendRegisterMail($data[0], $data[2]);
+            if(!isset($_SESSION["User"])){
+                $this->loginUser($_POST['name'], $_POST['password']);
+                $this->userModel->sendRegisterMail($data[0], $data[2]);
+                header("Location: ../index.php?action=1");
             }else header("Location: principal.php?methodUser=select&action=insert");
         }
     }
@@ -142,12 +143,8 @@ class UserController {
      * Return: No devuelve nada, solo destruye la sesión y elimina las cookies
      */
     public function logoutUser(){
-        try{
-            setcookie("search-options", -1, time()-1, "/");
-            session_destroy();
-        }catch (Exception $e){
-            return "Logout failed.";
-        }
+        setcookie("search-options", 0, time()-1, "/");
+        session_destroy();
     }
 
     ///////////////////////////////////////////////////////////////

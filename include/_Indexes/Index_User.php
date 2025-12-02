@@ -20,11 +20,11 @@ if(isset($_GET['methodUser'])){
         $message = $userController -> logoutUser();
         header("Location: ../index.php?action=0");
     }
+    if(in_array("insert", $methods))
+        $message = $userController -> insertUser();
     // CONTROLLER FUNCTION HANDLING
     if($PDOConnect!=false && isset($_SESSION["User"])){
         /*--------------------------------------------------------------------------*/
-        if(in_array("insert", $methods))
-            $message = $userController -> insertUser();
         if(in_array("update", $methods))
             $message = $userController -> updateUser();
         if(in_array("delete", $methods))

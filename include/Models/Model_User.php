@@ -70,7 +70,7 @@ class UserModel {
             $sql->execute();
 
             //*-----------------------------CLIENTE / PROVEEDOR------------------------------*//
-            $table = ($data[6]=="C") ? "CLIENTES" : "PROVEEDORES";
+            $table = ($data[6]=="C") ? "Clientes" : "Proveedores";
             $sql=$this->db->prepare("INSERT INTO $table (Usuario_ID) VALUES (?)");
             $sql->bindValue(1, $this->db->lastInsertId(), PDO::PARAM_INT);
             $sql->execute();
@@ -181,7 +181,7 @@ class UserModel {
                     if(password_verify($contraseña, $user['Contraseña']))
                         return 1;
                     else return 0;
-                }else   return 0;
+                }else return 0;
             }catch(PDOException $e){
                 return -1;
             }

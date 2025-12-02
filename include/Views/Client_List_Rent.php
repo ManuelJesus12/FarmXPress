@@ -52,13 +52,13 @@ if(is_array($rentControl)){ ?>
         }else{
             buttons += "<div class='col-12 d-flex gap-2'>" +
                 "<a href='#' class='btn btn-sm btn-product-extend btn-shape w-33' onclick='insertPay("+rent['RID']+", "+rent['PID']+", "+rent['Deuda']+")'><i class='fa-solid fa-plus border-5'></i> Extender</a>" +
-                "<a href='#' class='btn btn-sm btn-product-delete btn-shape w-33' onclick='activeRent("+rent['RID']+", "+rent['PID']+", "+rent['Nombre']+")'><i class='fa-solid fa-xmark border-5'></i> Liberar</a>" +
+                "<a href='#' class='btn btn-sm btn-product-delete btn-shape w-33' onclick='activeRent("+rent['RID']+", "+rent['PID']+", \""+String(rent['Nombre']).replace(/\\"/g, '\\"').replace(/"/g, '\\"')+"\")'><i class='fa-solid fa-xmark border-5'></i> Liberar</a>" +
                 "<a href='#' class='btn btn-sm element-green-bg btn-shape w-33' onclick='viewPay("+rent['RID']+")'><i class='fa-solid fa-credit-card border-5'></i> Pagos</a>" +
             "</div>";
         }
 
         $("#boxContent").append(
-            "<div id='rent-"+rent["RID"]+"' class='col-12 col-md-6 col-lg-3'>" +
+            "<div id='rent-"+rent["RID"]+"' class='col-12 col-md-6 col-lg-4'>" +
                 "<div class='card h-100 element-green-border'>" +
                     "<div class='card-header element-green-bg'><a class='element-green-bg text-decoration-underline' href='principal.php?methodProd=viewProduct&id="+rent['PID']+"'>"+rent["Nombre"]+" - "+rent["Referencia"]+"</a></div>" +
                     "<div class='card-body d-flex flex-column'>" +

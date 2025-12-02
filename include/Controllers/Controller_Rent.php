@@ -153,7 +153,7 @@ class RentController {
                     $producto=$productController->selectProduct($rent["Producto_ID"]); //Recoger datos producto
                     $usuario=$userController->selectUser($rent["Usuario_ID"]); //Recoger datos cliente
 
-                    //$this->rentModel->sendRentEmail($usuario["Email"], $producto["Nombre"], $mailType);  //Enviar correo al cliente
+                    $this->rentModel->sendRentEmail($usuario["Email"], $producto["Nombre"], $mailType);  //Enviar correo al cliente
                     $this->toggleMailBoolRent($rent["Alquiler_ID"]); //Actualizar mail_bool a 0
                 }
             }
