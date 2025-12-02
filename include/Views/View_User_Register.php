@@ -1,6 +1,6 @@
 <!-------------------------------LOGIC------------------------------->
 <?php
-    $userData=['Usuario_ID'=>'', 'Nombre'=>'', 'CIF'=>'', 'Email'=>'', 'Contraseña'=>'', 'Teléfono'=>'', 'Dirección'=>'', 'Comunidad'=>'', 'Provincia'=>''];
+    $userData=['Usuario_ID'=>'', 'Nombre'=>'', 'CIF'=>'', 'Email'=>'', 'Contraseña'=>'', 'Telefono'=>'', 'Direccion'=>'', 'Comunidad'=>'', 'Provincia'=>''];
     if($_GET["methodUser"]=="viewUpdate"){
         $title="Actualizar Usuario"; $field="Nombre";
         $userData=$this->selectUser($_SESSION["User"]["Nombre"], $field);
@@ -52,7 +52,7 @@
                 <div class="col-lg-6 col-md-6 mb-3">
                     <label for="phone" class="form-label">Teléfono: <span class="error">*</span></label>
                     <div class="input-group">
-                        <input type="text" placeholder="Ejemplo de teléfono: 123456789" name="phone" id="phone" class="form-control" value="<?php echo $userData["Teléfono"]; ?>" required />
+                        <input type="text" placeholder="Ejemplo de teléfono: 123456789" name="phone" id="phone" class="form-control" value="<?php echo $userData["Telefono"]; ?>" required />
                     </div>
                     <div class="form-text text-danger" id="error-phone"></div>
                 </div>
@@ -60,7 +60,7 @@
                 <div class="col-lg-6 mb-3">
                     <label for="address" class="form-label">Dirección: <span class="error">*</span></label>
                     <div class="input-group">
-                        <input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" class="form-control" value="<?php echo $userData["Dirección"]; ?>" required />
+                        <input type="text" placeholder="Ejemplo de Dirección" name="address" id="address" class="form-control" value="<?php echo $userData["Direccion"]; ?>" required />
                     </div>
                     <div class="form-text text-danger" id="error-address"></div>
                 </div>

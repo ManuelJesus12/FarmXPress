@@ -15,7 +15,7 @@ function content_paginate(contentList, itemAmount){
 
     /////////////////////////////BOTÓN DERECHO/////////////////////////////
     $("#btn-next").on("click", function(){
-        $("#boxContent").empty().fadeOut(300).fadeIn(300);
+        $("#boxContent").empty().fadeOut(100).fadeIn(100);
         let page = parseInt($("#btn-page").text())+1;
         let offset = (page-1)*itemAmount;
 
@@ -35,7 +35,7 @@ function content_paginate(contentList, itemAmount){
 
     ////////////////////////////BOTÓN IZQUIERDO////////////////////////////
     $("#btn-prev").on("click", function(){
-        $("#boxContent").empty().fadeOut(300).fadeIn(300);
+        $("#boxContent").empty().fadeOut(100).fadeIn(100);
         let page = parseInt($("#btn-page").text())-1;
         let offset = (page-1)*itemAmount;
 
@@ -55,7 +55,7 @@ function content_paginate(contentList, itemAmount){
 }
 
 ////////////////////////////FILTRAR PRODUCTOS////////////////////////////
-function filterProduct(){
+function filterProduct(itemAmount){
     let page = 1; let offset = (page-1)*5;
     let value = $("#inputSearch").val().toLowerCase();
     
@@ -63,7 +63,7 @@ function filterProduct(){
         (prod["Nombre"].toLowerCase().includes(value) || 
         prod["Referencia"].toLowerCase().includes(value)) );
     
-    $("#boxContent").empty().fadeOut(300).fadeIn(300);
+    $("#boxContent").empty().fadeOut(100).fadeIn(100);
     for(let i=offset; i<offset+itemAmount; i++){
         if(filteredProducts[i]!=undefined)
             createContent(filteredProducts[i]);

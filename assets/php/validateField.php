@@ -1,4 +1,4 @@
-<?php
+<<?php
 $c = new PDO("mysql:host=localhost;dbname=FARMXPRESS", "root", "");
 $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 header('Content-Type: application/json');

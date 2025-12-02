@@ -25,13 +25,13 @@ if(isset($_GET["error"])) echo "<script>showBoxProduct(".$_GET["error"].");</scr
                     <h5 class="card-title">Filtrar Productos</h5>
                     <form id="filter-form" action="#" method="POST" class="needs-validation" novalidate>
                         <div class="mb-3">
-                            <label for="category" class="form-label">Categoría</label>
+                            <label for="category" class="form-label">Categoria</label>
                             <select class="form-control" id="category" name="category">
                                 <option value="">Todas</option>
                                 <?php
                                     foreach($categoryControl as $cat){
-                                        $selected = ($cat["Categoría_ID"]==$category) ? "selected" : "";
-                                        echo "<option value='".$cat["Categoría_ID"]."' $selected>".$cat["Nombre"]."</option>";
+                                        $selected = ($cat["Categoria_ID"]==$category) ? "selected" : "";
+                                        echo "<option value='".$cat["Categoria_ID"]."' $selected>".$cat["Nombre"]."</option>";
                                     }
                                 ?>
                             </select>
@@ -40,7 +40,7 @@ if(isset($_GET["error"])) echo "<script>showBoxProduct(".$_GET["error"].");</scr
                         <div class="mb-3">
                             <label class="form-label">Rango de Precio (€)</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="minPrice" name="minPrice" min="0" placeholder="Mín" value="<?php echo $minPrice; ?>">
+                                <input type="number" class="form-control" id="minPrice" name="minPrice" min="0" placeholder="Min" value="<?php echo $minPrice; ?>">
                                 <span class="input-group-text">-</span>
                                 <input type="number" class="form-control" id="maxPrice" name="maxPrice" min="0" placeholder="Máx" value="<?php echo $maxPrice; ?>">
                             </div>
@@ -89,7 +89,7 @@ if(isset($_GET["error"])) echo "<script>showBoxProduct(".$_GET["error"].");</scr
                     foreach($productControl as $product){
                         //*-----------------------------DATA CONTROL------------------------------*//
                         $file = ($product['Imagen']!=null) ? "../assets/img/products/".$product['Imagen'] : "../assets/img/products/anon.png";
-                        $category = ($product["CAT"] != null) ? $product["CAT"] : "Sin Categoría";
+                        $category = ($product["CAT"] != null) ? $product["CAT"] : "Sin Categoria";
                         $estado = ($product["PEST"]==false) ? "<span class='badge bg-danger'>Alquilado</span>" : "<span class='badge bg-success'>Disponible</span>";
                         //*-----------------------------DATA CONTROL------------------------------*//
 
@@ -109,7 +109,7 @@ if(isset($_GET["error"])) echo "<script>showBoxProduct(".$_GET["error"].");</scr
                                 echo "<div class='card-body d-flex flex-column'>";
                                     echo "<img src='$file' class='card-img-top' alt='Imagen producto' style='margin-bottom:10px'>";
                                     echo "<p class='card-text mb-1'>Localización: <strong>{$product['PROV']}</strong></p>";
-                                    echo "<p class='card-text mb-1'>Categoría: <strong>{$product['CAT']}</strong></p>";
+                                    echo "<p class='card-text mb-1'>Categoria: <strong>{$product['CAT']}</strong></p>";
                                     echo "<div class='mt-auto d-flex justify-content-between align-items-center'>";
                                         echo "<div>{$estado}</div>";
                                         echo "<div class='text-end'><span class='h5' style='color: limegreen;'>{$product['Precio_Mensual']}€/mes</div>";

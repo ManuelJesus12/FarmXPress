@@ -51,18 +51,17 @@ class UserController {
     ///////////////////////////////////////////////////////////////
 
     /* Función: Insertar un nuevo usuario
-     * Params: No recibe parámetros, utiliza los datos de la cookie "data-user"
+     * Params: No recibe parámetros
      * Return: Redirección a la vista de lista de usuarios o login según el tipo de usuario
      */
     public function insertUser(){
         include("../assets/php/vBackEndUser.php");
         if($this->userModel->insertUser($data)==1){
-            if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR")
-                header("Location: principal.php?methodUser=select&action=insert");
-            else
+            if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
                 $this->loginUser($data[2], $data[3]);
-        }else
-            return "Error al registrar el usuario, datos incompletos o incorrectos.";
+                $this->userModel-sendRegisterMail($data[0], $data[2]);
+            }else header("Location: principal.php?methodUser=select&action=insert");
+        }
     }
 
     ///////////////////////////////////////////////////////////////
@@ -73,7 +72,6 @@ class UserController {
      */
     public function updateUser(){
         include("../assets/php/vBackEndUser.php");
-
         if($this->userModel->updateUser($_POST['userId'], $data)==1){
             if ($_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
                 $_SESSION["User"]["Email"] =$data[0];

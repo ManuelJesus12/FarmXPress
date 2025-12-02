@@ -12,13 +12,13 @@ class PerkModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Recuperar ventajas de una suscripción
-     * Params: $id (ID de la suscripción)
-     * Return: Array con las ventajas, 0 si no hay ventajas, -1 en caso de error
+    /* Funcion: Recuperar Ventajas de una suscripcion
+     * Params: $id (ID de la suscripcion)
+     * Return: Array con las Ventajas, 0 si no hay Ventajas, -1 en caso de error
      */
     public function listPerk(&$id){
         try{
-            $sql=$this->db->prepare("SELECT * FROM VENTAJAS WHERE SUSCRIPCIÓN_ID=?");
+            $sql=$this->db->prepare("SELECT * FROM Ventajas WHERE Suscripcion_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
 
@@ -31,13 +31,13 @@ class PerkModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Seleccionar una ventaja por su ID
+    /* Funcion: Seleccionar una ventaja por su ID
      * Params: $id (ID de la ventaja)
      * Return: Array con los datos de la ventaja, -1 en caso de error
      */
     public function selectPerk($id){
         try{
-            $sql=$this->db->prepare("SELECT * FROM VENTAJAS WHERE VENTAJA_ID=?");
+            $sql=$this->db->prepare("SELECT * FROM Ventajas WHERE Ventaja_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
 
@@ -51,13 +51,13 @@ class PerkModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Insertar una ventaja
+    /* Funcion: Insertar una ventaja
      * Params: Array con los datos de la ventaja
-     * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
+     * Return: Redireccion a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function insertPerk(&$data){
         try{
-            $sql=$this->db->prepare("INSERT INTO VENTAJAS (Nombre, Descripción, Suscripción_ID) VALUES (?, ?, ?)");
+            $sql=$this->db->prepare("INSERT INTO Ventajas (Nombre, Descripcion, Suscripcion_ID) VALUES (?, ?, ?)");
             for($i=0;$i<3;$i++) $sql->bindValue($i+1, $data[$i]);
             $sql->execute();
 
@@ -70,13 +70,13 @@ class PerkModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Actualizar una ventaja
+    /* Funcion: Actualizar una ventaja
      * Params: Array con los datos de la ventaja
-     * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
+     * Return: Redireccion a la página principal con éxito o error, o mensaje de éxito/error
      */
     public function updatePerk(&$data){
         try{
-            $sql=$this->db->prepare("UPDATE VENTAJAS SET Nombre=?, Descripción=? WHERE VENTAJA_ID=?");
+            $sql=$this->db->prepare("UPDATE Ventajas SET Nombre=?, Descripcion=? WHERE Ventaja_ID=?");
             for($i=0;$i<3;$i++) $sql->bindValue($i+1, $data[$i]);
             $sql->execute();
 
@@ -88,13 +88,13 @@ class PerkModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Eliminar una ventaja
+    /* Funcion: Eliminar una ventaja
      * Params: $id (ID de la ventaja)
      * Return: 1 si se ha eliminado correctamente, -1 en caso de error
      */
     public function deletePerk(&$id){
         try{
-            $sql=$this->db->prepare("DELETE FROM VENTAJAS WHERE VENTAJA_ID=?");
+            $sql=$this->db->prepare("DELETE FROM Ventajas WHERE Ventaja_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
             

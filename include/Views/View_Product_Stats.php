@@ -60,7 +60,7 @@
                 columns: [
                     { data: 'Nombre' },
                     { data: 'Email' },
-                    { data: 'Teléfono' },
+                    { data: 'Telefono' },
                     { data: 'Provincia' },
                     { data: 'Avatar', render: function(data, type, row) { 
                         let path=(data!=null) ? data : "anon.png";
@@ -75,7 +75,8 @@
                     } },
                 ],
                 lengthMenu: [3, 5, 7],
-                scrollY: 400
+                scrollY: true,
+                scrollX: true
             });
         }else $("#div-data-table").toggle(500);
         event.preventDefault();

@@ -183,8 +183,7 @@ footer *{ color: white !important; font-weight: bold; }
 }
 
 .card-body{
-    text-shadow: black 1px 0 5px, black 0 1px 5px, black 1px 0 5px, black 1px 0 5px;
-    color: white;
+    color: black;
     font-weight: bold;
 }
 
@@ -371,11 +370,29 @@ footer *{ color: white !important; font-weight: bold; }
 @media (max-width: 991.98px){
     .sticky-aside { position: static; top: auto; }
     .catalog-bg .card-image{ max-height: 320px; }
+    .nav-bg-mobile { background: linear-gradient(90deg, #116530 0%, #e0c9a6 100%); }
 }
 /*-----------------------------------------------------------------------------------------------------*/
 
+/*-----------------------------------------------------------------------------------------------------*/
 #header{
     background: linear-gradient(90deg, #116530 0%, #e0c9a6 100%); 
     box-shadow: 0 4px 16px rgba(17,101,48,0.08);
     border-bottom: brown 2px solid;
 }
+
+@media (max-width: 767px) { .navbar-toggler { margin-left: auto; } }
+.navbar-toggler { z-index: 2000 !important; }
+.header .navbar .container-fluid {
+    display: flex;
+    align-items: center;
+}
+/*-----------------------------------------------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------------------------------------------*/
+.dataTables_scrollHeadInner { width: 100% !important; }
+.dataTables_scrollHeadInner table { width: 100% !important; }
+.dataTables_scrollHead table { table-layout: fixed; }
+.dataTables_scrollHead table tbody tr td { table-layout: fixed; }
+.table.dataTable { width: 100% !important; }
+/*-----------------------------------------------------------------------------------------------------*/

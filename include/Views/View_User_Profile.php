@@ -27,8 +27,8 @@ $tipo = ($userControl['Tipo'] == "C") ? "Cliente" : "Proveedor";
                     <h3 class="card-title mb-1"><?php echo $userControl["Nombre"].' <small class="text-muted"> - '.$userControl["CIF"].'</small>'; ?></h3>
                     <p class="mb-2"><strong>Contacto:</strong> <?php echo $userControl["Email"]; ?></p>
                     <p class="mb-2"><strong>Localización:</strong> <?php echo $userControl["Provincia"].', '.$userControl["Comunidad"]; ?></p>
-                    <p class="mb-2"><strong>Dirección:</strong> <?php echo $userControl["Dirección"]; ?></p>
-                    <p class="mb-2"><strong>Teléfono:</strong> <?php echo $userControl["Teléfono"]; ?></p>
+                    <p class="mb-2"><strong>Dirección:</strong> <?php echo $userControl["Direccion"]; ?></p>
+                    <p class="mb-2"><strong>Teléfono:</strong> <?php echo $userControl["Telefono"]; ?></p>
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@
 <?php include("_Indexes/Index_Perk.php");
 ///////////////////////////////////////////////////////////////////////
 if(is_array($subControl)){
-    foreach($subControl as &$sub){ $sub["PerkList"]=$perkController->viewListPerk($sub['Suscripción_ID']); }
+    foreach($subControl as &$sub){ $sub["PerkList"]=$perkController->viewListPerk($sub['Suscripcion_ID']); }
     //*-----------------------------NOTIFICATIONS------------------------------*//
     if(isset($_GET["error"])) echo "<script>showFieldError('".$_GET["error"]."');</script>";
 
@@ -38,18 +38,20 @@ if(is_array($subControl)){
         new DataTable('#boxContent', {
             data: subControl,
             columns: [
-                { data: 'Suscripción_ID' },
+                { data: 'Suscripcion_ID' },
                 { data: 'Nombre' },
                 { data: 'Precio_Mensual', render: function(data, type, row) { return data+"€"; } },
-                { data: 'Duración_Base', render: function(data, type, row) { return data+" meses"; } },
+                { data: 'Duracion_Base', render: function(data, type, row) { return data+" meses"; } },
                 { data: null, render: function(data, type, row) {
-                    return "<a href='#' class='has-tooltip' data-tooltip='Añadir Ventaja' onclick='addPerk("+row['Suscripción_ID']+")'><i class='fa-solid fa-plus icon-plus border-5'></i></a>"+
-                    "<a href='#' class='has-tooltip' data-tooltip='Mostrar Ventajas' onclick='showPerk("+row['Suscripción_ID']+")' class='toggle-perks'><i class='fa-solid fa-eye icon-eye border-5'></i></a>"+
-                    "<a href='#' class='has-tooltip' data-tooltip='Actualizar Suscripción' onclick='updateSub("+row['Suscripción_ID']+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
-                    "<a href='#' class='has-tooltip' data-tooltip='Eliminar Suscripción' onclick='deleteSub("+row['Suscripción_ID']+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
+                    return "<a href='#' class='has-tooltip' data-tooltip='Añadir Ventaja' onclick='addPerk("+row['Suscripcion_ID']+")'><i class='fa-solid fa-plus icon-plus border-5'></i></a>"+
+                    "<a href='#' class='has-tooltip' data-tooltip='Mostrar Ventajas' onclick='showPerk("+row['Suscripcion_ID']+")' class='toggle-perks'><i class='fa-solid fa-eye icon-eye border-5'></i></a>"+
+                    "<a href='#' class='has-tooltip' data-tooltip='Actualizar Suscripción' onclick='updateSub("+row['Suscripcion_ID']+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
+                    "<a href='#' class='has-tooltip' data-tooltip='Eliminar Suscripción' onclick='deleteSub("+row['Suscripcion_ID']+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
                     }
                 }
-            ], createdRow: function(row, data, dataIndex){ row.id = "sub-"+data['Suscripción_ID']; }
+            ], 
+            createdRow: function(row, data, dataIndex){ row.id = "sub-"+data['Suscripcion_ID']; },
+            scrollX: true
         });
     });
 ///////////////////////////////////////////////////////////////////////
@@ -96,19 +98,21 @@ if(is_array($subControl)){
             table+="<tbody></tbody></table></div>";
             $("#sub-"+id).after(table);
 
-            let perkControl = subControl.find(sub => sub.Suscripción_ID === id).PerkList;
+            let perkControl = subControl.find(sub => sub.Suscripcion_ID === id).PerkList;
             new DataTable('#perkContent-'+id, {
                 data: perkControl,
                 columns: [
                     { data: 'Ventaja_ID' },
                     { data: 'Nombre' },
-                    { data: 'Descripción' },
+                    { data: 'Descripcion' },
                     { data: null, render: function(data, type, row) {
                         return "<a href='#' class='has-tooltip' data-tooltip='Actualizar Ventaja' onclick='updatePerk("+row['Ventaja_ID']+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>"+
                         "<a href='#' class='has-tooltip' data-tooltip='Eliminar Ventaja' onclick='deletePerk("+row['Ventaja_ID']+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
                         }
                     }
-                ], createdRow: function(row, data, dataIndex){ row.id = "perk-"+data['Ventaja_ID']; }
+                ], 
+                createdRow: function(row, data, dataIndex){ row.id = "perk-"+data['Ventaja_ID']; },
+                scrollX: true
             });
         }else $("#div-"+id).toggle(500);
         event.preventDefault();

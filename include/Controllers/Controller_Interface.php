@@ -11,7 +11,7 @@ class InterfaceController {
     */
     function PDOConnect(){
         try {
-            $c = new PDO("mysql:host=localhost;dbname=FARMXPRESS", "root", "");
+            $c = new PDO("mysql:host=localhost;dbname=farmxpress", "root", "");
             $c->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $c;
         } catch (Exception $e) {
@@ -52,30 +52,15 @@ class InterfaceController {
     @return: No devuelve nada, pero incluye las vistas correspondientes a cada página
     */
     function seleccionarContenidoIndex(){
-        $allowedPages = ["testimonials", "services", "contact", "about", "legal", "cookie", "privacy", "plan"];
-        if(isset($_GET["view"]) && in_array($_GET["view"], $allowedPages)){
-            if($_GET["view"]=="testimonials")
-                include("views/pages/testimonials.php");
-            if($_GET["view"]=="services")
-                include("views/pages/services.php");
-            if($_GET["view"]=="contact")
-                include("views/pages/contact.php");
-            if($_GET["view"]=="about")
-                include("views/pages/about.php");
-            if($_GET["view"]=="legal")
-                include("views/pages/aviso-legal.php");
-            if($_GET["view"]=="cookie")
-                include("views/pages/politica-cookies.php");
-            if($_GET["view"]=="privacy")
-                include("views/pages/politica-privacidad.php");
-            if($_GET["view"]=="plan")
-                include("views/pages/plan-prevencion.php");
-        }else{
+        $allowedPages = ["testimonials", "services", "contact", "about", "aviso-legal", "politica-cookies", "politica-privacidad", "plan-prevencion"];
+        if(isset($_GET["view"]) && in_array($_GET["view"], $allowedPages))
+            include("views/pages/".$_GET["view"].".php");
+        else{
             $type = (isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR") ? "Admin" : "User";
             include("views/viewIndex$type.php");
-        } 
+        }
         
-        $this->checkRentsActive();
+        $this->checkRentsActive(); $this->checkMembersActive();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +76,6 @@ class InterfaceController {
         global $PDOConnect;
 
         if($PDOConnect!=false && isset($_SESSION["User"])){
-            $this->checkRentsActive();
             if(isset($_GET["methodCat"]))
                 include("_Indexes/Index_Category.php");
             if(isset($_GET["methodSub"]))
@@ -104,6 +88,7 @@ class InterfaceController {
                 include("_Indexes/Index_Review.php");
             if(isset($_GET["methodPay"]))
                 include("_Indexes/Index_Pay.php");
+            $this->checkRentsActive(); $this->checkMembersActive();
         }
         if(isset($_GET["methodProd"]))
             include("_Indexes/Index_Product.php");
@@ -132,16 +117,30 @@ class InterfaceController {
         }
     }
 
+    /*
+    Funcion: Incluir el índice de los alquileres para comprobar los alquileres activos y desactivar los que hayan finalizado
+    @param: No recibe parametros
+    @return: No devuelve nada, pero incluye los índices de las visitas, miembros y alquileres
+    */
     function checkRentsActive(){
         global $dirLocation, $PDOConnect;
         
-        if(($PDOConnect!=false)){
+        if(($PDOConnect!=false) && isset($_SESSION["User"])){
             $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
             include($dir."_Indexes/Index_Rent.php");
             $rentController -> checkActiveRents();
         }
     }
 
+    function checkMembersActive(){
+        global $dirLocation, $PDOConnect;
+        
+        if(($PDOConnect!=false)  && isset($_SESSION["User"])){
+            $dir = ($dirLocation == 1) ? "" : (($dirLocation == 2) ? "../" : "include/"); 
+            include($dir."_Indexes/Index_Member.php");
+            $memberController -> activeMember();
+        }
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////

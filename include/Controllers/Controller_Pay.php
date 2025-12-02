@@ -43,13 +43,11 @@ class PayController {
             else if(isset($_GET["methodPay"])){
                 setcookie("data-pay", "", time() - 3600, "/");
                 header("Location: principal.php?methodRent=select&page=1&success=1");
-            }else
-                return "Pago realizado correctamente";
+            }else return "Pago realizado correctamente";
         }else{
             if(isset($_GET["methodPay"]))
                 header("Location: principal.php?methodRent=select&page=1&success=0");
-            else
-                return "Error al realizar el pago";
+            else return "Error al realizar el pago";
         }
     }
 

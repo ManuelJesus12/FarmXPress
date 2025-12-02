@@ -8,7 +8,7 @@ var array = fetch('../assets/js/provinces_list.json')
             const option = document.createElement('option');
             option.value = comunidad;
             option.textContent = comunidad;
-            if(typeof currentRegion != 'undefined' && currentRegion == comunidad) option.selected = true;
+            if(typeof currentRegion != 'undefined' && currentRegion === comunidad) option.selected = true;
             region.appendChild(option);
         });
         //CARGAR COMUNIDADES AUTÓNOMAS
@@ -25,7 +25,7 @@ var array = fetch('../assets/js/provinces_list.json')
                     const option = document.createElement('option');
                     option.value = provincia;
                     option.textContent = provincia;
-                    if(typeof currentProvince != 'undefined' && currentProvince == provincia) option.selected = true;
+                    if(typeof currentProvince != 'undefined' && currentProvince === provincia) option.selected = true;
                     province.appendChild(option);
                 });
                 provinceSelect.prop('disabled', false);

@@ -1,28 +1,28 @@
-CREATE DATABASE FARMXPRESS;
-USE FARMXPRESS;
+CREATE DATABASE  farmxpress;
+USE  farmxpress;
 
 CREATE TABLE Suscripciones (
-    Suscripción_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Suscripcion_ID INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(255) UNIQUE,
     Precio_Mensual DECIMAL(10,2),
-    Duración_Base INT
+    Duracion_Base INT
 );
 
 CREATE TABLE Ventajas (
     Ventaja_ID INT PRIMARY KEY AUTO_INCREMENT,
-    Descripción VARCHAR(255),
+    Descripcion VARCHAR(255),
     Nombre VARCHAR(255),
     Estado BOOLEAN,
-    Suscripción_ID INT,
-    FOREIGN KEY (Suscripción_ID) REFERENCES Suscripciones(Suscripción_ID) ON UPDATE CASCADE ON DELETE CASCADE
+    Suscripcion_ID INT,
+    FOREIGN KEY (Suscripcion_ID) REFERENCES Suscripciones(Suscripcion_ID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE Categorías (
-    Categoría_ID INT PRIMARY KEY AUTO_INCREMENT,
-    Descripción VARCHAR(255),
+CREATE TABLE Categorias (
+    Categoria_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Descripcion VARCHAR(255),
     Nombre VARCHAR(255) UNIQUE,
     Cat_Padre_ID INT,
-    FOREIGN KEY (Cat_Padre_ID) REFERENCES Categorías(Categoría_ID) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (Cat_Padre_ID) REFERENCES Categorias(Categoria_ID) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE Usuarios (
@@ -31,8 +31,8 @@ CREATE TABLE Usuarios (
     CIF VARCHAR(9) UNIQUE,
     Nombre VARCHAR(255),
     Contraseña VARCHAR(255),
-    Teléfono VARCHAR(9) UNIQUE,
-    Dirección VARCHAR(255),
+    Telefono VARCHAR(9) UNIQUE,
+    Direccion VARCHAR(255),
     Comunidad VARCHAR(255),
     Provincia VARCHAR(255),
     Fecha_Registro DATETIME,
@@ -51,15 +51,16 @@ CREATE TABLE Clientes (
     FOREIGN KEY (Usuario_ID) REFERENCES Usuarios(Usuario_ID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE Membresías (
-    Membresía_ID INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE Membresias (
+    Membresia_ID INT PRIMARY KEY AUTO_INCREMENT,
     Usuario_ID INT,
-    Suscripción_ID INT,
+    Suscripcion_ID INT,
     Fecha_Inicio DATE,
     Fecha_Fin DATE,
     Estado BOOLEAN,
+    Mail_Bool BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (Usuario_ID) REFERENCES Usuarios(Usuario_ID) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (Suscripción_ID) REFERENCES Suscripciones(Suscripción_ID) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (Suscripcion_ID) REFERENCES Suscripciones(Suscripcion_ID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE Visitas (
@@ -74,14 +75,14 @@ CREATE TABLE Productos (
     Producto_ID INT PRIMARY KEY AUTO_INCREMENT,
     Referencia VARCHAR(50) UNIQUE,
     Nombre VARCHAR(255), 
-    Descripción VARCHAR(255), 
+    Descripcion VARCHAR(255), 
     Precio_Mensual DECIMAL(10,2),
     Estado BOOLEAN,
     Usuario_ID INT,
-    Categoría_ID INT,
+    Categoria_ID INT,
     Imagen BLOB,
     FOREIGN KEY (Usuario_ID) REFERENCES Proveedores(Usuario_ID) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (Categoría_ID) REFERENCES Categorías(Categoría_ID) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (Categoria_ID) REFERENCES Categorias(Categoria_ID) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE Seguimientos (
@@ -117,7 +118,7 @@ CREATE TABLE Pagos (
 CREATE TABLE Reseñas (
     Reseña_ID INT PRIMARY KEY AUTO_INCREMENT,
     Comentario VARCHAR(255), 
-    Calificación INT,
+    Calificacion INT,
     Fecha_Hora DATETIME,
     Usuario_ID INT,
     Producto_ID INT,

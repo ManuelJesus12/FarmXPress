@@ -51,22 +51,31 @@
     ======================================================== -->
 </head>
 
-<header id="header" class="header d-flex align-items-center position-relative">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
-        <i class="mobile-nav-toggle"></i>
-        <div class="d-flex align-items-center flex-shrink-0" style="min-width:90px;">
-            <?php
-                if(!isset($_SESSION["usuario"]) || (isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"))
-                    echo "<img src='$logo' alt='FarmXPress' style='width: 80px; height:60px; display:block;'>";
-            ?>
-        </div>
+<header id="header" class="header position-relative">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid container-xl">
 
-        <div class="flex-grow-1 d-flex align-items-center justify-content-end position-relative" style="min-width:0;">
-            <?php
-                echo '<i class="mobile-nav-toggle"></i>';
-                ob_start();
-                $interfaceController->navegacion(); 
-            ?>
+            <div class="d-flex align-items-center flex-shrink-0" style="min-width:90px;">
+                <?php
+                    if (!isset($_SESSION["usuario"]) || (isset($_SESSION["usuario"]) && $_SESSION["usuario"]!="ADMINISTRADOR"))
+                        echo "<img src='$logo' alt='FarmXPress' style='width: 80px; height:60px; display:block;'>";
+                ?>
+            </div>
+
+            <!-- MOBILE TOGGLER (ALWAYS VISIBLE ON SMALL SCREENS) -->
+            <button class="navbar-toggler d-lg-none ms-auto"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainNavbar">
+                <i class="mobile-nav-toggle bi bi-list fs-1"></i>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
+                <?php 
+                    ob_start();
+                    $interfaceController->navegacion();
+                ?>
+            </div>
         </div>
-    </div>
+    </nav>
 </header>

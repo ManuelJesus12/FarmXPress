@@ -14,7 +14,7 @@ class RentModel {
 
     public function listAllActiveRents(){
         try{
-            $sql=$this->db->prepare("SELECT * FROM ALQUILERES WHERE ESTADO=1");
+            $sql=$this->db->prepare("SELECT * FROM Alquileres WHERE Estado=1");
             $sql->execute();
 
             if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -26,15 +26,15 @@ class RentModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Ver lista de alquileres de un usuario
-     * Params: $offset (paginación)
-     * Return: Página de lista de alquileres.
+    /* Funcion: Ver lista de Alquileres de un usuario
+     * Params: $offset (paginacion)
+     * Return: Página de lista de Alquileres.
      */
     public function listRent(){
         try{
-            $query="SELECT P.PRODUCTO_ID AS 'PID', A.ALQUILER_ID AS 'RID', Nombre, Referencia, Imagen, Fecha_Inicio, Fecha_Fin, Precio_Total, (PRECIO_TOTAL - SUM(CANTIDAD)) AS 'Deuda'
-            FROM ALQUILERES A JOIN PRODUCTOS P ON A.PRODUCTO_ID=P.PRODUCTO_ID LEFT JOIN PAGOS G ON A.ALQUILER_ID=G.ALQUILER_ID
-            WHERE A.USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND A.ESTADO=1 GROUP BY A.ALQUILER_ID";
+            $query="SELECT P.Producto_ID AS 'PID', A.Alquiler_ID AS 'RID', Nombre, Referencia, Imagen, Fecha_Inicio, Fecha_Fin, Precio_Total, (Precio_Total - SUM(Cantidad)) AS 'Deuda'
+            FROM Alquileres A JOIN Productos P ON A.Producto_ID=P.Producto_ID LEFT JOIN Pagos G ON A.Alquiler_ID=G.Alquiler_ID
+            WHERE A.Usuario_ID=(SELECT Usuario_ID FROM Usuarios WHERE Nombre=?) AND A.Estado=1 GROUP BY A.Alquiler_ID";
             $sql=$this->db->prepare($query);
             $sql->bindValue(1,$_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->execute();
@@ -50,14 +50,14 @@ class RentModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Seleccionar un alquiler por ID de producto
+    /* Funcion: Seleccionar un alquiler por ID de producto
      * Params: $pId (ID del producto)
-     * Return: Array con los alquileres encontrados, 0 si no hay alquileres, -1 en caso de error
+     * Return: Array con los Alquileres encontrados, 0 si no hay Alquileres, -1 en caso de error
      */
     public function selectRent(&$pId){
         try{
-            $sql=$this->db->prepare("SELECT * FROM ALQUILERES A JOIN PRODUCTOS P ON A.PRODUCTO_ID=P.PRODUCTO_ID 
-            WHERE A.USUARIO_ID=(SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?) AND A.PRODUCTO_ID=? AND A.ESTADO=1");
+            $sql=$this->db->prepare("SELECT * FROM Alquileres A JOIN Productos P ON A.Producto_ID=P.Producto_ID 
+            WHERE A.Usuario_ID=(SELECT Usuario_ID FROM Usuarios WHERE Nombre=?) AND A.Producto_ID=? AND A.Estado=1");
             $sql->bindValue(1, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->bindValue(2, $pId, PDO::PARAM_INT);
             $sql->execute();
@@ -75,13 +75,14 @@ class RentModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Insertar un nuevo alquiler
+    /* Funcion: Insertar un nuevo alquiler
      * Params: $id (ID del producto), $month (meses de alquiler), $price (precio del alquiler)
      * Return: 1 o -1 en caso de error
      */
     public function insertRent(&$id, &$month, &$price){
         try{
-            $sql=$this->db->prepare("INSERT INTO ALQUILERES (USUARIO_ID, PRODUCTO_ID, FECHA_INICIO, FECHA_FIN, ESTADO, PRECIO_TOTAL) VALUES ((SELECT USUARIO_ID FROM USUARIOS WHERE Nombre=?), ?, ?, ?, ?, ?)");
+            $sql=$this->db->prepare("INSERT INTO Alquileres (Usuario_ID, Producto_ID, Fecha_Inicio, Fecha_Fin, Estado, 
+                            Precio_Total) VALUES ((SELECT Usuario_ID FROM Usuarios WHERE Nombre=?), ?, ?, ?, ?, ?)");
             $sql->bindValue(1,$_SESSION["User"]["Nombre"], PDO::PARAM_STR);
             $sql->bindValue(2, $id, PDO::PARAM_INT);
             $sql->bindValue(3, date("Y-m-d H:i:s"), PDO::PARAM_STR);
@@ -98,13 +99,13 @@ class RentModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Actualizar un alquiler
+    /* Funcion: Actualizar un alquiler
      * Params: $month (meses de alquiler), $mPrice (precio del alquiler), $rId (ID del alquiler)
      * Return: 1 si se actualiza correctamente, -1 en caso de error
      */
     public function updateRent(&$month, &$mPrice, &$rId){
         try{
-            $sql=$this->db->prepare("UPDATE ALQUILERES SET MAIL_BOOL=1, FECHA_FIN = ADDDATE(FECHA_FIN, INTERVAL ? MONTH), PRECIO_TOTAL=PRECIO_TOTAL + ? WHERE ALQUILER_ID=?");
+            $sql=$this->db->prepare("UPDATE Alquileres SET Mail_Bool=1, Fecha_Fin = ADDDATE(Fecha_Fin, INTERVAL ? MONTH), Precio_Total=Precio_Total + ? WHERE Alquiler_ID=?");
             $sql->bindValue(1, $month, PDO::PARAM_INT);
             $sql->bindValue(2, $month*$mPrice, PDO::PARAM_INT);
             $sql->bindValue(3, $rId, PDO::PARAM_INT);
@@ -118,13 +119,13 @@ class RentModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Desactivar un alquiler
+    /* Funcion: Desactivar un alquiler
      * Params: $rId (ID del alquiler)
      * Return: 1 si se activa correctamente, -1 en caso de error
      */
     public function activeRent(&$rId){
         try{
-            $sql=$this->db->prepare("UPDATE ALQUILERES SET ESTADO=0, MAIL_BOOL=0, FECHA_FIN=NOW() WHERE ALQUILER_ID=?");
+            $sql=$this->db->prepare("UPDATE Alquileres SET Estado=0, Mail_Bool=0, Fecha_Fin=NOW() WHERE Alquiler_ID=?");
             $sql->bindValue(1, $rId, PDO::PARAM_INT);
             $sql->execute();
 
@@ -134,9 +135,9 @@ class RentModel {
         }
     }
 
-    public function mailBoolRent(&$rId){
+    public function toggleMailBoolRent(&$rId){
         try{
-            $sql=$this->db->prepare("UPDATE ALQUILERES SET MAIL_BOOL=0 WHERE ALQUILER_ID=?");
+            $sql=$this->db->prepare("UPDATE Alquileres SET Mail_Bool=0 WHERE Alquiler_ID=?");
             $sql->bindValue(1, $rId, PDO::PARAM_INT);
             $sql->execute();
 
@@ -149,13 +150,13 @@ class RentModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Contar el número de alquileres
+    /* Funcion: Contar el número de Alquileres
      * Params: Void
-     * Return: Número de alquileres, 0 si no hay alquileres, -1 en caso de error
+     * Return: Número de Alquileres, 0 si no hay Alquileres, -1 en caso de error
      */
     public function countRent(){
         try{
-            $sql=$this->db->prepare("SELECT COUNT(ALQUILER_ID) AS 'COUNT' FROM ALQUILERES");
+            $sql=$this->db->prepare("SELECT COUNT(Alquiler_ID) AS 'COUNT' FROM Alquileres");
             $sql->execute();
             
             if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC)[0]['COUNT'];
@@ -165,7 +166,7 @@ class RentModel {
         }
     }
 
-    /* Función: Recabar datos de los Alquileres de un Producto
+    /* Funcion: Recabar datos de los Alquileres de un Producto
      * Params: $id (ID del producto)
      * Return: Consulta si se activa correctamente, 0 en caso de no encontrar datos y -1 en caso de error
      */
@@ -173,14 +174,14 @@ class RentModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Recabar información de los Alquileres de un Producto
+    /* Funcion: Recabar informacion de los Alquileres de un Producto
      * Params: $id (ID del producto)
      * Return: Consulta si se activa correctamente, 0 en caso de no encontrar datos y -1 en caso de error
      */
     public function listRentDataByProduct(&$id){
         try{
-            $query="SELECT Nombre, Cif, Email, Teléfono, Provincia, Avatar, Fecha_Inicio, Fecha_Fin, Precio_Total, 
-            A.Estado AS 'STATRENT' FROM ALQUILERES A JOIN USUARIOS U ON U.USUARIO_ID=A.USUARIO_ID WHERE A.PRODUCTO_ID=?";
+            $query="SELECT Nombre, Cif, Email, Telefono, Provincia, Avatar, Fecha_Inicio, Fecha_Fin, Precio_Total, 
+            A.Estado AS 'STATRENT' FROM Alquileres A JOIN Usuarios U ON U.Usuario_ID=A.Usuario_ID WHERE A.Producto_ID=?";
             $sql=$this->db->prepare($query);
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
@@ -196,10 +197,10 @@ class RentModel {
 
     public function listRentStatsByProduct(&$id){
         try{
-            $query="SELECT IFNULL(COUNT(ALQUILER_ID),0) AS 'TOTAL_RENTS', IFNULL(SUM(PRECIO_TOTAL),0) AS 'TOTAL_EARNINGS', 
-            (SELECT AVG(CALIFICACIÓN) FROM RESEÑAS WHERE PRODUCTO_ID=A.PRODUCTO_ID) AS 'AVG_RATE', 
-            (SELECT NOMBRE FROM PRODUCTOS WHERE PRODUCTO_ID=A.PRODUCTO_ID) AS 'PNOM'
-            FROM ALQUILERES A WHERE PRODUCTO_ID=?";
+            $query="SELECT IFNULL(COUNT(Alquiler_ID),0) AS 'TOTAL_RENTS', IFNULL(SUM(Precio_Total),0) AS 'TOTAL_EARNINGS', 
+            (SELECT AVG(Calificacion) FROM Reseñas WHERE Producto_ID=A.Producto_ID) AS 'AVG_RATE', 
+            (SELECT NOMBRE FROM Productos WHERE Producto_ID=A.Producto_ID) AS 'PNOM'
+            FROM Alquileres A WHERE Producto_ID=?";
             $sql=$this->db->prepare($query);
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
@@ -217,9 +218,9 @@ class RentModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Enviar un correo electrónico al usuario
-     * Params: $email (correo electrónico del usuario), $name (nombre del usuario)
-     * Return: Mensaje de éxito o error al enviar el correo
+    /* Funcion: Enviar un correo electronico al usuario
+     * Params: $email (correo electronico del usuario), $name (nombre del producto), $bool (tipo de correo)
+     * Return: Mensaje de exito o error al enviar el correo
      */
     public function sendRentEmail(&$email, &$name, &$bool){
         try{
@@ -233,10 +234,10 @@ class RentModel {
                 $subject="Nuevo Alquiler";
                 $body="Su producto $name ha sido alquilado.";
             }else if($bool==0){
-                $subject="Uno de sus productos vuelve a estar disponible";
+                $subject="Uno de sus Productos vuelve a estar disponible";
                 $body="Su producto $name vuelve a estar disponible al haber sido anulado su alquiler previo.";
             }else{
-                $subject="Notificación de Alquiler";
+                $subject="Notificacion de Alquiler";
                 $body="A su alquiler del producto $name le quedan solo 5 días.";
             }
 

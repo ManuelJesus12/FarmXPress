@@ -89,6 +89,7 @@ class RentController {
         global $dirAux; $mailType= 0; $active=1;
         include($dirAux."_Indexes/Index_Product.php");
         include($dirAux."_Indexes/Index_User.php");
+
         $producto=$productController->selectProduct($pId); //Recoger datos producto
         $usuario=$userController->selectUser($producto["Usuario_ID"]); //Recoger datos proveedor
 
@@ -97,8 +98,8 @@ class RentController {
         $this->rentModel->sendRentEmail($usuario["Email"], $producto["Nombre"], $mailType);  //Enviar correo al proveedor
     }
 
-    public function mailBoolRent(&$rId){
-        return $this->rentModel->mailBoolRent($rId);
+    public function toggleMailBoolRent(&$rId){
+        return $this->rentModel->toggleMailBoolRent($rId);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -131,8 +132,8 @@ class RentController {
     ///////////////////////////////////////////////////////////////
 
     /* Función: Comprobar si hay alquileres que deberían desactivarse y notificar al usuario
-     * Params: $offset (paginación) seteado por referencia a -1 lo cual selecciona todos los alquileres del usuario
-     * Return: Notificación de alquiler activo si corresponde
+     * Params: void
+     * Return: Desactiva los alquileres caducados y notifica a los usuarios con alquileres próximos a caducar
      */
     public function checkActiveRents(){
         $rentControl = $this->rentModel->listAllActiveRents();
@@ -143,14 +144,17 @@ class RentController {
 
                 if($diffDays<=0){ //Desactivar alquiler
                     $this->activeRent($rent["Alquiler_ID"], $rent["Producto_ID"]);
+                    
                 }else if($diffDays>0 && $diffDays<=5 && $rent["Mail_Bool"]==1){ //Notificar usuario
                     global $dirAux; $mailType= 2;
                     include($dirAux."_Indexes/Index_Product.php");
                     include($dirAux."_Indexes/Index_User.php");
+
                     $producto=$productController->selectProduct($rent["Producto_ID"]); //Recoger datos producto
                     $usuario=$userController->selectUser($rent["Usuario_ID"]); //Recoger datos cliente
-                    $this->rentModel->sendRentEmail($usuario["Email"], $producto["Nombre"], $mailType);  //Enviar correo al cliente
-                    $this->mailBoolRent($rent["Alquiler_ID"]); //Actualizar mail_bool a 0
+
+                    //$this->rentModel->sendRentEmail($usuario["Email"], $producto["Nombre"], $mailType);  //Enviar correo al cliente
+                    $this->toggleMailBoolRent($rent["Alquiler_ID"]); //Actualizar mail_bool a 0
                 }
             }
         }

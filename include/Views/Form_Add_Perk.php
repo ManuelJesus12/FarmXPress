@@ -12,7 +12,7 @@
         $dirLocation=2;
         include("../_Indexes/Index_Interface.php");
         include("../_Indexes/Index_Perk.php");
-        $perkData=['Ventaja_ID'=>'', 'Nombre'=>'', 'Descripción'=>''];
+        $perkData=['Ventaja_ID'=>'', 'Nombre'=>'', 'Descripcion'=>''];
         
         if(isset($_GET["id"])){
             $perkData=$perkController->selectPerk($_GET["id"]);
@@ -49,7 +49,7 @@
                     <div class="col-12 mb-3">
                         <label for="desc" class="form-label">Descripción: <span class="error">*</span></label>
                         <div class="input-group">
-                            <input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" class="form-control" value="<?php echo $perkData["Descripción"]; ?>" required />
+                            <input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" class="form-control" value="<?php echo $perkData["Descripcion"]; ?>" required />
                         </div>
                         <div class="form-text text-danger" id="error-desc"></div>
                     </div>

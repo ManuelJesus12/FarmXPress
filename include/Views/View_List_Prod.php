@@ -67,12 +67,12 @@ if(is_array($productControl)){
         }
 
         $("#boxContent").append(    
-            "<div id='product-"+prod['Producto_ID']+"' class='col-12 col-md-6 col-lg-4'>"+
+            "<div id='product-"+prod['Producto_ID']+"' class='col-12 col-md-6 col-lg-3'>"+
                 "<div class='card h-100 element-green-border'>" +
                     "<div class='card-header element-green-bg'>"+prod["Nombre"]+" - "+prod["Referencia"]+"</div>"+
                     "<div class='card-body d-flex flex-column'>" +
                         "<img src='../assets/img/products/"+file+"' class='card-img-top mb-3' alt='"+prod["Nombre"]+"'/>" +
-                        "<p class='card-text mb-1'>Descripción: <strong>"+prod['Descripción']+"</strong></p>" +
+                        "<p class='card-text mb-1'>Descripción: <strong>"+prod['Descripcion']+"</strong></p>" +
                         "<p class='card-text mb-1'>Categoría: <strong>"+cat+"</strong></p>" +
                         "<p class='card-text mb-1'>Precio Mensual: <strong>"+prod['Precio_Mensual']+"€</strong></p>" +
                         estado +

@@ -8,7 +8,7 @@ if(isset($_GET["success"])){ ?> <script> showBoxSuccessPay("<?php echo $_GET["su
 
 if(is_array($rentControl)){ ?>
     <h2>Productos Alquilados</h2><br>
-    <input type='text' id='inputSearch' onInput='filterProduct()' placeholder='Filtrar por Nombre o Referencia'></input>
+    <input type='text' id='inputSearch' onInput='filterProduct(8)' placeholder='Filtrar por Nombre o Referencia'></input>
     <div id='boxContent' class='row card-deck'></div>
 
     <!--------------------------------------------NAV BUTTONS--------------------------------------------->
@@ -42,7 +42,6 @@ if(is_array($rentControl)){ ?>
     function createContent(rent){
         let file = (rent["Imagen"]!=null) ? rent["Imagen"] : "anon.png";
         let deuda = (rent["Deuda"]!=null) ? rent["Deuda"] : 0 ;
-        let safeName = (rent["Nombre"]) ? rent["Nombre"].replace(/"/g, '\\"') : "";
         let buttons = "";
 
         if(rent['Deuda']>0){
@@ -53,14 +52,13 @@ if(is_array($rentControl)){ ?>
         }else{
             buttons += "<div class='col-12 d-flex gap-2'>" +
                 "<a href='#' class='btn btn-sm btn-product-extend btn-shape w-33' onclick='insertPay("+rent['RID']+", "+rent['PID']+", "+rent['Deuda']+")'><i class='fa-solid fa-plus border-5'></i> Extender</a>" +
-                "<a href='#' class='btn btn-sm btn-product-delete btn-shape w-33' onclick='activeRent("+rent['RID']+", "+rent['PID']+", \""+safeName+"\")'><i class='fa-solid fa-xmark border-5'></i> Liberar</a>" +
+                "<a href='#' class='btn btn-sm btn-product-delete btn-shape w-33' onclick='activeRent("+rent['RID']+", "+rent['PID']+", "+rent['Nombre']+")'><i class='fa-solid fa-xmark border-5'></i> Liberar</a>" +
                 "<a href='#' class='btn btn-sm element-green-bg btn-shape w-33' onclick='viewPay("+rent['RID']+")'><i class='fa-solid fa-credit-card border-5'></i> Pagos</a>" +
             "</div>";
         }
 
-        // Build card similar to Client_Fav_Prod layout
         $("#boxContent").append(
-            "<div id='rent-"+rent["RID"]+"' class='col-12 col-md-6 col-lg-4'>" +
+            "<div id='rent-"+rent["RID"]+"' class='col-12 col-md-6 col-lg-3'>" +
                 "<div class='card h-100 element-green-border'>" +
                     "<div class='card-header element-green-bg'><a class='element-green-bg text-decoration-underline' href='principal.php?methodProd=viewProduct&id="+rent['PID']+"'>"+rent["Nombre"]+" - "+rent["Referencia"]+"</a></div>" +
                     "<div class='card-body d-flex flex-column'>" +

@@ -13,7 +13,7 @@
         include("../_Indexes/Index_Interface.php");
         include("../_Indexes/Index_Category.php");
         include("../_Indexes/Index_Product.php");
-        $productData=['Producto_ID'=>'', 'Nombre'=>'', 'Descripción'=>'', 'Referencia'=>'', 'Precio_Mensual'=>'', 'Categoría_ID'=>''];
+        $productData=['Producto_ID'=>'', 'Nombre'=>'', 'Descripcion'=>'', 'Referencia'=>'', 'Precio_Mensual'=>'', 'Categoria_ID'=>''];
 
         if(isset($_GET["id"])){
             $productData=$productController->selectProduct($_GET["id"]);
@@ -58,7 +58,7 @@
                     <div class="col-12 mb-3">
                         <label for="desc" class="form-label">Descripción Producto: <span class="error">*</span></label>
                         <div class="input-group">
-                            <input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" class="form-control" value="<?php echo $productData["Descripción"]; ?>" required />
+                            <input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" class="form-control" value="<?php echo $productData["Descripcion"]; ?>" required />
                         </div>
                         <div class="form-text text-danger" id="error-desc"></div>
                     </div>
@@ -82,8 +82,8 @@
 
                                     if($categoryControl!=0){
                                         foreach($categoryControl as $category){
-                                                $selected = ($category['Categoría_ID'] == $productData["Categoría_ID"]) ? 'selected' : '';
-                                                echo "<option value='".$category['Categoría_ID']."' $selected>".$category['Nombre']."</option>";
+                                                $selected = ($category['Categoria_ID'] == $productData["Categoria_ID"]) ? 'selected' : '';
+                                                echo "<option value='".$category['Categoria_ID']."' $selected>".$category['Nombre']."</option>";
                                             }
                                     }
                                 ?>

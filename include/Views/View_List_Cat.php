@@ -39,16 +39,17 @@ if(isset($categoryControl)){
         new DataTable('#boxContent', {
             data: categoryControl,
             columns: [
-                { data: 'Categoría_ID' },
+                { data: 'Categoria_ID' },
                 { data: 'Nombre' },
-                { data: 'Descripción' },
+                { data: 'Descripcion' },
                 { data: 'Cat_Padre', render: function(data, type, row){ return data ? data : 'Ninguna'; }},
                 { data: null, render: function(data, type, row) {
-                        return "<a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría' onclick='updateCategory("+row["Categoría_ID"]+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>" +
-                        "<a href='#' class='has-tooltip' data-tooltip='Eliminar Categoría' onclick='deleteCategory("+row["Categoría_ID"]+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
+                        return "<a href='#' class='has-tooltip' data-tooltip='Actualizar Categoría' onclick='updateCategory("+row["Categoria_ID"]+")'><i class='fa-solid fa-gear icon-gear border-5'></i></a>" +
+                        "<a href='#' class='has-tooltip' data-tooltip='Eliminar Categoría' onclick='deleteCategory("+row["Categoria_ID"]+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
                     }
                 }
-            ]
+            ],
+            scrollX: true
         });
     });
 </script>

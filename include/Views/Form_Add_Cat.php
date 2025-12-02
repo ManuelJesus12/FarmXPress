@@ -12,7 +12,7 @@
         $dirLocation=2;
         include("../_Indexes/Index_Interface.php");
         include("../_Indexes/Index_Category.php");
-        $categoryData=['Categoría_ID'=>'', 'Nombre'=>'', 'Descripción'=>'', 'Cat_Padre_ID'=>''];
+        $categoryData=['Categoria_ID'=>'', 'Nombre'=>'', 'Descripcion'=>'', 'Cat_Padre_ID'=>''];
 
         if(isset($_GET["id"])){
             $categoryData=$categoryController->selectCategory($_GET["id"]);
@@ -34,23 +34,23 @@
             <div class="container-fluid">
                 <div class="row gx-3">
                     <div class="col-12 mb-3">
-                        <label for="name" class="form-label">Nombre Categoría: <span class="error">*</span></label>
+                        <label for="name" class="form-label">Nombre Categoria: <span class="error">*</span></label>
                         <div class="input-group">
-                            <input type="text" placeholder="Ejemplo de Categoría" name="name" id="name" class="form-control" value="<?php echo $categoryData["Nombre"]; ?>" required />
+                            <input type="text" placeholder="Ejemplo de Categoria" name="name" id="name" class="form-control" value="<?php echo $categoryData["Nombre"]; ?>" required />
                         </div>
                         <div class="form-text text-danger" id="error-name"></div>
                     </div>
 
                     <div class="col-12 mb-3">
-                        <label for="desc" class="form-label">Descripción Categoría: <span class="error">*</span></label>
+                        <label for="desc" class="form-label">Descripción Categoria: <span class="error">*</span></label>
                         <div class="input-group">
-                            <input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" class="form-control" value="<?php echo $categoryData["Descripción"]; ?>" required />
+                            <input type="text" placeholder="Ejemplo de descripción" name="desc" id="desc" class="form-control" value="<?php echo $categoryData["Descripcion"]; ?>" required />
                         </div>
                         <div class="form-text text-danger" id="error-desc"></div>
                     </div>
 
                     <div class="col-12 mb-3">
-                        <label for="parent_cat" class="form-label">Categoría Padre:</label>
+                        <label for="parent_cat" class="form-label">Categoria Padre:</label>
                         <div class="input-group">
                             <select name="parent_cat" id="parent_cat" class="form-select">
                                 <option value="">Sin Padre</option>
@@ -60,8 +60,8 @@
 
                                     if(is_array($categoryControl)){
                                         foreach($categoryControl as $category){
-                                            $selected = ($category['Categoría_ID'] == $categoryData['Cat_Padre_ID']) ? 'selected' : '';
-                                            echo "<option value='".$category['Categoría_ID']."' $selected>".$category['Nombre']."</option>";
+                                            $selected = ($category['Categoria_ID'] == $categoryData['Cat_Padre_ID']) ? 'selected' : '';
+                                            echo "<option value='".$category['Categoria_ID']."' $selected>".$category['Nombre']."</option>";
                                         }
                                     }
                                 ?>

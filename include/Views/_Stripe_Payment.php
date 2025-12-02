@@ -60,7 +60,7 @@ try {
     header("Location: " . $session->url);
     exit();
 } catch (Exception $e) {
-    header("Location: http://localhost/FARMXPRESS/principal.php?methodProd=select&page=1&error=1");
+    header("Location: http://localhost/FARMXPRESS/include/principal.php?methodProd=select&page=1&error=1");
 }
 ?>
 

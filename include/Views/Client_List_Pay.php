@@ -43,7 +43,8 @@
                 { data: 'Cantidad', render: function(data, type, row) { return data+"€"; } },
                 { data: 'Meses_Extra', render: function(data, type, row) { return data+" meses"; } }
             ],
-            lengthMenu: [3, 5, 7]
+            lengthMenu: [3, 5, 7],
+            scrollX: true
         });
 </script>
 
@@ -51,9 +52,9 @@
     $("#boxContent_length").find("select").on("change", function() {
         const selectedValue = $(this).val();
         
-        if(selectedValue == 3) $("popup-content").css("top", "-40");
-        else if(selectedValue == 5) $("popup-content").css("top", "-80");
-        else if(selectedValue == 7) $("popup-content").css("top", "-120");
+        if(selectedValue == 3)      $(".popup-content").css("top", "-40");
+        else if(selectedValue == 5) $(".popup-content").css("top", "-80");
+        else if(selectedValue == 7) $(".popup-content").css("top", "-130");
     });
 </script>
 <!-------------------------------SCRIPT------------------------------->

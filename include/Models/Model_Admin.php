@@ -99,9 +99,9 @@ class AdminModel {
             $placeholder="%";
             //*-----------------------------QUERY BUILD------------------------------*//
             if($type=="rent")
-                $query="SELECT U.Usuario_ID AS 'UID', U.Nombre AS 'UNOM', CIF, A.Alquiler_ID, P.Nombre AS 'PID', Fecha_Inicio, Fecha_Fin, Precio_Total, A.Estado AS 'Estado' FROM ALQUILERES A JOIN USUARIOS U ON A.Usuario_ID=U.Usuario_ID JOIN PRODUCTOS P ON A.Producto_ID=P.Producto_ID";
+                $query="SELECT U.Usuario_ID AS 'UID', U.Nombre AS 'UNOM', CIF, A.Alquiler_ID, P.Nombre AS 'PID', Fecha_Inicio, Fecha_Fin, Precio_Total, A.Estado AS 'Estado' FROM Alquileres A JOIN Usuarios U ON A.Usuario_ID=U.Usuario_ID JOIN Productos P ON A.Producto_ID=P.Producto_ID";
             else if($type=="visit")
-                $query="SELECT U.Usuario_ID AS 'UID', Nombre, CIF, Ruta, Fecha_Hora FROM VISITAS V JOIN USUARIOS U ON V.Usuario_ID=U.Usuario_ID";
+                $query="SELECT U.Usuario_ID AS 'UID', Nombre, CIF, Ruta, Fecha_Hora FROM Visitas V JOIN Usuarios U ON V.Usuario_ID=U.Usuario_ID";
             $query.= " WHERE U.Usuario_ID LIKE ?";
 
             if($data[1]!="" || $data[2]!=""){

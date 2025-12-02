@@ -12,20 +12,20 @@ class VisitModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Listar visitas
-     * Params: No recibe parámetros, utiliza la sesión para verificar el acceso
-     * Return: Página de lista de visitas si el usuario es administrador, 0 si no hay visitas
+    /* Funcion: Listar Visitas
+     * Params: No recibe parámetros, utiliza la sesion para verificar el acceso
+     * Return: Página de lista de Visitas si el usuario es administrador, 0 si no hay Visitas
      */
     public function listVisit(){
-        $sql=$this->db->query("SELECT NOMBRE, EMAIL, CIF, TELÉFONO, DIRECCIÓN, TIPO, RUTA, FECHA_HORA FROM USUARIOS JOIN VISITAS ON USUARIOS.USUARIO_ID=VISITAS.USUARIO_ID"); 
+        $sql=$this->db->query("SELECT Nombre, Email, Cif, Telefono, Direccion, Tipo, Ruta, Fecha_Hora FROM Usuarios JOIN Visitas ON Usuarios.Usuario_ID=Visitas.Usuario_ID"); 
         if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
         else return 0;
     }
     
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Insertar una nueva visita
-     * Params: No recibe parámetros, utiliza la sesión para obtener el nombre del usuario
+    /* Funcion: Insertar una nueva visita
+     * Params: No recibe parámetros, utiliza la sesion para obtener el Nombre del usuario
      * Return: No devuelve nada, solo inserta la visita en la base de datos
      */
     public function insertVisit(){
@@ -33,7 +33,7 @@ class VisitModel {
         $url=explode("/",$_SERVER["PHP_SELF"]); $url=$url[count($url)-1];
         if($_SERVER["QUERY_STRING"]!="") $url.="?".$_SERVER["QUERY_STRING"];
         
-        $sql=$this->db->prepare("INSERT INTO VISITAS (RUTA, FECHA_HORA, USUARIO_ID) VALUES (?, ?, (SELECT USUARIO_ID FROM USUARIOS WHERE NOMBRE = ?))");
+        $sql=$this->db->prepare("INSERT INTO Visitas (Ruta, Fecha_Hora, Usuario_ID) VALUES (?, ?, (SELECT Usuario_ID FROM Usuarios WHERE Nombre = ?))");
         $sql->bindParam(1, $url);
         $sql->bindParam(2, $date);
         $sql->bindParam(3, $_SESSION["User"]["Nombre"], PDO::PARAM_STR);

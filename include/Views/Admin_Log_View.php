@@ -11,7 +11,7 @@ if(is_array($logControl)){
     }else if($_GET["type"]=="rent"){
         echo "<div id='alert-success' class='alert alert-success'>Información sobre el tráfico cargada correctamente</div>";
         echo "<a class='btn btn-log btn-shape element-green-bg' id='store'>Imprimir Informe</a>";
-        echo "<table id='boxContent' class='table table-striped'><thead><tr><th>Usuario ID</th><th>Nombre Usuario</th><th>CIF</th><th>Alquiler ID</th><th>Nombre Producto</th><th>Fecha Inicio</th><th>Fecha Fin</th><th>Precio Total</th><th>Estado</th></tr></thead><tbody>";
+        echo "<table id='boxContent' class='table table-striped'><thead><tr><th>Usuario ID</th><th>Nombre Usuario</th><th>CIF</th><th>Nombre Producto</th><th>Fecha Inicio</th><th>Fecha Fin</th><th>Precio Total</th><th>Estado</th></tr></thead><tbody>";
         echo "<tbody></tbody></table><br>";
     }
 }else if($logControl==0){
@@ -35,7 +35,8 @@ if(is_array($logControl)){
                 { data: 'CIF' },
                 { data: 'Fecha_Hora', render: function(data, type, row) { return new Date(data).toLocaleDateString(); } },
                 { data: 'Ruta' }
-            ]
+            ],
+            scrollX: true
         });
     }else{
         new DataTable('#boxContent', {
@@ -44,7 +45,6 @@ if(is_array($logControl)){
                 { data: 'UID' },
                 { data: 'UNOM' },
                 { data: 'CIF' },
-                { data: 'Alquiler_ID' },
                 { data: 'PID' },
                 { data: 'Fecha_Inicio', render: function(data, type, row) { return new Date(data).toLocaleDateString(); } },
                 { data: 'Fecha_Fin', render: function(data, type, row) { return new Date(data).toLocaleDateString(); } },
@@ -53,7 +53,8 @@ if(is_array($logControl)){
                     var estado = (data==1) ? "Activo" : "Finalizado"; 
                     return estado; 
                 } }
-            ]
+            ],
+            scrollX: true
         });
     }
     ////////////////////////////PAGINACIÓN////////////////////////////

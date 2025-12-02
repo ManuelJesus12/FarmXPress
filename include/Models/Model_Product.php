@@ -12,15 +12,15 @@ class ProductModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Recuperar productos de un usuario Proveedor
-     * Params: $offset (paginación)
-     * Return: Array con los productos, 0 si no hay productos, -1 en caso de error
+    /* Funcion: Recuperar Productos de un usuario Proveedor
+     * Params: $offset (paginacion)
+     * Return: Array con los Productos, 0 si no hay Productos, -1 en caso de error
      */
 
     public function listProductP(&$value, &$field = "Nombre"){
         try{
-            $sql=$this->db->prepare("SELECT *, (SELECT NOMBRE FROM CATEGORÍAS C WHERE C.CATEGORÍA_ID=P.CATEGORÍA_ID) AS 'CAT'
-            FROM PRODUCTOS P WHERE Usuario_ID=(SELECT Usuario_ID FROM USUARIOS WHERE $field=?)");
+            $sql=$this->db->prepare("SELECT *, (SELECT Nombre FROM Categorias C WHERE C.Categoria_ID=P.Categoria_ID) AS 'CAT'
+            FROM Productos P WHERE Usuario_ID=(SELECT Usuario_ID FROM Usuarios WHERE $field=?)");
             $sql->bindValue(1, $value, PDO::PARAM_STR);
             $sql->execute();
 
@@ -33,9 +33,9 @@ class ProductModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Recuperar catálogo de productos para mostrar a un un usuario Cliente
-     * Params: $offset (paginación)
-     * Return: Array con los productos, 0 si no hay productos, -1 en caso de error
+    /* Funcion: Recuperar catálogo de Productos para mostrar a un un usuario Cliente
+     * Params: $offset (paginacion)
+     * Return: Array con los Productos, 0 si no hay Productos, -1 en caso de error
      */
     public function listProductC(&$offset=0){
         try{
@@ -43,20 +43,20 @@ class ProductModel {
 
             //*-----------------------------QUERY BUILD------------------------------*//
             $query = "SELECT Producto_ID, U.Usuario_ID AS 'UID', P.Nombre AS 'PNOM', Referencia, Precio_Mensual, P.Estado AS 'PEST', Imagen, 
-            (SELECT Provincia FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'PROV', 
-            (SELECT U.Nombre FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'UNOM', 
-            (SELECT C.Nombre FROM CATEGORÍAS C WHERE C.Categoría_ID=P.Categoría_ID) AS 'CAT' 
-            FROM PRODUCTOS P JOIN USUARIOS U ON P.USUARIO_ID=U.USUARIO_ID WHERE P.Categoría_ID LIKE ? OR P.Categoría_ID IS NULL";
+            (SELECT Provincia FROM Usuarios U WHERE U.Usuario_ID=P.Usuario_ID) AS 'PROV', 
+            (SELECT U.Nombre FROM Usuarios U WHERE U.Usuario_ID=P.Usuario_ID) AS 'UNOM', 
+            (SELECT C.Nombre FROM Categorias C WHERE C.Categoria_ID=P.Categoria_ID) AS 'CAT' 
+            FROM Productos P JOIN Usuarios U ON P.Usuario_ID=U.Usuario_ID WHERE P.Categoria_ID LIKE ? OR P.Categoria_ID IS NULL";
             $parameters = [$placeholder];
 
             if(isset($_COOKIE["search-options"])){
                 $search=json_decode($_COOKIE["search-options"], true);
                 if ($search["category"]!="") {
                     $query = "SELECT Producto_ID, U.Usuario_ID AS 'UID', P.Nombre AS 'PNOM', Referencia, Precio_Mensual, P.Estado AS 'PEST', Imagen, 
-                    (SELECT Provincia FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'PROV', 
-                    (SELECT U.Nombre FROM USUARIOS U WHERE U.Usuario_ID=P.Usuario_ID) AS 'UNOM',  
-                    (SELECT C.Nombre FROM CATEGORÍAS C WHERE C.Categoría_ID=P.Categoría_ID) AS 'CAT' 
-                    FROM PRODUCTOS P JOIN USUARIOS U ON P.USUARIO_ID=U.USUARIO_ID WHERE P.Categoría_ID = ?";
+                    (SELECT Provincia FROM Usuarios U WHERE U.Usuario_ID=P.Usuario_ID) AS 'PROV', 
+                    (SELECT U.Nombre FROM Usuarios U WHERE U.Usuario_ID=P.Usuario_ID) AS 'UNOM',  
+                    (SELECT C.Nombre FROM Categorias C WHERE C.Categoria_ID=P.Categoria_ID) AS 'CAT' 
+                    FROM Productos P JOIN Usuarios U ON P.Usuario_ID=U.Usuario_ID WHERE P.Categoria_ID = ?";
                     $parameters[0] = $search["category"];
                 }
                 if ($search["minPrice"]!="") {
@@ -95,7 +95,7 @@ class ProductModel {
 
     public function carouselListProduct(){
         try{
-            $sql=$this->db->prepare("SELECT * FROM PRODUCTOS ORDER BY RAND() LIMIT 10");
+            $sql=$this->db->prepare("SELECT * FROM Productos ORDER BY RAND() LIMIT 10");
             $sql->execute();
 
             if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -106,14 +106,14 @@ class ProductModel {
     }
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Seleccionar un producto por un campo y valor
+    /* Funcion: Seleccionar un producto por un campo y valor
      * Params: $id (ID del producto)
-     * Return: Array con los productos, 0 si no hay productos, -1 en caso de error
+     * Return: Array con los Productos, 0 si no hay Productos, -1 en caso de error
      */
     public function selectProduct(&$value, &$field = "Producto_ID"){
         try{
-            $sql=$this->db->prepare("SELECT *, (SELECT Nombre FROM CATEGORÍAS C WHERE 
-            C.Categoría_ID=P.Categoría_ID) AS 'CAT' FROM PRODUCTOS P WHERE $field=?");
+            $sql=$this->db->prepare("SELECT *, (SELECT Nombre FROM Categorias C WHERE 
+            C.Categoria_ID=P.Categoria_ID) AS 'CAT' FROM Productos P WHERE $field=?");
             $sql->bindValue(1, $value, PDO::PARAM_INT);
             $sql->execute();
             
@@ -128,9 +128,9 @@ class ProductModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Insertar un producto
+    /* Funcion: Insertar un producto
      * Params: Recibe array con los datos del producto
-     * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
+     * Return: 1 en caso de éxito, -1 en caso de error
      */
     public function insertProduct(&$data){
         try{
@@ -140,7 +140,8 @@ class ProductModel {
             $data[5]=$userController->selectUser($_SESSION["User"]["Nombre"], $field)['Usuario_ID'];
             //*-----------------------------DATA------------------------------*//
 
-            $sql=$this->db->prepare("INSERT INTO PRODUCTOS (Nombre, Descripción, Referencia, Precio_Mensual, Categoría_ID, Usuario_ID, Imagen, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
+            $sql=$this->db->prepare("INSERT INTO Productos (Nombre, Descripcion, Referencia, Precio_Mensual, 
+                                    Categoria_ID, Usuario_ID, Imagen, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, 1)");
             for($i=0;$i<7;$i++) $sql->bindValue(($i+1), $data[$i]);
             $sql->execute();
 
@@ -152,15 +153,16 @@ class ProductModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Actualizar un producto
+    /* Funcion: Actualizar un producto
      * Params: $id (ID del producto), $data (datos del producto)
-     * Return: Redirección a la página principal con éxito o error, o mensaje de éxito/error
+     * Return: 1 en caso de éxito, -1 en caso de error
      */
     public function updateProduct(&$id, &$data){
         try{
             $data[4]=($data[4]=="") ? null : $data[4];
             
-            $sql=$this->db->prepare("UPDATE PRODUCTOS SET Nombre=?, Descripción=?, Referencia=?, Precio_Mensual=?, Categoría_ID=?, Imagen=? WHERE Producto_ID=?");
+            $sql=$this->db->prepare("UPDATE Productos SET Nombre=?, Descripcion=?, Referencia=?, 
+                                    Precio_Mensual=?, Categoria_ID=?, Imagen=? WHERE Producto_ID=?");
             $sql->bindValue(1, $data[0]);
             $sql->bindValue(2, $data[1]);
             $sql->bindValue(3, $data[2]);
@@ -178,14 +180,14 @@ class ProductModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Eliminar un producto
+    /* Funcion: Eliminar un producto
      * Params: $id (ID del producto)
      * Return: 1 si se ha eliminado correctamente, -1 en caso de error
      */
     public function deleteProduct($id){
         try{
             $imagen=$this->selectProduct($id)['Imagen'];
-            $sql=$this->db->prepare("DELETE FROM PRODUCTOS WHERE PRODUCTO_ID=?");
+            $sql=$this->db->prepare("DELETE FROM Productos WHERE Producto_ID=?");
             $sql->bindValue(1, $id, PDO::PARAM_INT);
             $sql->execute();
 
@@ -198,13 +200,13 @@ class ProductModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Activar o desactivar un producto
+    /* Funcion: Activar o desactivar un producto
      * Params: $id (ID del producto), $active (1 para activar, 0 para desactivar)
      * Return: 1 si se ha actualizado correctamente, -1 en caso de error
      */
     public function activeProduct($id, $active=0){
         try{
-            $sql=$this->db->prepare("UPDATE PRODUCTOS SET Estado=? WHERE PRODUCTO_ID=?");
+            $sql=$this->db->prepare("UPDATE Productos SET Estado=? WHERE Producto_ID=?");
             $sql->bindValue(1, $active, PDO::PARAM_INT);
             $sql->bindValue(2, $id, PDO::PARAM_INT);
             $sql->execute();
@@ -217,14 +219,14 @@ class ProductModel {
 
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Reactivar productos alquilados por un usuario eliminado
+    /* Funcion: Reactivar Productos alquilados por un usuario eliminado
      * Params: $uId (ID del usuario)
      * Return: 1 si se activa correctamente, -1 en caso de error
      */
     public function liberateProduct(&$uId){
         try{
-            $sql2 = $this->db->prepare("UPDATE PRODUCTOS SET ESTADO=1 WHERE PRODUCTO_ID IN (
-                SELECT PRODUCTO_ID FROM ALQUILERES A WHERE A.USUARIO_ID=? AND A.ESTADO=1)");
+            $sql2 = $this->db->prepare("UPDATE Productos SET Estado=1 WHERE Producto_ID IN (
+                SELECT Producto_ID FROM Alquileres A WHERE A.Usuario_ID=? AND A.Estado=1)");
             $sql2->bindValue(1, $uId, PDO::PARAM_INT);
             $sql2->execute();
 
@@ -238,13 +240,13 @@ class ProductModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
-    /* Función: Contar el número total de productos
+    /* Funcion: Contar el número total de Productos
      * Params: No recibe parámetros
-     * Return: Número total de productos, 0 si no hay productos, -1 en caso de error
+     * Return: Número total de Productos, 0 si no hay Productos, -1 en caso de error
      */
     public function countProduct(){
         try{
-            $sql=$this->db->prepare("SELECT COUNT(PRODUCTO_ID) AS 'COUNT', MAX(PRODUCTO_ID) AS 'MAX' FROM PRODUCTOS");
+            $sql=$this->db->prepare("SELECT COUNT(Producto_ID) AS 'COUNT', MAX(Producto_ID) AS 'MAX' FROM Productos");
             $sql->execute();
             
             if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC)[0];

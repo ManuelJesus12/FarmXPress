@@ -8,7 +8,7 @@ if(is_array($productControl)){
 
     <!-------------------------------PRODUCT LIST-------------------------------->
     <h2>Productos en seguimiento</h2><br>
-    <input type='text' id='inputSearch' onInput='filterProduct()' placeholder='Filtrar por Nombre o Referencia'></input>
+    <input type='text' id='inputSearch' onInput='filterProduct(8)' placeholder='Filtrar por Nombre o Referencia'></input>
     <div id='boxContent' class='row card-deck'></div>
     <!-------------------------------PRODUCT LIST-------------------------------->
     <!--------------------------------------------NAV BUTTONS--------------------------------------------->
@@ -60,7 +60,7 @@ if(is_array($productControl)){
             `<span class="badge bg-danger">Alquilado</span>`;
 
         $("#boxContent").append(
-            "<div id='prod-"+prod["RID"]+"' class='col-12 col-md-6 col-lg-4'>"+
+            "<div id='prod-"+prod["RID"]+"' class='col-12 col-md-6 col-lg-3'>"+
                 "<div class='card h-100 element-green-border'>"+
                     "<div class='card-header element-green-bg'><a class='element-green-bg text-decoration-underline' href='principal.php?methodProd=viewProduct&id="+prod['PID']+"'>"+prod["Nombre"]+" - "+prod["Referencia"]+"</a></div>"+fav+
                         "<div class='card-body d-flex flex-column' style='color: white !important; text-shadow: black 1px 0 5px, black 0 1px 5px, black 1px 0 5px, black 1px 0 5px !important; '>"+

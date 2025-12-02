@@ -48,8 +48,11 @@ if(isset($userControl)){
                 },
                 { data: 'Email' },
                 { data: 'CIF' },
-                { data: 'Nombre' },
-                { data: 'Teléfono' },
+                { data: 'Nombre', render: function(data, type, row) {
+                        return "<a href='principal.php?methodUser=viewProfile&id="+row['Usuario_ID']+"'>"+data+"</a>";
+                    }
+                },
+                { data: 'Telefono' },
                 { data: 'Provincia' },
                 { data: 'Fecha_Registro', render: function(data, type, row) { return new Date(data).toLocaleDateString(); } },
                 { data: 'Tipo', render: function(data, type, row) {
@@ -63,7 +66,8 @@ if(isset($userControl)){
                         "<a href='#' class='has-tooltip' data-tooltip='Eliminar Usuario' onclick='deleteUser("+row["Usuario_ID"]+")'><i class='fa-solid fa-trash icon-trash border-5'></i></a>";
                     }
                 }
-            ]
+            ],
+            scrollX: true
         });
     });
 </script>

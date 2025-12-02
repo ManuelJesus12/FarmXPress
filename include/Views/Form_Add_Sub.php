@@ -12,7 +12,7 @@
         $dirLocation=2;
         include("../_Indexes/Index_Interface.php");
         include("../_Indexes/Index_Sub.php");
-        $subData=['Suscripción_ID'=>'', 'Nombre'=>'', 'Precio_Mensual'=>'', 'Duración_Base'=>''];
+        $subData=['Suscripcion_ID'=>'', 'Nombre'=>'', 'Precio_Mensual'=>'', 'Duracion_Base'=>''];
 
         if(isset($_GET["id"])){
             $subData=$subController->selectSub($_GET["id"]);
@@ -52,7 +52,7 @@
                     <div class="col-12 col-md-6 mb-3">
                         <label for="months" class="form-label">Duración Base (Meses): <span class="error">*</span></label>
                         <div class="input-group">
-                            <input type="number" placeholder="12" name="months" id="months" class="form-control" value="<?php echo $subData["Duración_Base"]; ?>" required />
+                            <input type="number" placeholder="12" name="months" id="months" class="form-control" value="<?php echo $subData["Duracion_Base"]; ?>" required />
                         </div>
                         <div class="form-text text-danger" id="error-months"></div>
                     </div>

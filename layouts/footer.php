@@ -16,10 +16,10 @@
                     <li><a href= "<?php echo $dir."index.php?view=services"; ?>" >Servicios</a></li>
                     <li><a href= "<?php echo $dir."index.php?view=testimonials"; ?>" >Testimonios</a></li>
                     <li><a href= "<?php echo $dir."index.php?view=about";  ?>" >Sobre nosotros</a></li>
-                    <li><a href= "<?php echo $dir."index.php?view=privacy"; ?>" >Política de privacidad</a></li>
-                    <li><a href= "<?php echo $dir."index.php?view=cookie"; ?>" >Política de cookies</a></li>
-                    <li><a href= "<?php echo $dir."index.php?view=legal";  ?>" >Aviso legal</a></li>
-                    <li><a href= "<?php echo $dir."index.php?view=plan";  ?>" >Prevención Riesgos Laborales</a></li>
+                    <li><a href= "<?php echo $dir."index.php?view=politica-privacidad"; ?>" >Política de privacidad</a></li>
+                    <li><a href= "<?php echo $dir."index.php?view=politica-cookies"; ?>" >Política de cookies</a></li>
+                    <li><a href= "<?php echo $dir."index.php?view=aviso-legal";  ?>" >Aviso legal</a></li>
+                    <li><a href= "<?php echo $dir."index.php?view=plan-prevencion";  ?>" >Prevención Riesgos Laborales</a></li>
                 </ul>
             </div>
         </div>
