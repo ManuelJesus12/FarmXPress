@@ -18,7 +18,7 @@ if(is_array($productControl)){
     //*-----------------------------NOTIFICATIONS------------------------------*//
     //*-----------------------------PRODUCT LIST------------------------------*//
     echo "<a id='add-product' class='btn btn-shape element-green-bg mb-3'>Agregar Producto</a>";
-    echo "<input type='text' id='inputSearch' onInput='filterProduct()' placeholder='Filtrar por Nombre o Referencia'></input>";
+    echo "<input type='text' id='inputSearch' onInput='filterProduct(6)' placeholder='Filtrar por Nombre o Referencia'></input>";
     echo "<div id='boxContent' class='row card-deck col-12'></div>";
     //*-----------------------------PRODUCT LIST------------------------------*//
 
@@ -47,7 +47,7 @@ if(is_array($productControl)){
 
 <script>
     var productControl = <?php echo json_encode($productControl); ?>;
-    content_paginate(productControl, 8);
+    content_paginate(productControl, 6);
 
     ////////////////////////////CONTENIDO////////////////////////////
     function createContent(prod){

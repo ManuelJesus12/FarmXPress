@@ -8,7 +8,7 @@ if(isset($_GET["success"])){ ?> <script> showBoxSuccessPay("<?php echo $_GET["su
 
 if(is_array($rentControl)){ ?>
     <h2>Productos Alquilados</h2><br>
-    <input type='text' id='inputSearch' onInput='filterProduct(8)' placeholder='Filtrar por Nombre o Referencia'></input>
+    <input type='text' id='inputSearch' onInput='filterProduct(6)' placeholder='Filtrar por Nombre o Referencia'></input>
     <div id='boxContent' class='row card-deck'></div>
 
     <!--------------------------------------------NAV BUTTONS--------------------------------------------->
