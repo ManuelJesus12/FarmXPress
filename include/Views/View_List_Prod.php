@@ -67,7 +67,7 @@ if(is_array($productControl)){
         }
 
         $("#boxContent").append(    
-            "<div id='product-"+prod['Producto_ID']+"' class='col-12 col-md-6 col-lg-3'>"+
+            "<div id='product-"+prod['Producto_ID']+"' class='col-12 col-md-6 col-lg-4'>"+
                 "<div class='card h-100 element-green-border'>" +
                     "<div class='card-header element-green-bg'>"+prod["Nombre"]+" - "+prod["Referencia"]+"</div>"+
                     "<div class='card-body d-flex flex-column'>" +

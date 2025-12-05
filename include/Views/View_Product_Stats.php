@@ -18,9 +18,9 @@
     ?>
     <!-------------------------------LOGICA------------------------------->
 
-<div id="formPopup" class="popup" style="top: -130;">
-    <div class="popup-content" style="width: 80%;">
-        <button class="close-btn" id="closeFormBtn" style="top: 140;">X</button>
+<div id="formPopup" class="popup">
+    <div class="popup-content" style='position:relative; top: -40;'>
+        <button class="close-btn" id="closeFormBtn" style="position:fixed;">X</button>
         <?php if(is_array($rentData)){ ?>
             <h2>Mostrando Estadísticas del Producto <?php echo $rentStats['PNOM']; ?></h2>
             <p><strong>Ganancias Totales:</strong> <?php echo $rentStats['TOTAL_EARNINGS']; ?>€</p>
@@ -81,6 +81,10 @@
         }else $("#div-data-table").toggle(500);
         event.preventDefault();
     }
+
+    $("#lastP a").on("click", function() {
+        $(".popup-content").css("top", "-140");
+    });
 </script>
 <!-------------------------------SCRIPT------------------------------->
 </html>

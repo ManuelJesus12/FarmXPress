@@ -70,7 +70,7 @@ class UserModel {
             $sql->execute();
 
             //*-----------------------------CLIENTE / PROVEEDOR------------------------------*//
-            $table = ($data[6]=="C") ? "Clientes" : "Proveedores";
+            $table = ($data[8]=="C") ? "Clientes" : "Proveedores";
             $sql=$this->db->prepare("INSERT INTO $table (Usuario_ID) VALUES (?)");
             $sql->bindValue(1, $this->db->lastInsertId(), PDO::PARAM_INT);
             $sql->execute();

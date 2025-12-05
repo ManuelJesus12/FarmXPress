@@ -45,15 +45,15 @@ if(is_array($rentControl)){ ?>
         let buttons = "";
 
         if(rent['Deuda']>0){
-            buttons += "<div class='col-12 d-flex gap-2'>" +
-                "<a href='#' class='btn btn-sm btn-product-modify btn-shape w-50' onclick='insertPay("+rent['RID']+", "+rent['PID']+", "+rent['Deuda']+")'><i class='fa-solid fa-credit-card border-5'></i> Realizar Pago</a>" +
-                "<a href='#' class='btn btn-sm element-green-bg btn-shape w-50' onclick='viewPay("+rent['RID']+")'><i class='fa-solid fa-credit-card border-5'></i> Pagos</a>" +
+            buttons += "<div class='col-12 d-flex gap-2 flex-wrap'>" +
+                "<a href='#' class='btn btn-sm btn-product-modify btn-shape flex-fill' onclick='insertPay("+rent['RID']+", "+rent['PID']+", "+rent['Deuda']+")'><i class='fa-solid fa-credit-card border-5'></i> Realizar Pago</a>" +
+                "<a href='#' class='btn btn-sm element-green-bg btn-shape flex-fill' onclick='viewPay("+rent['RID']+")'><i class='fa-solid fa-credit-card border-5'></i> Pagos</a>" +
             "</div>";
         }else{
-            buttons += "<div class='col-12 d-flex gap-2'>" +
-                "<a href='#' class='btn btn-sm btn-product-extend btn-shape w-33' onclick='insertPay("+rent['RID']+", "+rent['PID']+", "+rent['Deuda']+")'><i class='fa-solid fa-plus border-5'></i> Extender</a>" +
-                "<a href='#' class='btn btn-sm btn-product-delete btn-shape w-33' onclick='activeRent("+rent['RID']+", "+rent['PID']+", \""+String(rent['Nombre']).replace(/\\"/g, '\\"').replace(/"/g, '\\"')+"\")'><i class='fa-solid fa-xmark border-5'></i> Liberar</a>" +
-                "<a href='#' class='btn btn-sm element-green-bg btn-shape w-33' onclick='viewPay("+rent['RID']+")'><i class='fa-solid fa-credit-card border-5'></i> Pagos</a>" +
+            buttons += "<div class='col-12 d-flex gap-2 flex-wrap'>" +
+                "<a href='#' class='btn btn-sm btn-product-extend btn-shape flex-fill' onclick='insertPay("+rent['RID']+", "+rent['PID']+", "+rent['Deuda']+")'><i class='fa-solid fa-plus border-5'></i> Extender</a>" +
+                "<a href='#' class='btn btn-sm btn-product-delete btn-shape flex-fill' onclick='activeRent("+rent['RID']+", "+rent['PID']+", \""+String(rent['Nombre']).replace(/\\"/g, '\\"').replace(/"/g, '\\"')+"\")'><i class='fa-solid fa-xmark border-5'></i> Liberar</a>" +
+                "<a href='#' class='btn btn-sm element-green-bg btn-shape flex-fill' onclick='viewPay("+rent['RID']+")'><i class='fa-solid fa-credit-card border-5'></i> Pagos</a>" +
             "</div>";
         }
 
