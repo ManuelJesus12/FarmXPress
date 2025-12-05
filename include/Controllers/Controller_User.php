@@ -103,12 +103,16 @@ class UserController {
      * Return: Mensaje de éxito o error
      */
     public function activeUser(&$id, &$active){
-        return $this->userModel->activeUser($id, $active);
+        $this->userModel->activeUser($id, $active);
     }
 
     public function validateUser(){
-        $this->userModel->validateUser();
-        header("Location: ../index.php?action=3");
+        if(isset($_SESSION["User"])){
+            $this->userModel->validateUser();
+            $_SESSION["User"]["Estado"]=1;
+            
+            header("Location: ../index.php?action=3");
+        }else header("Location: ../index.php?action=-1");
     }
 
 

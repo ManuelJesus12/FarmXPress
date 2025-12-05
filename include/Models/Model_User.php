@@ -234,9 +234,20 @@ class UserModel {
             $phpmailer->addAddress($email, $name);
             $phpmailer->isHTML(true);
             $phpmailer->Subject = 'Gracias por su registro';
-            $phpmailer->Body = "Verifica su cuenta haciendo click 
-            <a href='https://localhost/FARMXPRESS/include/principal.php?methodUser=validate'>aquí</a>
-            para poder comenzar a alquilar productos.";
+            $phpmailer->Body = "
+                <html>
+                <head>
+                    <title>Gracias por su registro</title>
+                </head>
+                <body>
+                    <h2>Bienvenido a FarmXPress, $name!</h2>
+                    <p>Gracias por registrarse en nuestra plataforma. Estamos encantados de tenerle con nosotros.</p>
+                    <p>Valide su cuenta para comenzar a alquilar productos haciendo click
+                        <a href='https://localhost/FARMXPRESS/include/principal.php?methodUser=validate'>aquí</a>.</p>
+                    <p>Saludos cordiales,</p>
+                    <p>El equipo de FarmXPress</p>
+                </body>
+                </html>";
             $phpmailer->SMTPOptions = array(
                 'ssl' => array(
                     'verify_peer' => false,
