@@ -18,7 +18,8 @@ class UserModel {
      */
     public function listUser(){
         try{
-            $sql=$this->db->prepare("SELECT * FROM Usuarios ORDER BY Usuario_ID ASC");
+            $sql=$this->db->prepare("SELECT Usuario_ID, Email, CIF, Nombre, Telefono, Provincia, Fecha_Registro, 
+            					    Tipo, Estado FROM Usuarios ORDER BY Usuario_ID DESC");
             $sql->execute();
 
             if($sql->rowCount()!=0) return $sql->fetchAll(PDO::FETCH_ASSOC);

@@ -176,7 +176,7 @@ if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
 
     ////////////////////////////CONTENIDO////////////////////////////
     function createContent(review){
-        let file = (review["Imagen"]!=null) ? review["Imagen"] : "anon.png";
+        let file = (review["Avatar"]!=null) ? review["Avatar"] : "anon.png";
         let starsHtml = deleteBtn = "";
         
         if(review['Nombre']==sessionUser || sessionUser=='ADMINISTRADOR')
