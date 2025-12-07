@@ -31,8 +31,8 @@
         <button class="close-btn" id="closeFormBtn" style="position:fixed;">X</button>
         <h2 style='margin-top: -30px'><?php echo $title ?></h2>
         <form action="<?php echo $action; ?>" method="post" enctype='multipart/form-data' id="form-data-user" novalidate>
-            <?php if($_GET["methodUser"]=="viewUpdate"){ ?>
-                <input type="hidden" name="userId" id="userId" value="<?php echo $userData["Usuario_ID"] ?>" />
+            <?php if(isset($_GET["id"])){ ?>
+                <input type="hidden" name="userId" id="userId" value="<?php echo $userData["Usuario_ID"]; ?>" />
             <?php } ?>
 
             <div class="container-fluid">
