@@ -182,7 +182,7 @@ if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
         if(review['Nombre']==sessionUser || sessionUser=='ADMINISTRADOR')
             deleteBtn = "<a href='#' onclick='deleteReview("+review['Reseña_ID']+")' class='btn btn-danger btn-delete mt-2'>Eliminar</a>";
         for(let i=1; i<=5; i++){
-            let classStar = (i<=review['Calificación']) ? 'fas' : 'fa-regular';
+            let classStar = (i<=review['Calificacion']) ? 'fas' : 'fa-regular';
             starsHtml += "<i class='fa-star icon-rev "+classStar+"'></i>";
         }
         
