@@ -10,7 +10,7 @@ async function validateField(field, value, fieldName, idField, type) {
             data: { field: field, value: value, objectId: id, type: type },
             success: function(response) {
                 if(response.text != 0){
-                    $("#error-"+fieldName).text("Ya hay un usuario registrado con este " + field);
+                    $("#error-"+fieldName).text("Ya hay un "+type+" registrado con este " + field);
                     $("#"+fieldName).addClass("input-error");
                     $("#"+fieldName).val("");
                     $("#"+fieldName).focus();

@@ -22,7 +22,7 @@ $("#btn-data-prod").on("click", async function() {
         $("#ref").addClass("input-error").focus();
         return;
     }else{
-        var validRef = await validateField("Referencia", ref, "ref", "#prodId", "PRODUCTO");
+        var validRef = await validateField("Referencia", ref, "ref", "#prodId", "Producto");
         if (!validRef) return;
     }
 
