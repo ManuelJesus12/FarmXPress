@@ -130,8 +130,8 @@
 
     <!-------------------------------SCRIPT------------------------------->
     <script>
-        const currentRegion   = "<?php echo $userData["Comunidad"] ?>";
-        const currentProvince = "<?php echo $userData["Provincia"] ?>";
+        var currentRegion   = "<?php echo $userData["Comunidad"] ?>";
+        var currentProvince = "<?php echo $userData["Provincia"] ?>";
     </script>
     <script src="../assets/js/form_field_validation.js"></script>
     <script src="../assets/js/form_user_validation.js"></script>
