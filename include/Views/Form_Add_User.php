@@ -27,7 +27,7 @@
 
     <!-------------------------------FORM------------------------------->
     <div id="formPopup" class="popup">
-    <div class="popup-content" style='position:relative; top: -100; width: 900px'>
+    <div class="popup-content" style='position:relative; top: -80; width: 900px'>
         <button class="close-btn" id="closeFormBtn" style="position:fixed;">X</button>
         <h2 style='margin-top: -30px'><?php echo $title ?></h2>
         <form action="<?php echo $action; ?>" method="post" enctype='multipart/form-data' id="form-data-user" novalidate>
@@ -109,7 +109,6 @@
                             <option value="C">Cliente</option>
                         </select>
                     </div>
-                    <?php } ?>
 
                     <div class="col-lg-4 col-md-6 mb-3">
                         <label for="avatar" class="form-label" style='margin-bottom: 0px'>Avatar:</label>
@@ -117,6 +116,7 @@
                         <small class="form-text text-muted">PNG o JPG de máximo 1MB</small>
                         <div class="form-text text-danger" id="error-avatar"></div>
                     </div>
+                    <?php } ?>
 
                     <div class="col-12 text-center mt-2">
                         <input type="button" id="btn-data-user" class="btn btn-pill btn-pill-green element-green-bg px-4 py-2" value="Enviar" />

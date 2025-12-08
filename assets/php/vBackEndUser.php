@@ -44,7 +44,7 @@ if(isset($_POST['userId'])){
 }else{
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
         if (in_array($_FILES['avatar']['type'], $allowedTypes) && $_FILES['avatar']['size'] <= (1024 * 1024)){
-            $data[9]=($this->countProduct()['MAX']+1).".".strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
+            $data[9]=($this->countUser()['MAX']+1).".".strtolower(pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION));
             $uploadFile = "../assets/img/users/".$data[9];
             move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadFile);
         }else header("Location: principal.php?methodUser=$method?error=avatar");

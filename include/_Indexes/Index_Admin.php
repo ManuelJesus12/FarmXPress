@@ -22,6 +22,8 @@ if(isset($_GET['methodAdmin'])){
         $message = $adminController -> storeLog();
     if(in_array("print", $methods))  
         $message = $adminController -> printLog();
+    if(in_array("contact", $methods))  
+        $message = $adminController -> contact($_POST['email'], $_POST['name'], $_POST['subject'], $_POST['body']);
     if(in_array("select", $methods))  
         $message = $adminController -> listLog($_GET['type']);
     /*--------------------------------------------------------------------------*/

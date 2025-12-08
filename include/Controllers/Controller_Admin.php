@@ -111,5 +111,11 @@ class AdminController {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
+    public function contact(&$mail, &$name, &$subject, &$body){
+        if($this->adminModel->contact($mail, $name, $subject, $body)==1)
+            header("Location: ../index.php?action=4");
+        else
+            header("Location: ../index.php?action=-1");
+    }
 }
 ?>

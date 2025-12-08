@@ -6,9 +6,8 @@ $("#btn-data-user").on("click", async function(event){
     var name = $("#name").val().trim();        const nameRegex = /^[A-Za-z0-9\s]+$/;
     var phone = $("#phone").val().trim();      const phoneRegex = /^[1-9][0-9]{8}$/;
     var address = $("#address").val().trim();  const addressRegex = /^[A-Za-z0-9\s.,\-ºª#\/]+$/;
-    var password = "";                         const passwordRegex = /^[A-Za-z0-9\s.,\-ºª#\/]+$/;
+    var password = ""; var file = "";          const passwordRegex = /^[A-Za-z0-9\s.,\-ºª#\/]+$/;
     var region = $("#region").val().trim();    var province = $("#province").val().trim();  
-    var file = $("#avatar").val().trim();
 
     // Clear previous errors
     $('#error-email, #error-name, #error-cif, #error-phone, #error-address, #error-region, #error-province, #error-password, #error-avatar, #error-terms').text('');
@@ -120,18 +119,21 @@ $("#btn-data-user").on("click", async function(event){
     // Contraseña validación
 
     // Subir Avatar
-    if(file != "") {
-        var fileExt = $("#avatar").val().split('.').pop().toLowerCase();
-        if($.inArray(fileExt, ['png', 'jpg', 'jpeg']) == -1) {
-            $("#error-avatar").text("El campo Avatar debe estar en formatos PNG, JPG o JPEG.");
-            $("#avatar").addClass('input-error').focus();
-            return;
-        } else if ($("#avatar").get(0).files[0].size > 1000000) {
-            $("#error-avatar").text("El campo Avatar no puede superar el 1MB.");
-            $("#avatar").addClass('input-error').focus();
-            return;
-        } 
-        await sleep(500);
+    if($("#avatar").length > 0){
+        file = $("#avatar").val().trim();
+        if(file != ""){
+            var fileExt = $("#avatar").val().split('.').pop().toLowerCase();
+            if($.inArray(fileExt, ['png', 'jpg', 'jpeg']) == -1) {
+                $("#error-avatar").text("El campo Avatar debe estar en formatos PNG, JPG o JPEG.");
+                $("#avatar").addClass('input-error').focus();
+                return;
+            } else if ($("#avatar").get(0).files[0].size > 1000000) {
+                $("#error-avatar").text("El campo Avatar no puede superar el 1MB.");
+                $("#avatar").addClass('input-error').focus();
+                return;
+            } 
+            await sleep(500);
+        }
     }
     // Subir Avatar
 

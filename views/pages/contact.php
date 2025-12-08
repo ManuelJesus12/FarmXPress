@@ -60,7 +60,7 @@ a, a h2{font-weight: bold;}
       </div>
 
       <div class="col-lg-8">
-        <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+        <form action="include/principal.php?methodAdmin=contact" method="post" role="form" class="php-email-form">
           <div class="row">
             <div class="col-md-6 form-group">
               <input type="text" name="name" class="form-control" id="name" placeholder="Tu Nombre" required="">
@@ -73,12 +73,7 @@ a, a h2{font-weight: bold;}
             <input type="text" class="form-control" name="subject" id="subject" placeholder="Asunto" required="">
           </div>
           <div class="form-group mt-3">
-            <textarea class="form-control" name="message" placeholder="Mensaje" required=""></textarea>
-          </div>
-          <div class="my-3">
-            <div class="loading">Cargando...</div>
-            <div class="error-message"></div>
-            <div class="sent-message">Tu mensaje ha sido enviado. Gracias.</div>
+            <textarea class="form-control" name="body" placeholder="Mensaje" required=""></textarea>
           </div>
           <div class="text-center"><button type="submit">Enviar Mensaje</button></div>
         </form>

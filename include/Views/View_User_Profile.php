@@ -87,7 +87,7 @@ $tipo = ($userControl['Tipo'] == "C") ? "Cliente" : "Proveedor";
             "<div class='col-12 col-md-6 col-lg-3'>"+
                 "<div class='card h-100 element-green-border'>"+
                     "<div class='card-header element-green-bg'>"+prod["Nombre"]+" - "+prod["Referencia"]+"</div>"+
-                        "<div class='card-body d-flex flex-column' style='color: white !important; text-shadow: black 1px 0 5px, black 0 1px 5px, black 1px 0 5px, black 1px 0 5px !important; '>"+
+                        "<div class='card-body d-flex flex-column'>"+
                             "<img src='../assets/img/products/"+file+"' class='card-img-top card-image' style='margin-bottom:10px' alt='"+prod["Nombre"]+"></img>"+
                             "<p class='card-text mb-1'>Categoría: "+cat+"</p>"+
                             "<div class='mt-auto d-flex justify-content-between align-items-center'>"+

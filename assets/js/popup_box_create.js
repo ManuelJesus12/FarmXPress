@@ -87,6 +87,9 @@ function showBoxSuccessLogin(bool, name){
     }else if(bool==3){
         warning.textContent="Cuenta verificada correctamente, " + name;
         warning.setAttribute("class", "warning alert alert-success");
+    }else if(bool==4){
+        warning.textContent="Email enviado con éxito.";
+        warning.setAttribute("class", "warning alert alert-success");
     }else if(bool==-1){
         warning.textContent="Error de conexión. Por favor, inténtalo de nuevo más tarde.";
         warning.setAttribute("class", "warning alert alert-danger");

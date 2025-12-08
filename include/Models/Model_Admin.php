@@ -193,6 +193,39 @@ class AdminModel {
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
+    public function contact(&$mail, &$name, &$subject, &$body){
+        try{
+            require_once '../assets/vendor/PHPMailer/src/PHPMailer.php';
+            require_once '../assets/vendor/PHPMailer/src/SMTP.php';
+            require_once '../assets/vendor/PHPMailer/src/Exception.php';
+            
+            $phpmailer =  new \PHPMailer\PHPMailer\PHPMailer;
+            $phpmailer->isSMTP();
+            $phpmailer->Host = 'smtp.gmail.com';
+            $phpmailer->SMTPAuth = true;
+            $phpmailer->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+            $phpmailer->Port = 587;
+            $phpmailer->Username = 'farmxpress0@gmail.com';
+            $phpmailer->Password = 'btrh raeq lpko zlxk';
+            $phpmailer->setFrom($mail, $name);
+            $phpmailer->addAddress('farmxpress0@gmail.com', 'FarmXPress Admin');
+            $phpmailer->isHTML(true);
+            $phpmailer->Subject = $subject;
+            $phpmailer->Body = "<h2>Email de $mail - $name<h2><br><br>".$body;
+            $phpmailer->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+            ));
+
+            if($phpmailer->send()) return 1;
+            else return 0;
+            
+        }catch(Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }
 
 ///////////////////////////////////////////////////////////////

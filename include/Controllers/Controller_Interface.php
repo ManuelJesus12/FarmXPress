@@ -94,7 +94,7 @@ class InterfaceController {
             include("_Indexes/Index_Product.php");
         if(isset($_GET["methodUser"]))
             include("_Indexes/Index_User.php");
-        if(isset($_GET["methodAdmin"]) && isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]=="ADMINISTRADOR")
+        if(isset($_GET["methodAdmin"]))
             include("_Indexes/Index_Admin.php");
     }
 

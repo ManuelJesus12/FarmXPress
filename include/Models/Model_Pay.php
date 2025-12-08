@@ -18,7 +18,7 @@ class PayModel {
      */
     public function selectPay(&$rId){
         try{
-            $sql=$this->db->prepare("SELECT * FROM Pagos WHERE Alquiler_ID=? ORDER BY Fecha_Hora DESC");
+            $sql=$this->db->prepare("SELECT * FROM Pagos WHERE Alquiler_ID=? ORDER BY Fecha_Hora ASC");
             $sql->bindValue(1, $rId, PDO::PARAM_INT);
             $sql->execute();
 

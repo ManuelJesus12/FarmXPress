@@ -63,7 +63,7 @@ if(is_array($productControl)){
             "<div id='prod-"+prod["RID"]+"' class='col-12 col-md-6 col-lg-3'>"+
                 "<div class='card h-100 element-green-border'>"+
                     "<div class='card-header element-green-bg'><a class='element-green-bg text-decoration-underline' href='principal.php?methodProd=viewProduct&id="+prod['PID']+"'>"+prod["Nombre"]+" - "+prod["Referencia"]+"</a></div>"+fav+
-                        "<div class='card-body d-flex flex-column' style='color: white !important; text-shadow: black 1px 0 5px, black 0 1px 5px, black 1px 0 5px, black 1px 0 5px !important; '>"+
+                        "<div class='card-body d-flex flex-column'>"+
                             "<img src='../assets/img/products/"+file+"' class='card-img-top mb-3' alt='"+prod["Nombre"]+"></img>"+
                             "<p class='card-text mb-1'>Categoría: "+cat+"</p>"+
                             "<p class='card-text mb-1'>Localización: "+prod['PROV']+"</p>"+
