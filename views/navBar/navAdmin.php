@@ -1,7 +1,7 @@
 <?php global $PDOConnect; ?>
 <link rel="stylesheet" href="assets/css/principal.css">
 <!-- Sidebar Menu -->
-    <nav id="navmenu" class="d-none d-lg-block navmenu">
+    <nav id="navmenu" class="d-lg-block navmenu">
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .margin-5 class
             with font-awesome or any other icon font library -->
