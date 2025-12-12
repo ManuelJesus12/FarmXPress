@@ -91,7 +91,7 @@
                         </div>
                     </div>
 
-                    <div class="col-12 col-md-6 mb-3">
+                    <div class="col-12 col-md-6 mb-3" style='margin-top: -30px'>
                         <label for="imagen" class="form-label">Imagen:</label>
                         <div class="input-group">
                             <input type="file" name="imagen" id="imagen" class="form-control" />
