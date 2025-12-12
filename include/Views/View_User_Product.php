@@ -157,7 +157,7 @@ if(isset($_SESSION["User"]) && $_SESSION["User"]["Nombre"]!="ADMINISTRADOR"){
         let order = $("input[name='orderRev']:checked").val();
         if(order=="newest") reviewControl.sort((a,b) => new Date(b["Fecha_Hora"]) - new Date(a["Fecha_Hora"]));
         if(order=="oldest") reviewControl.sort((a,b) => new Date(a["Fecha_Hora"]) - new Date(b["Fecha_Hora"]));
-        if(order=="highest") reviewControl.sort((a,b) => b["Calificación"] - a["Calificación"]);
+        if(order=="highest") reviewControl.sort((a,b) => b["Calificacion"] - a["Calificacion"]);
 
         $("#boxContent").empty();
         for(let i=0; i<5; i++){

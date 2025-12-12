@@ -134,7 +134,7 @@ if($PDOConnect!=false) {
                 </p>
               <?php } 
               
-              if(isset($_SESSION["usuario"])){ ?>
+              if(isset($_SESSION["User"])){ ?>
                 <a href="include/principal.php?methodProd=viewProduct&id=<?php echo $product['Producto_ID']; ?>&page=1" class="col-6 btn btn-log btn-shape element-green-bg" style="font-size:1em">Ver Detalles</a>
               <?php } else { ?>
                 <a href="include/principal.php?methodUser=login" class="col-6 btn btn-log btn-shape element-green-bg" style="font-size:1em">Iniciar Sesión</a>

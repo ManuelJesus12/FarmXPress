@@ -18,7 +18,7 @@ class ReviewModel {
      */
     public function listReview(&$pId){
         try{
-            $sql=$this->db->prepare("SELECT Reseña_ID, Nombre, Comentario, Calificacion, Fecha_Hora, Avatar FROM Reseñas R 
+            $sql=$this->db->prepare("SELECT * FROM Reseñas R 
                                 JOIN Usuarios U ON R.Usuario_ID=U.Usuario_ID WHERE Producto_ID=? ORDER BY Fecha_Hora DESC");
             $sql->bindValue(1, $pId, PDO::PARAM_INT);
             $sql->execute();
